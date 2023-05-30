@@ -1,0 +1,17 @@
+@openzeppelin/=lib/openzeppelin-contracts/
+@ensdomains/ens-contracts/=lib/ens-contracts/contracts/
+ds-test/=lib/ds-test/src/
+forge-std/=lib/forge-std/src/
+openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/
+openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/
+royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/
+royalty-registry/=lib/royalty-registry-solidity/contracts/
+solmate/=lib/solmate/src/
+rareprotocol/assets/=lib/assets/src/
+rareprotocol/aux/=lib/aux/src/
+ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/
+@ensdomains/buffer/=lib/buffer/
+arachnid/solidity-stringutils/=lib/solidity-stringutils/
+@uniswap/v3-core/=lib/v3-core/contracts/
+@uniswap/v3-core/contracts/=lib/v3-core/contracts/
+@uniswap/v3-periphery/=lib/v3-periphery/contracts/

@@ -1,0 +1,15 @@
+**/node_modules/*
+.github
+reports
+lib
+out
+.*
+!.*.js
+*.txt
+commitlint.config.js
+cache/*
+Makefile
+*.mk
+*.sh
+Dockerfile*
+*.tpl
