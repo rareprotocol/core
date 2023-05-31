@@ -1,9 +1,9 @@
-# RARE Protocol Core Smart Contract
+# Rare Protocol Core Smart Contract
 
 ## Contracts
 
 ### Staking
-#### Rare Staking Registry
+#### Staking Registry
 The `RareStakingRegistry` serves as a registry where staking contracts (see Rarity Pools), reward swapping contracts, and configuration settings related to staking can be managed and accessed.
 
 #### Rarity Pool
@@ -17,7 +17,7 @@ The contract provides functions for initializing the contract, performing a rewa
 Overall, the contract serves as an interface for a reward swapping mechanism where users can trade their RARE tokens for other ERC20 tokens and ether at a discounted price.
 
 ### Bazaar
-The Bazaar is the interface to RARE protocol's market mechanisms which include: offers, general and direct sale prices/purchases, Coldie Auctions (aka Reserve auctions), and scheduled auctions.
+The Bazaar is the interface to Rare Protocol's market mechanisms which include: offers, general and direct sale prices/purchases, Coldie Auctions (aka Reserve auctions), and scheduled auctions.
 
 
 ## Building
