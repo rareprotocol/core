@@ -9,7 +9,7 @@ import {IBeaconUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/beaco
 import {BeaconProxy} from "openzeppelin-contracts/proxy/beacon/BeaconProxy.sol";
 
 import {IRarityPoolFactory} from "./IRarityPoolFactory.sol";
-import {IRewardSwapFactory} from "./IRewardSwapFactory.sol";
+import {IRewardAccumulatorFactory} from "./IRewardAccumulatorFactory.sol";
 import {IRareStakingRegistry} from "../registry/IRareStakingRegistry.sol";
 import {IRarityPool} from "../token/IRarityPool.sol";
 
@@ -26,7 +26,7 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, OwnableUpg
   IRareStakingRegistry private stakingRegistry;
 
   // Reward swap factory contract
-  IRewardSwapFactory private rewardSwapFactory;
+  IRewardAccumulatorFactory private rewardSwapFactory;
 
   // Template contract used for Beacon implementation
   address private rareStakingTemplate;
@@ -44,7 +44,7 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, OwnableUpg
     require(_stakingRegistry != address(0), "initialize::_stakingRegistry cannot be zero address");
     require(_rareStakingTemplate != address(0), "initialize::_rareStakingTemplate cannot be zero address");
     require(_rewardSwapFactory != address(0), "initialize::_rewardSwapFactory cannot be zero address");
-    rewardSwapFactory = IRewardSwapFactory(_rewardSwapFactory);
+    rewardSwapFactory = IRewardAccumulatorFactory(_rewardSwapFactory);
     require(
       (rewardSwapFactory.getStakingRegistryAddress() == _stakingRegistry),
       "initialize::StakingRegistries must match"

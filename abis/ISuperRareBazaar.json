@@ -1,0 +1,3718 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_originContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_currencyAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address payable[]",
+          "name": "_splitAddresses",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint8[]",
+          "name": "_splitRatios",
+          "type": "uint8[]"
+        }
+      ],
+      "name": "acceptOffer",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_originContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_currencyAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "bid",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_originContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_currencyAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "buy",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_originContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelAuction",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_originContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_currencyAddress",
+          "type": "address"
+        }
+      ],
+      "name": "cancelOffer",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_auctionType",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "_originContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_startingAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_currencyAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_lengthOfAuction",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_startTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address payable[]",
+          "name": "_splitAddresses",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint8[]",
+          "name": "_splitRatios",
+          "type": "uint8[]"
+        }
+      ],
+      "name": "configureAuction",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_originContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_currencyAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_lengthOfAuction",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address payable[]",
+          "name": "_splitAddresses",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint8[]",
+          "name": "_splitRatios",
+          "type": "uint8[]"
+        }
+      ],
+      "name": "convertOfferToAuction",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_originContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getAuctionDetails",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address payable[]",
+          "name": "",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint8[]",
+          "name": "",
+          "type": "uint8[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_originContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_target",
+          "type": "address"
+        }
+      ],
+      "name": "getSalePrice",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address payable[]",
+          "name": "",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint8[]",
+          "name": "",
+          "type": "uint8[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_originContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_currencyAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "_convertible",
+          "type": "bool"
+        }
+      ],
+      "name": "offer",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_originContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_target",
+          "type": "address"
+        }
+      ],
+      "name": "removeSalePrice",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_originContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_currencyAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_listPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_target",
+          "type": "address"
+        },
+        {
+          "internalType": "address payable[]",
+          "name": "_splitAddresses",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint8[]",
+          "name": "_splitRatios",
+          "type": "uint8[]"
+        }
+      ],
+      "name": "setSalePrice",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_originContract",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "settleAuction",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "acceptOffer(address,uint256,address,uint256,address[],uint8[])": "534665e9",
+    "bid(address,uint256,address,uint256)": "b5678588",
+    "buy(address,uint256,address,uint256)": "b3ffb760",
+    "cancelAuction(address,uint256)": "859b97fe",
+    "cancelOffer(address,uint256,address)": "e92f94d1",
+    "configureAuction(bytes32,address,uint256,uint256,address,uint256,uint256,address[],uint8[])": "9041a0ec",
+    "convertOfferToAuction(address,uint256,address,uint256,uint256,address[],uint8[])": "060d9eeb",
+    "getAuctionDetails(address,uint256)": "0cd87c68",
+    "getSalePrice(address,uint256,address)": "369679a4",
+    "offer(address,uint256,address,uint256,bool)": "0f2b2532",
+    "removeSalePrice(address,uint256,address)": "f7cfaad0",
+    "setSalePrice(address,uint256,address,uint256,address,address[],uint8[])": "c8f94f4e",
+    "settleAuction(address,uint256)": "5138b08c"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.15+commit.e14f2714\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_originContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_currencyAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"address payable[]\",\"name\":\"_splitAddresses\",\"type\":\"address[]\"},{\"internalType\":\"uint8[]\",\"name\":\"_splitRatios\",\"type\":\"uint8[]\"}],\"name\":\"acceptOffer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_originContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_currencyAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"bid\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_originContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_currencyAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"buy\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_originContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"cancelAuction\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_originContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_currencyAddress\",\"type\":\"address\"}],\"name\":\"cancelOffer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_auctionType\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"_originContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_startingAmount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_currencyAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_lengthOfAuction\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_startTime\",\"type\":\"uint256\"},{\"internalType\":\"address payable[]\",\"name\":\"_splitAddresses\",\"type\":\"address[]\"},{\"internalType\":\"uint8[]\",\"name\":\"_splitRatios\",\"type\":\"uint8[]\"}],\"name\":\"configureAuction\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_originContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_currencyAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_lengthOfAuction\",\"type\":\"uint256\"},{\"internalType\":\"address payable[]\",\"name\":\"_splitAddresses\",\"type\":\"address[]\"},{\"internalType\":\"uint8[]\",\"name\":\"_splitRatios\",\"type\":\"uint8[]\"}],\"name\":\"convertOfferToAuction\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_originContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"getAuctionDetails\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"},{\"internalType\":\"address payable[]\",\"name\":\"\",\"type\":\"address[]\"},{\"internalType\":\"uint8[]\",\"name\":\"\",\"type\":\"uint8[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_originContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_target\",\"type\":\"address\"}],\"name\":\"getSalePrice\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"address payable[]\",\"name\":\"\",\"type\":\"address[]\"},{\"internalType\":\"uint8[]\",\"name\":\"\",\"type\":\"uint8[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_originContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_currencyAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"_convertible\",\"type\":\"bool\"}],\"name\":\"offer\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_originContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_target\",\"type\":\"address\"}],\"name\":\"removeSalePrice\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_originContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_currencyAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_listPrice\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_target\",\"type\":\"address\"},{\"internalType\":\"address payable[]\",\"name\":\"_splitAddresses\",\"type\":\"address[]\"},{\"internalType\":\"uint8[]\",\"name\":\"_splitRatios\",\"type\":\"uint8[]\"}],\"name\":\"setSalePrice\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_originContract\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"settleAuction\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"koloz\",\"kind\":\"dev\",\"methods\":{\"acceptOffer(address,uint256,address,uint256,address[],uint8[])\":{\"params\":{\"_amount\":\"Amount the offer was for/and is being accepted.\",\"_currencyAddress\":\"Address of the currency used for the offer.\",\"_originContract\":\"Contract of the asset the offer was made on.\",\"_splitAddresses\":\"Addresses to split the sellers commission with.\",\"_splitRatios\":\"The ratio for the split corresponding to each of the addresses being split with.\",\"_tokenId\":\"TokenId of the asset.\"}},\"bid(address,uint256,address,uint256)\":{\"params\":{\"_amount\":\"Amount of the currency being used for the bid.\",\"_currencyAddress\":\"Address of currency being used to bid.\",\"_originContract\":\"Contract address of asset being bid on.\",\"_tokenId\":\"Token Id of the asset.\"}},\"buy(address,uint256,address,uint256)\":{\"params\":{\"_amount\":\"Amount the piece if being bought for.\",\"_currencyAddress\":\"Currency address of asset being used to buy.\",\"_originContract\":\"Contract address for asset being bought.\",\"_tokenId\":\"TokenId of asset being bought.\"}},\"cancelAuction(address,uint256)\":{\"params\":{\"_originContract\":\"Contract address of the asset pending auction.\",\"_tokenId\":\"Token Id of the asset.\"}},\"cancelOffer(address,uint256,address)\":{\"params\":{\"_currencyAddress\":\"Currency address of the offer.\",\"_originContract\":\"Contract address of token.\",\"_tokenId\":\"TokenId that has an offer.\"}},\"configureAuction(bytes32,address,uint256,uint256,address,uint256,uint256,address[],uint8[])\":{\"params\":{\"_auctionType\":\"The type of auction being configured.\",\"_currencyAddress\":\"The currency the auction is being conducted in.\",\"_lengthOfAuction\":\"The amount of time in seconds that the auction is configured for.\",\"_originContract\":\"Contract address of the asset being put up for auction.\",\"_splitAddresses\":\"Addresses to split the sellers commission with.\",\"_splitRatios\":\"The ratio for the split corresponding to each of the addresses being split with.\",\"_startingAmount\":\"The reserve price or min bid of an auction.\",\"_tokenId\":\"Token Id of the asset.\"}},\"convertOfferToAuction(address,uint256,address,uint256,uint256,address[],uint8[])\":{\"params\":{\"_amount\":\"Amount being converted into an auction.\",\"_currencyAddress\":\"Address of the currency being converted.\",\"_lengthOfAuction\":\"Number of seconds the auction will last.\",\"_originContract\":\"Contract address of the asset.\",\"_splitAddresses\":\"Addresses that the sellers take in will be split amongst.\",\"_splitRatios\":\"Ratios that the take in will be split by.\",\"_tokenId\":\"Token Id of the asset.\"}},\"getAuctionDetails(address,uint256)\":{\"returns\":{\"_0\":\"Auction Struct: creatorAddress, creationTime, startingTime, lengthOfAuction, currencyAddress, minimumBid, auctionType, splitRecipients array, and splitRatios array.\"}},\"offer(address,uint256,address,uint256,bool)\":{\"params\":{\"_amount\":\"Amount being offered.\",\"_convertible\":\"If the offer can be converted into an auction\",\"_currencyAddress\":\"Address of the token being offered.\",\"_originContract\":\"Contract address of the asset being listed.\",\"_tokenId\":\"Token Id of the asset.\"}},\"removeSalePrice(address,uint256,address)\":{\"params\":{\"_originContract\":\"The origin contract of the asset.\",\"_target\":\"The address of the person\",\"_tokenId\":\"The tokenId of the asset within the _originContract.\"}},\"setSalePrice(address,uint256,address,uint256,address,address[],uint8[])\":{\"params\":{\"_currencyAddress\":\"Contract address of the currency asset is being listed for.\",\"_listPrice\":\"Amount of the currency the asset is being listed for (including all decimal points).\",\"_originContract\":\"Contract address of the asset being listed.\",\"_splitAddresses\":\"Addresses to split the sellers commission with.\",\"_splitRatios\":\"The ratio for the split corresponding to each of the addresses being split with.\",\"_target\":\"Address of the person this sale price is target to.\",\"_tokenId\":\"Token Id of the asset.\"}},\"settleAuction(address,uint256)\":{\"params\":{\"_originContract\":\"Contract address of asset.\",\"_tokenId\":\"Token Id of the asset.\"}}},\"title\":\"ISuperRareBazaar\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"acceptOffer(address,uint256,address,uint256,address[],uint8[])\":{\"notice\":\"Accept an offer placed on _originContract : _tokenId.\"},\"bid(address,uint256,address,uint256)\":{\"notice\":\"Places a bid on a valid auction.\"},\"buy(address,uint256,address,uint256)\":{\"notice\":\"Purchases the token for the current sale price.\"},\"cancelAuction(address,uint256)\":{\"notice\":\"Cancels a configured Auction that has not started.\"},\"cancelOffer(address,uint256,address)\":{\"notice\":\"Cancels an existing offer the sender has placed on a piece.\"},\"configureAuction(bytes32,address,uint256,uint256,address,uint256,uint256,address[],uint8[])\":{\"notice\":\"Configures an Auction for a given asset.\"},\"convertOfferToAuction(address,uint256,address,uint256,uint256,address[],uint8[])\":{\"notice\":\"Converts an offer into a coldie auction.\"},\"offer(address,uint256,address,uint256,bool)\":{\"notice\":\"Create an offer for a given asset\"},\"removeSalePrice(address,uint256,address)\":{\"notice\":\"Removes the current sale price of an asset for the given currency.\"},\"setSalePrice(address,uint256,address,uint256,address,address[],uint8[])\":{\"notice\":\"Sets a sale price for the given asset(s).\"},\"settleAuction(address,uint256)\":{\"notice\":\"Settles an auction that has ended.\"}},\"notice\":\"Interface for the SuperRareBazaar Contract\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/bazaar/ISuperRareBazaar.sol\":\"ISuperRareBazaar\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/buffer/=lib/buffer/\",\":@ensdomains/ens-contracts/=lib/ens-contracts/contracts/\",\":@manifoldxyz/libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/\",\":@openzeppelin/=lib/openzeppelin-contracts/\",\":@openzeppelin/contracts-upgradeable/=lib/royalty-registry-solidity/lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/royalty-registry-solidity/lib/openzeppelin-contracts/contracts/\",\":@uniswap/v3-core/=lib/v3-core/contracts/\",\":@uniswap/v3-core/contracts/=lib/v3-core/contracts/\",\":@uniswap/v3-periphery/=lib/v3-periphery/contracts/\",\":arachnid/solidity-stringutils/=lib/solidity-stringutils/\",\":assets/=lib/assets/\",\":aux/=lib/aux/\",\":buffer/=lib/buffer/contracts/\",\":create2-helpers/=lib/royalty-registry-solidity/lib/create2-helpers/\",\":create2-scripts/=lib/royalty-registry-solidity/lib/create2-helpers/script/\",\":ds-test/=lib/ds-test/src/\",\":ens-contracts/=lib/ens-contracts/contracts/\",\":ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/\",\":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/contracts/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":openzeppelin/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":rareprotocol/assets/=lib/assets/src/\",\":rareprotocol/aux/=lib/aux/src/\",\":royalty-guard/=lib/aux/lib/royalty-guard/src/\",\":royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/\",\":royalty-registry/=lib/royalty-registry-solidity/contracts/\",\":solidity-stringutils/=lib/solidity-stringutils/\",\":solmate/=lib/solmate/src/\",\":v3-core/=lib/v3-core/\",\":v3-periphery/=lib/v3-periphery/contracts/\"]},\"sources\":{\"src/bazaar/ISuperRareBazaar.sol\":{\"keccak256\":\"0xb75cb39f8c63e813a2891b41ae6c835903c975b2646b689936c51bc6d3a74546\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://616f9aa0a4ae90da19f46b62041eadeef64b13a9e1870ac9791cb94f85c62805\",\"dweb:/ipfs/QmeqhUs6pzfsTUoarSArUMrtmHvvMYnTD4XiFLAj6KwaWk\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.15+commit.e14f2714"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable[]",
+              "name": "_splitAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint8[]",
+              "name": "_splitRatios",
+              "type": "uint8[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "acceptOffer"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable",
+          "type": "function",
+          "name": "bid"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable",
+          "type": "function",
+          "name": "buy"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "cancelAuction"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "cancelOffer"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_auctionType",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_startingAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_lengthOfAuction",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_startTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable[]",
+              "name": "_splitAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint8[]",
+              "name": "_splitRatios",
+              "type": "uint8[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "configureAuction"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_lengthOfAuction",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable[]",
+              "name": "_splitAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint8[]",
+              "name": "_splitRatios",
+              "type": "uint8[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "convertOfferToAuction"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getAuctionDetails",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address payable[]",
+              "name": "",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint8[]",
+              "name": "",
+              "type": "uint8[]"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_target",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getSalePrice",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable[]",
+              "name": "",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint8[]",
+              "name": "",
+              "type": "uint8[]"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "_convertible",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "payable",
+          "type": "function",
+          "name": "offer"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_target",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "removeSalePrice"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_listPrice",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_target",
+              "type": "address"
+            },
+            {
+              "internalType": "address payable[]",
+              "name": "_splitAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint8[]",
+              "name": "_splitRatios",
+              "type": "uint8[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "setSalePrice"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "settleAuction"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "acceptOffer(address,uint256,address,uint256,address[],uint8[])": {
+            "params": {
+              "_amount": "Amount the offer was for/and is being accepted.",
+              "_currencyAddress": "Address of the currency used for the offer.",
+              "_originContract": "Contract of the asset the offer was made on.",
+              "_splitAddresses": "Addresses to split the sellers commission with.",
+              "_splitRatios": "The ratio for the split corresponding to each of the addresses being split with.",
+              "_tokenId": "TokenId of the asset."
+            }
+          },
+          "bid(address,uint256,address,uint256)": {
+            "params": {
+              "_amount": "Amount of the currency being used for the bid.",
+              "_currencyAddress": "Address of currency being used to bid.",
+              "_originContract": "Contract address of asset being bid on.",
+              "_tokenId": "Token Id of the asset."
+            }
+          },
+          "buy(address,uint256,address,uint256)": {
+            "params": {
+              "_amount": "Amount the piece if being bought for.",
+              "_currencyAddress": "Currency address of asset being used to buy.",
+              "_originContract": "Contract address for asset being bought.",
+              "_tokenId": "TokenId of asset being bought."
+            }
+          },
+          "cancelAuction(address,uint256)": {
+            "params": {
+              "_originContract": "Contract address of the asset pending auction.",
+              "_tokenId": "Token Id of the asset."
+            }
+          },
+          "cancelOffer(address,uint256,address)": {
+            "params": {
+              "_currencyAddress": "Currency address of the offer.",
+              "_originContract": "Contract address of token.",
+              "_tokenId": "TokenId that has an offer."
+            }
+          },
+          "configureAuction(bytes32,address,uint256,uint256,address,uint256,uint256,address[],uint8[])": {
+            "params": {
+              "_auctionType": "The type of auction being configured.",
+              "_currencyAddress": "The currency the auction is being conducted in.",
+              "_lengthOfAuction": "The amount of time in seconds that the auction is configured for.",
+              "_originContract": "Contract address of the asset being put up for auction.",
+              "_splitAddresses": "Addresses to split the sellers commission with.",
+              "_splitRatios": "The ratio for the split corresponding to each of the addresses being split with.",
+              "_startingAmount": "The reserve price or min bid of an auction.",
+              "_tokenId": "Token Id of the asset."
+            }
+          },
+          "convertOfferToAuction(address,uint256,address,uint256,uint256,address[],uint8[])": {
+            "params": {
+              "_amount": "Amount being converted into an auction.",
+              "_currencyAddress": "Address of the currency being converted.",
+              "_lengthOfAuction": "Number of seconds the auction will last.",
+              "_originContract": "Contract address of the asset.",
+              "_splitAddresses": "Addresses that the sellers take in will be split amongst.",
+              "_splitRatios": "Ratios that the take in will be split by.",
+              "_tokenId": "Token Id of the asset."
+            }
+          },
+          "getAuctionDetails(address,uint256)": {
+            "returns": {
+              "_0": "Auction Struct: creatorAddress, creationTime, startingTime, lengthOfAuction, currencyAddress, minimumBid, auctionType, splitRecipients array, and splitRatios array."
+            }
+          },
+          "offer(address,uint256,address,uint256,bool)": {
+            "params": {
+              "_amount": "Amount being offered.",
+              "_convertible": "If the offer can be converted into an auction",
+              "_currencyAddress": "Address of the token being offered.",
+              "_originContract": "Contract address of the asset being listed.",
+              "_tokenId": "Token Id of the asset."
+            }
+          },
+          "removeSalePrice(address,uint256,address)": {
+            "params": {
+              "_originContract": "The origin contract of the asset.",
+              "_target": "The address of the person",
+              "_tokenId": "The tokenId of the asset within the _originContract."
+            }
+          },
+          "setSalePrice(address,uint256,address,uint256,address,address[],uint8[])": {
+            "params": {
+              "_currencyAddress": "Contract address of the currency asset is being listed for.",
+              "_listPrice": "Amount of the currency the asset is being listed for (including all decimal points).",
+              "_originContract": "Contract address of the asset being listed.",
+              "_splitAddresses": "Addresses to split the sellers commission with.",
+              "_splitRatios": "The ratio for the split corresponding to each of the addresses being split with.",
+              "_target": "Address of the person this sale price is target to.",
+              "_tokenId": "Token Id of the asset."
+            }
+          },
+          "settleAuction(address,uint256)": {
+            "params": {
+              "_originContract": "Contract address of asset.",
+              "_tokenId": "Token Id of the asset."
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "acceptOffer(address,uint256,address,uint256,address[],uint8[])": {
+            "notice": "Accept an offer placed on _originContract : _tokenId."
+          },
+          "bid(address,uint256,address,uint256)": {
+            "notice": "Places a bid on a valid auction."
+          },
+          "buy(address,uint256,address,uint256)": {
+            "notice": "Purchases the token for the current sale price."
+          },
+          "cancelAuction(address,uint256)": {
+            "notice": "Cancels a configured Auction that has not started."
+          },
+          "cancelOffer(address,uint256,address)": {
+            "notice": "Cancels an existing offer the sender has placed on a piece."
+          },
+          "configureAuction(bytes32,address,uint256,uint256,address,uint256,uint256,address[],uint8[])": {
+            "notice": "Configures an Auction for a given asset."
+          },
+          "convertOfferToAuction(address,uint256,address,uint256,uint256,address[],uint8[])": {
+            "notice": "Converts an offer into a coldie auction."
+          },
+          "offer(address,uint256,address,uint256,bool)": {
+            "notice": "Create an offer for a given asset"
+          },
+          "removeSalePrice(address,uint256,address)": {
+            "notice": "Removes the current sale price of an asset for the given currency."
+          },
+          "setSalePrice(address,uint256,address,uint256,address,address[],uint8[])": {
+            "notice": "Sets a sale price for the given asset(s)."
+          },
+          "settleAuction(address,uint256)": {
+            "notice": "Settles an auction that has ended."
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@ensdomains/buffer/=lib/buffer/",
+        ":@ensdomains/ens-contracts/=lib/ens-contracts/contracts/",
+        ":@manifoldxyz/libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/",
+        ":@openzeppelin/=lib/openzeppelin-contracts/",
+        ":@openzeppelin/contracts-upgradeable/=lib/royalty-registry-solidity/lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":@openzeppelin/contracts/=lib/royalty-registry-solidity/lib/openzeppelin-contracts/contracts/",
+        ":@uniswap/v3-core/=lib/v3-core/contracts/",
+        ":@uniswap/v3-core/contracts/=lib/v3-core/contracts/",
+        ":@uniswap/v3-periphery/=lib/v3-periphery/contracts/",
+        ":arachnid/solidity-stringutils/=lib/solidity-stringutils/",
+        ":assets/=lib/assets/",
+        ":aux/=lib/aux/",
+        ":buffer/=lib/buffer/contracts/",
+        ":create2-helpers/=lib/royalty-registry-solidity/lib/create2-helpers/",
+        ":create2-scripts/=lib/royalty-registry-solidity/lib/create2-helpers/script/",
+        ":ds-test/=lib/ds-test/src/",
+        ":ens-contracts/=lib/ens-contracts/contracts/",
+        ":ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/",
+        ":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/",
+        ":forge-std/=lib/forge-std/src/",
+        ":libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/contracts/",
+        ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        ":openzeppelin/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":rareprotocol/assets/=lib/assets/src/",
+        ":rareprotocol/aux/=lib/aux/src/",
+        ":royalty-guard/=lib/aux/lib/royalty-guard/src/",
+        ":royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/",
+        ":royalty-registry/=lib/royalty-registry-solidity/contracts/",
+        ":solidity-stringutils/=lib/solidity-stringutils/",
+        ":solmate/=lib/solmate/src/",
+        ":v3-core/=lib/v3-core/",
+        ":v3-periphery/=lib/v3-periphery/contracts/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/bazaar/ISuperRareBazaar.sol": "ISuperRareBazaar"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "src/bazaar/ISuperRareBazaar.sol": {
+        "keccak256": "0xb75cb39f8c63e813a2891b41ae6c835903c975b2646b689936c51bc6d3a74546",
+        "urls": [
+          "bzz-raw://616f9aa0a4ae90da19f46b62041eadeef64b13a9e1870ac9791cb94f85c62805",
+          "dweb:/ipfs/QmeqhUs6pzfsTUoarSArUMrtmHvvMYnTD4XiFLAj6KwaWk"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/bazaar/ISuperRareBazaar.sol",
+    "id": 48614,
+    "exportedSymbols": {
+      "ISuperRareBazaar": [
+        48613
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:7182:120",
+    "nodes": [
+      {
+        "id": 48406,
+        "nodeType": "PragmaDirective",
+        "src": "32:23:120",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 48613,
+        "nodeType": "ContractDefinition",
+        "src": "158:7055:120",
+        "nodes": [
+          {
+            "id": 48421,
+            "nodeType": "FunctionDefinition",
+            "src": "575:161:120",
+            "nodes": [],
+            "documentation": {
+              "id": 48408,
+              "nodeType": "StructuredDocumentation",
+              "src": "228:344:120",
+              "text": "@notice Create an offer for a given asset\n @param _originContract Contract address of the asset being listed.\n @param _tokenId Token Id of the asset.\n @param _currencyAddress Address of the token being offered.\n @param _amount Amount being offered.\n @param _convertible If the offer can be converted into an auction"
+            },
+            "functionSelector": "0f2b2532",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "offer",
+            "nameLocation": "584:5:120",
+            "parameters": {
+              "id": 48419,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48410,
+                  "mutability": "mutable",
+                  "name": "_originContract",
+                  "nameLocation": "603:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48421,
+                  "src": "595:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48409,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "595:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48412,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "632:8:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48421,
+                  "src": "624:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48411,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "624:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48414,
+                  "mutability": "mutable",
+                  "name": "_currencyAddress",
+                  "nameLocation": "654:16:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48421,
+                  "src": "646:24:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48413,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "646:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48416,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "684:7:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48421,
+                  "src": "676:15:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48415,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "676:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48418,
+                  "mutability": "mutable",
+                  "name": "_convertible",
+                  "nameLocation": "702:12:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48421,
+                  "src": "697:17:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 48417,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "697:4:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "589:129:120"
+            },
+            "returnParameters": {
+              "id": 48420,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "735:0:120"
+            },
+            "scope": 48613,
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 48433,
+            "nodeType": "FunctionDefinition",
+            "src": "1059:136:120",
+            "nodes": [],
+            "documentation": {
+              "id": 48422,
+              "nodeType": "StructuredDocumentation",
+              "src": "740:316:120",
+              "text": "@notice Purchases the token for the current sale price.\n @param _originContract Contract address for asset being bought.\n @param _tokenId TokenId of asset being bought.\n @param _currencyAddress Currency address of asset being used to buy.\n @param _amount Amount the piece if being bought for."
+            },
+            "functionSelector": "b3ffb760",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "buy",
+            "nameLocation": "1068:3:120",
+            "parameters": {
+              "id": 48431,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48424,
+                  "mutability": "mutable",
+                  "name": "_originContract",
+                  "nameLocation": "1085:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48433,
+                  "src": "1077:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48423,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1077:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48426,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "1114:8:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48433,
+                  "src": "1106:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48425,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1106:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48428,
+                  "mutability": "mutable",
+                  "name": "_currencyAddress",
+                  "nameLocation": "1136:16:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48433,
+                  "src": "1128:24:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48427,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1128:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48430,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "1166:7:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48433,
+                  "src": "1158:15:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48429,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1158:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1071:106:120"
+            },
+            "returnParameters": {
+              "id": 48432,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1194:0:120"
+            },
+            "scope": 48613,
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 48443,
+            "nodeType": "FunctionDefinition",
+            "src": "1439:115:120",
+            "nodes": [],
+            "documentation": {
+              "id": 48434,
+              "nodeType": "StructuredDocumentation",
+              "src": "1199:237:120",
+              "text": "@notice Cancels an existing offer the sender has placed on a piece.\n @param _originContract Contract address of token.\n @param _tokenId TokenId that has an offer.\n @param _currencyAddress Currency address of the offer."
+            },
+            "functionSelector": "e92f94d1",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "cancelOffer",
+            "nameLocation": "1448:11:120",
+            "parameters": {
+              "id": 48441,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48436,
+                  "mutability": "mutable",
+                  "name": "_originContract",
+                  "nameLocation": "1473:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48443,
+                  "src": "1465:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48435,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1465:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48438,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "1502:8:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48443,
+                  "src": "1494:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48437,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1494:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48440,
+                  "mutability": "mutable",
+                  "name": "_currencyAddress",
+                  "nameLocation": "1524:16:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48443,
+                  "src": "1516:24:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48439,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1516:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1459:85:120"
+            },
+            "returnParameters": {
+              "id": 48442,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1553:0:120"
+            },
+            "scope": 48613,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 48463,
+            "nodeType": "FunctionDefinition",
+            "src": "2201:244:120",
+            "nodes": [],
+            "documentation": {
+              "id": 48444,
+              "nodeType": "StructuredDocumentation",
+              "src": "1571:627:120",
+              "text": "@notice Sets a sale price for the given asset(s).\n @param _originContract Contract address of the asset being listed.\n @param _tokenId Token Id of the asset.\n @param _currencyAddress Contract address of the currency asset is being listed for.\n @param _listPrice Amount of the currency the asset is being listed for (including all decimal points).\n @param _target Address of the person this sale price is target to.\n @param _splitAddresses Addresses to split the sellers commission with.\n @param _splitRatios The ratio for the split corresponding to each of the addresses being split with."
+            },
+            "functionSelector": "c8f94f4e",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setSalePrice",
+            "nameLocation": "2210:12:120",
+            "parameters": {
+              "id": 48461,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48446,
+                  "mutability": "mutable",
+                  "name": "_originContract",
+                  "nameLocation": "2236:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48463,
+                  "src": "2228:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48445,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2228:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48448,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "2265:8:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48463,
+                  "src": "2257:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48447,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2257:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48450,
+                  "mutability": "mutable",
+                  "name": "_currencyAddress",
+                  "nameLocation": "2287:16:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48463,
+                  "src": "2279:24:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48449,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2279:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48452,
+                  "mutability": "mutable",
+                  "name": "_listPrice",
+                  "nameLocation": "2317:10:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48463,
+                  "src": "2309:18:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48451,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2309:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48454,
+                  "mutability": "mutable",
+                  "name": "_target",
+                  "nameLocation": "2341:7:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48463,
+                  "src": "2333:15:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48453,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2333:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48457,
+                  "mutability": "mutable",
+                  "name": "_splitAddresses",
+                  "nameLocation": "2381:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48463,
+                  "src": "2354:42:120",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_payable_$dyn_calldata_ptr",
+                    "typeString": "address payable[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 48455,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "2354:15:120",
+                      "stateMutability": "payable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address_payable",
+                        "typeString": "address payable"
+                      }
+                    },
+                    "id": 48456,
+                    "nodeType": "ArrayTypeName",
+                    "src": "2354:17:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_payable_$dyn_storage_ptr",
+                      "typeString": "address payable[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48460,
+                  "mutability": "mutable",
+                  "name": "_splitRatios",
+                  "nameLocation": "2419:12:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48463,
+                  "src": "2402:29:120",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint8_$dyn_calldata_ptr",
+                    "typeString": "uint8[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 48458,
+                      "name": "uint8",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "2402:5:120",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint8",
+                        "typeString": "uint8"
+                      }
+                    },
+                    "id": 48459,
+                    "nodeType": "ArrayTypeName",
+                    "src": "2402:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint8_$dyn_storage_ptr",
+                      "typeString": "uint8[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2222:213:120"
+            },
+            "returnParameters": {
+              "id": 48462,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2444:0:120"
+            },
+            "scope": 48613,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 48473,
+            "nodeType": "FunctionDefinition",
+            "src": "2715:110:120",
+            "nodes": [],
+            "documentation": {
+              "id": 48464,
+              "nodeType": "StructuredDocumentation",
+              "src": "2449:263:120",
+              "text": "@notice Removes the current sale price of an asset for the given currency.\n @param _originContract The origin contract of the asset.\n @param _tokenId The tokenId of the asset within the _originContract.\n @param _target The address of the person"
+            },
+            "functionSelector": "f7cfaad0",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "removeSalePrice",
+            "nameLocation": "2724:15:120",
+            "parameters": {
+              "id": 48471,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48466,
+                  "mutability": "mutable",
+                  "name": "_originContract",
+                  "nameLocation": "2753:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48473,
+                  "src": "2745:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48465,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2745:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48468,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "2782:8:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48473,
+                  "src": "2774:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48467,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2774:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48470,
+                  "mutability": "mutable",
+                  "name": "_target",
+                  "nameLocation": "2804:7:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48473,
+                  "src": "2796:15:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48469,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2796:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2739:76:120"
+            },
+            "returnParameters": {
+              "id": 48472,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2824:0:120"
+            },
+            "scope": 48613,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 48491,
+            "nodeType": "FunctionDefinition",
+            "src": "3342:219:120",
+            "nodes": [],
+            "documentation": {
+              "id": 48474,
+              "nodeType": "StructuredDocumentation",
+              "src": "2829:510:120",
+              "text": "@notice Accept an offer placed on _originContract : _tokenId.\n @param _originContract Contract of the asset the offer was made on.\n @param _tokenId TokenId of the asset.\n @param _currencyAddress Address of the currency used for the offer.\n @param _amount Amount the offer was for/and is being accepted.\n @param _splitAddresses Addresses to split the sellers commission with.\n @param _splitRatios The ratio for the split corresponding to each of the addresses being split with."
+            },
+            "functionSelector": "534665e9",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "acceptOffer",
+            "nameLocation": "3351:11:120",
+            "parameters": {
+              "id": 48489,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48476,
+                  "mutability": "mutable",
+                  "name": "_originContract",
+                  "nameLocation": "3376:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48491,
+                  "src": "3368:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48475,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3368:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48478,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "3405:8:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48491,
+                  "src": "3397:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48477,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3397:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48480,
+                  "mutability": "mutable",
+                  "name": "_currencyAddress",
+                  "nameLocation": "3427:16:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48491,
+                  "src": "3419:24:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48479,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3419:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48482,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "3457:7:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48491,
+                  "src": "3449:15:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48481,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3449:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48485,
+                  "mutability": "mutable",
+                  "name": "_splitAddresses",
+                  "nameLocation": "3497:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48491,
+                  "src": "3470:42:120",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_payable_$dyn_calldata_ptr",
+                    "typeString": "address payable[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 48483,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "3470:15:120",
+                      "stateMutability": "payable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address_payable",
+                        "typeString": "address payable"
+                      }
+                    },
+                    "id": 48484,
+                    "nodeType": "ArrayTypeName",
+                    "src": "3470:17:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_payable_$dyn_storage_ptr",
+                      "typeString": "address payable[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48488,
+                  "mutability": "mutable",
+                  "name": "_splitRatios",
+                  "nameLocation": "3535:12:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48491,
+                  "src": "3518:29:120",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint8_$dyn_calldata_ptr",
+                    "typeString": "uint8[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 48486,
+                      "name": "uint8",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "3518:5:120",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint8",
+                        "typeString": "uint8"
+                      }
+                    },
+                    "id": 48487,
+                    "nodeType": "ArrayTypeName",
+                    "src": "3518:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint8_$dyn_storage_ptr",
+                      "typeString": "uint8[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3362:189:120"
+            },
+            "returnParameters": {
+              "id": 48490,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3560:0:120"
+            },
+            "scope": 48613,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 48499,
+            "nodeType": "FunctionDefinition",
+            "src": "3747:75:120",
+            "nodes": [],
+            "documentation": {
+              "id": 48492,
+              "nodeType": "StructuredDocumentation",
+              "src": "3597:147:120",
+              "text": "@notice Settles an auction that has ended.\n @param _originContract Contract address of asset.\n @param _tokenId Token Id of the asset."
+            },
+            "functionSelector": "5138b08c",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "settleAuction",
+            "nameLocation": "3756:13:120",
+            "parameters": {
+              "id": 48497,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48494,
+                  "mutability": "mutable",
+                  "name": "_originContract",
+                  "nameLocation": "3778:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48499,
+                  "src": "3770:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48493,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3770:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48496,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "3803:8:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48499,
+                  "src": "3795:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48495,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3795:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3769:43:120"
+            },
+            "returnParameters": {
+              "id": 48498,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3821:0:120"
+            },
+            "scope": 48613,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 48511,
+            "nodeType": "FunctionDefinition",
+            "src": "4136:136:120",
+            "nodes": [],
+            "documentation": {
+              "id": 48500,
+              "nodeType": "StructuredDocumentation",
+              "src": "3838:295:120",
+              "text": "@notice Places a bid on a valid auction.\n @param _originContract Contract address of asset being bid on.\n @param _tokenId Token Id of the asset.\n @param _currencyAddress Address of currency being used to bid.\n @param _amount Amount of the currency being used for the bid."
+            },
+            "functionSelector": "b5678588",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "bid",
+            "nameLocation": "4145:3:120",
+            "parameters": {
+              "id": 48509,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48502,
+                  "mutability": "mutable",
+                  "name": "_originContract",
+                  "nameLocation": "4162:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48511,
+                  "src": "4154:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48501,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4154:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48504,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "4191:8:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48511,
+                  "src": "4183:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48503,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4183:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48506,
+                  "mutability": "mutable",
+                  "name": "_currencyAddress",
+                  "nameLocation": "4213:16:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48511,
+                  "src": "4205:24:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48505,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4205:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48508,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "4243:7:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48511,
+                  "src": "4235:15:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48507,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4235:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4148:106:120"
+            },
+            "returnParameters": {
+              "id": 48510,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "4271:0:120"
+            },
+            "scope": 48613,
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 48535,
+            "nodeType": "FunctionDefinition",
+            "src": "4969:312:120",
+            "nodes": [],
+            "documentation": {
+              "id": 48512,
+              "nodeType": "StructuredDocumentation",
+              "src": "4289:677:120",
+              "text": "@notice Configures an Auction for a given asset.\n @param _auctionType The type of auction being configured.\n @param _originContract Contract address of the asset being put up for auction.\n @param _tokenId Token Id of the asset.\n @param _startingAmount The reserve price or min bid of an auction.\n @param _currencyAddress The currency the auction is being conducted in.\n @param _lengthOfAuction The amount of time in seconds that the auction is configured for.\n @param _splitAddresses Addresses to split the sellers commission with.\n @param _splitRatios The ratio for the split corresponding to each of the addresses being split with."
+            },
+            "functionSelector": "9041a0ec",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "configureAuction",
+            "nameLocation": "4978:16:120",
+            "parameters": {
+              "id": 48533,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48514,
+                  "mutability": "mutable",
+                  "name": "_auctionType",
+                  "nameLocation": "5008:12:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48535,
+                  "src": "5000:20:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 48513,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5000:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48516,
+                  "mutability": "mutable",
+                  "name": "_originContract",
+                  "nameLocation": "5034:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48535,
+                  "src": "5026:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48515,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5026:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48518,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "5063:8:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48535,
+                  "src": "5055:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48517,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5055:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48520,
+                  "mutability": "mutable",
+                  "name": "_startingAmount",
+                  "nameLocation": "5085:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48535,
+                  "src": "5077:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48519,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5077:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48522,
+                  "mutability": "mutable",
+                  "name": "_currencyAddress",
+                  "nameLocation": "5114:16:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48535,
+                  "src": "5106:24:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48521,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5106:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48524,
+                  "mutability": "mutable",
+                  "name": "_lengthOfAuction",
+                  "nameLocation": "5144:16:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48535,
+                  "src": "5136:24:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48523,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5136:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48526,
+                  "mutability": "mutable",
+                  "name": "_startTime",
+                  "nameLocation": "5174:10:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48535,
+                  "src": "5166:18:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48525,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5166:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48529,
+                  "mutability": "mutable",
+                  "name": "_splitAddresses",
+                  "nameLocation": "5217:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48535,
+                  "src": "5190:42:120",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_payable_$dyn_calldata_ptr",
+                    "typeString": "address payable[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 48527,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "5190:15:120",
+                      "stateMutability": "payable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address_payable",
+                        "typeString": "address payable"
+                      }
+                    },
+                    "id": 48528,
+                    "nodeType": "ArrayTypeName",
+                    "src": "5190:17:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_payable_$dyn_storage_ptr",
+                      "typeString": "address payable[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48532,
+                  "mutability": "mutable",
+                  "name": "_splitRatios",
+                  "nameLocation": "5255:12:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48535,
+                  "src": "5238:29:120",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint8_$dyn_calldata_ptr",
+                    "typeString": "uint8[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 48530,
+                      "name": "uint8",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "5238:5:120",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint8",
+                        "typeString": "uint8"
+                      }
+                    },
+                    "id": 48531,
+                    "nodeType": "ArrayTypeName",
+                    "src": "5238:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint8_$dyn_storage_ptr",
+                      "typeString": "uint8[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4994:277:120"
+            },
+            "returnParameters": {
+              "id": 48534,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5280:0:120"
+            },
+            "scope": 48613,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 48543,
+            "nodeType": "FunctionDefinition",
+            "src": "5471:75:120",
+            "nodes": [],
+            "documentation": {
+              "id": 48536,
+              "nodeType": "StructuredDocumentation",
+              "src": "5285:183:120",
+              "text": "@notice Cancels a configured Auction that has not started.\n @param _originContract Contract address of the asset pending auction.\n @param _tokenId Token Id of the asset."
+            },
+            "functionSelector": "859b97fe",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "cancelAuction",
+            "nameLocation": "5480:13:120",
+            "parameters": {
+              "id": 48541,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48538,
+                  "mutability": "mutable",
+                  "name": "_originContract",
+                  "nameLocation": "5502:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48543,
+                  "src": "5494:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48537,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5494:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48540,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "5527:8:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48543,
+                  "src": "5519:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48539,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5519:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5493:43:120"
+            },
+            "returnParameters": {
+              "id": 48542,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5545:0:120"
+            },
+            "scope": 48613,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 48563,
+            "nodeType": "FunctionDefinition",
+            "src": "6068:259:120",
+            "nodes": [],
+            "documentation": {
+              "id": 48544,
+              "nodeType": "StructuredDocumentation",
+              "src": "5550:515:120",
+              "text": "@notice Converts an offer into a coldie auction.\n @param _originContract Contract address of the asset.\n @param _tokenId Token Id of the asset.\n @param _currencyAddress Address of the currency being converted.\n @param _amount Amount being converted into an auction.\n @param _lengthOfAuction Number of seconds the auction will last.\n @param _splitAddresses Addresses that the sellers take in will be split amongst.\n @param _splitRatios Ratios that the take in will be split by."
+            },
+            "functionSelector": "060d9eeb",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "convertOfferToAuction",
+            "nameLocation": "6077:21:120",
+            "parameters": {
+              "id": 48561,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48546,
+                  "mutability": "mutable",
+                  "name": "_originContract",
+                  "nameLocation": "6112:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48563,
+                  "src": "6104:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48545,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6104:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48548,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "6141:8:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48563,
+                  "src": "6133:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48547,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6133:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48550,
+                  "mutability": "mutable",
+                  "name": "_currencyAddress",
+                  "nameLocation": "6163:16:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48563,
+                  "src": "6155:24:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48549,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6155:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48552,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "6193:7:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48563,
+                  "src": "6185:15:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48551,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6185:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48554,
+                  "mutability": "mutable",
+                  "name": "_lengthOfAuction",
+                  "nameLocation": "6214:16:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48563,
+                  "src": "6206:24:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48553,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6206:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48557,
+                  "mutability": "mutable",
+                  "name": "_splitAddresses",
+                  "nameLocation": "6263:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48563,
+                  "src": "6236:42:120",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_payable_$dyn_calldata_ptr",
+                    "typeString": "address payable[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 48555,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "6236:15:120",
+                      "stateMutability": "payable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address_payable",
+                        "typeString": "address payable"
+                      }
+                    },
+                    "id": 48556,
+                    "nodeType": "ArrayTypeName",
+                    "src": "6236:17:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_payable_$dyn_storage_ptr",
+                      "typeString": "address payable[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48560,
+                  "mutability": "mutable",
+                  "name": "_splitRatios",
+                  "nameLocation": "6301:12:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48563,
+                  "src": "6284:29:120",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint8_$dyn_calldata_ptr",
+                    "typeString": "uint8[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 48558,
+                      "name": "uint8",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "6284:5:120",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint8",
+                        "typeString": "uint8"
+                      }
+                    },
+                    "id": 48559,
+                    "nodeType": "ArrayTypeName",
+                    "src": "6284:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint8_$dyn_storage_ptr",
+                      "typeString": "uint8[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "6098:219:120"
+            },
+            "returnParameters": {
+              "id": 48562,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "6326:0:120"
+            },
+            "scope": 48613,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 48591,
+            "nodeType": "FunctionDefinition",
+            "src": "6695:274:120",
+            "nodes": [],
+            "documentation": {
+              "id": 48564,
+              "nodeType": "StructuredDocumentation",
+              "src": "6493:199:120",
+              "text": "@return Auction Struct: creatorAddress, creationTime, startingTime, lengthOfAuction,\ncurrencyAddress, minimumBid, auctionType, splitRecipients array, and splitRatios array."
+            },
+            "functionSelector": "0cd87c68",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getAuctionDetails",
+            "nameLocation": "6704:17:120",
+            "parameters": {
+              "id": 48569,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48566,
+                  "mutability": "mutable",
+                  "name": "_originContract",
+                  "nameLocation": "6730:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48591,
+                  "src": "6722:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48565,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6722:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48568,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "6755:8:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48591,
+                  "src": "6747:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48567,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6747:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "6721:43:120"
+            },
+            "returnParameters": {
+              "id": 48590,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48571,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48591,
+                  "src": "6807:7:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48570,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6807:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48573,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48591,
+                  "src": "6822:7:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48572,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6822:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48575,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48591,
+                  "src": "6837:7:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48574,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6837:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48577,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48591,
+                  "src": "6852:7:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48576,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6852:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48579,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48591,
+                  "src": "6867:7:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48578,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6867:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48581,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48591,
+                  "src": "6882:7:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48580,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6882:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48583,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48591,
+                  "src": "6897:7:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 48582,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6897:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48586,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48591,
+                  "src": "6912:26:120",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_payable_$dyn_calldata_ptr",
+                    "typeString": "address payable[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 48584,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "6912:15:120",
+                      "stateMutability": "payable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address_payable",
+                        "typeString": "address payable"
+                      }
+                    },
+                    "id": 48585,
+                    "nodeType": "ArrayTypeName",
+                    "src": "6912:17:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_payable_$dyn_storage_ptr",
+                      "typeString": "address payable[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48589,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48591,
+                  "src": "6946:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint8_$dyn_calldata_ptr",
+                    "typeString": "uint8[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 48587,
+                      "name": "uint8",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "6946:5:120",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint8",
+                        "typeString": "uint8"
+                      }
+                    },
+                    "id": 48588,
+                    "nodeType": "ArrayTypeName",
+                    "src": "6946:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint8_$dyn_storage_ptr",
+                      "typeString": "uint8[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "6799:169:120"
+            },
+            "scope": 48613,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 48612,
+            "nodeType": "FunctionDefinition",
+            "src": "6973:238:120",
+            "nodes": [],
+            "functionSelector": "369679a4",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getSalePrice",
+            "nameLocation": "6982:12:120",
+            "parameters": {
+              "id": 48598,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48593,
+                  "mutability": "mutable",
+                  "name": "_originContract",
+                  "nameLocation": "7008:15:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48612,
+                  "src": "7000:23:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48592,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7000:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48595,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "7037:8:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48612,
+                  "src": "7029:16:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48594,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7029:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48597,
+                  "mutability": "mutable",
+                  "name": "_target",
+                  "nameLocation": "7059:7:120",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48612,
+                  "src": "7051:15:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48596,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7051:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "6994:76:120"
+            },
+            "returnParameters": {
+              "id": 48611,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 48600,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48612,
+                  "src": "7113:7:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48599,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7113:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48602,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48612,
+                  "src": "7128:7:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 48601,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7128:7:120",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48604,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48612,
+                  "src": "7143:7:120",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 48603,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7143:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48607,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48612,
+                  "src": "7158:24:120",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_payable_$dyn_memory_ptr",
+                    "typeString": "address payable[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 48605,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "7158:15:120",
+                      "stateMutability": "payable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address_payable",
+                        "typeString": "address payable"
+                      }
+                    },
+                    "id": 48606,
+                    "nodeType": "ArrayTypeName",
+                    "src": "7158:17:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_payable_$dyn_storage_ptr",
+                      "typeString": "address payable[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 48610,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 48612,
+                  "src": "7190:14:120",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint8_$dyn_memory_ptr",
+                    "typeString": "uint8[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 48608,
+                      "name": "uint8",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "7190:5:120",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint8",
+                        "typeString": "uint8"
+                      }
+                    },
+                    "id": 48609,
+                    "nodeType": "ArrayTypeName",
+                    "src": "7190:7:120",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint8_$dyn_storage_ptr",
+                      "typeString": "uint8[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7105:105:120"
+            },
+            "scope": 48613,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "ISuperRareBazaar",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 48407,
+          "nodeType": "StructuredDocumentation",
+          "src": "57:101:120",
+          "text": "@author koloz\n @title ISuperRareBazaar\n @notice Interface for the SuperRareBazaar Contract"
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          48613
+        ],
+        "name": "ISuperRareBazaar",
+        "nameLocation": "168:16:120",
+        "scope": 48614,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 120
+}

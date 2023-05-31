@@ -1,0 +1,4830 @@
+{
+  "abi": [
+    {
+      "inputs": [],
+      "name": "CannotAddZeroRewards",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "CannotClaimCurrentRound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ClaimingTooManyRounds",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ClaimingZeroRounds",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InsufficientStakedRare",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InsufficientSyntheticRare",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RewardAlreadyClaimed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Unauthorized",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_donor",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "_round",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_totalAmountAdded",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_newRoundRewardAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "AddRewards",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Approval",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_msgSender",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_claimer",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amountToStaker",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amountToClaimer",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amountToStakee",
+          "type": "uint256"
+        }
+      ],
+      "name": "RewardClaimed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_staker",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amountStaking",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_totalAmountStaked",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amountSRareReceived",
+          "type": "uint256"
+        }
+      ],
+      "name": "Stake",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_lastSnapshotTimestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_currentSnapshotTimestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_round",
+          "type": "uint256"
+        }
+      ],
+      "name": "StakingSnapshot",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_staker",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amountUnstaking",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_totalAmountStaked",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amountRareBurned",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amountSRareSold",
+          "type": "uint256"
+        }
+      ],
+      "name": "Unstake",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_donor",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "addRewards",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        }
+      ],
+      "name": "allowance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "approve",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "balanceOf",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_totalSRare",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_stakedAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "calculatePurchaseReturn",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_totalSRareByUser",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_totalRareStakedByUser",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_unstakeAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "calculateSaleReturn",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_rounds",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "claimRewardsForRounds",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAllStakers",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAllTimeRewards",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "getAmountStakedByUser",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getClaimRounds",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_rounds",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "getClaimableRewardsForUserForRounds",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getCreationTime",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getCurrentRound",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "_rounds",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "getHistoricalRewardsForUserForRounds",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getLastSnapshotTimestamp",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_round",
+          "type": "uint256"
+        }
+      ],
+      "name": "getRoundRewards",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getSumOfAllClaimed",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getTargetBeingStakedOn",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_rare",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_userStakedTo",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_stakingRegistry",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_creator",
+          "type": "address"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "name",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "stake",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_staker",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_round",
+          "type": "uint256"
+        }
+      ],
+      "name": "stakerHasClaimedForRound",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "symbol",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "takeSnapshot",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalSupply",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "transfer",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "transferFrom",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "unstake",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "addRewards(address,uint256)": "a9fc507b",
+    "allowance(address,address)": "dd62ed3e",
+    "approve(address,uint256)": "095ea7b3",
+    "balanceOf(address)": "70a08231",
+    "calculatePurchaseReturn(uint256,uint256)": "ace4e824",
+    "calculateSaleReturn(uint256,uint256,uint256)": "74293bf8",
+    "claimRewardsForRounds(address,uint256[])": "c5557883",
+    "getAllStakers()": "6e4f88c8",
+    "getAllTimeRewards()": "94616420",
+    "getAmountStakedByUser(address)": "399d99ec",
+    "getClaimRounds()": "d78744d6",
+    "getClaimableRewardsForUserForRounds(address,uint256[])": "4f7395ce",
+    "getCreationTime()": "e6519a35",
+    "getCurrentRound()": "a32bf597",
+    "getHistoricalRewardsForUserForRounds(address,uint256[])": "cae06944",
+    "getLastSnapshotTimestamp()": "7c27ff86",
+    "getRoundRewards(uint256)": "91e2057e",
+    "getSumOfAllClaimed()": "3b1c612e",
+    "getTargetBeingStakedOn()": "3b248c76",
+    "initialize(address,address,address,address)": "f8c8765e",
+    "name()": "06fdde03",
+    "stake(uint256)": "a694fc3a",
+    "stakerHasClaimedForRound(address,uint256)": "ad23785b",
+    "symbol()": "95d89b41",
+    "takeSnapshot()": "b3d3d37e",
+    "totalSupply()": "18160ddd",
+    "transfer(address,uint256)": "a9059cbb",
+    "transferFrom(address,address,uint256)": "23b872dd",
+    "unstake(uint256)": "2e17de78"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.15+commit.e14f2714\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"CannotAddZeroRewards\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"CannotClaimCurrentRound\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ClaimingTooManyRounds\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ClaimingZeroRounds\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientStakedRare\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientSyntheticRare\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"RewardAlreadyClaimed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Unauthorized\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_donor\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"_round\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_totalAmountAdded\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_newRoundRewardAmount\",\"type\":\"uint256\"}],\"name\":\"AddRewards\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_msgSender\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_claimer\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amountToStaker\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amountToClaimer\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amountToStakee\",\"type\":\"uint256\"}],\"name\":\"RewardClaimed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_staker\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amountStaking\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_totalAmountStaked\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amountSRareReceived\",\"type\":\"uint256\"}],\"name\":\"Stake\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_lastSnapshotTimestamp\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_currentSnapshotTimestamp\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_round\",\"type\":\"uint256\"}],\"name\":\"StakingSnapshot\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_staker\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amountUnstaking\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_totalAmountStaked\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amountRareBurned\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amountSRareSold\",\"type\":\"uint256\"}],\"name\":\"Unstake\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_donor\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"addRewards\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_totalSRare\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_stakedAmount\",\"type\":\"uint256\"}],\"name\":\"calculatePurchaseReturn\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_totalSRareByUser\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_totalRareStakedByUser\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_unstakeAmount\",\"type\":\"uint256\"}],\"name\":\"calculateSaleReturn\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"},{\"internalType\":\"uint256[]\",\"name\":\"_rounds\",\"type\":\"uint256[]\"}],\"name\":\"claimRewardsForRounds\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAllStakers\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAllTimeRewards\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"}],\"name\":\"getAmountStakedByUser\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getClaimRounds\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"},{\"internalType\":\"uint256[]\",\"name\":\"_rounds\",\"type\":\"uint256[]\"}],\"name\":\"getClaimableRewardsForUserForRounds\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCreationTime\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCurrentRound\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"},{\"internalType\":\"uint256[]\",\"name\":\"_rounds\",\"type\":\"uint256[]\"}],\"name\":\"getHistoricalRewardsForUserForRounds\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLastSnapshotTimestamp\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_round\",\"type\":\"uint256\"}],\"name\":\"getRoundRewards\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getSumOfAllClaimed\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTargetBeingStakedOn\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_rare\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_userStakedTo\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_stakingRegistry\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_creator\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"stake\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_staker\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_round\",\"type\":\"uint256\"}],\"name\":\"stakerHasClaimedForRound\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"takeSnapshot\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"unstake\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"koloz, charlescrain\",\"kind\":\"dev\",\"methods\":{\"addRewards(address,uint256)\":{\"params\":{\"_amount\":\"Amount of $RARE being staked.\",\"_donor\":\"Address of the account donating the $RARE.\"}},\"allowance(address,address)\":{\"details\":\"Returns the remaining number of tokens that `spender` will be allowed to spend on behalf of `owner` through {transferFrom}. This is zero by default. This value changes when {approve} or {transferFrom} are called.\"},\"approve(address,uint256)\":{\"details\":\"Sets `amount` as the allowance of `spender` over the caller's tokens. Returns a boolean value indicating whether the operation succeeded. IMPORTANT: Beware that changing an allowance with this method brings the risk that someone may use both the old and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards: https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729 Emits an {Approval} event.\"},\"balanceOf(address)\":{\"details\":\"Returns the amount of tokens owned by `account`.\"},\"calculatePurchaseReturn(uint256,uint256)\":{\"params\":{\"_stakedAmount\":\"Amount of RARE being staked.\",\"_totalSRare\":\"Current supply of sRare.\"},\"returns\":{\"_0\":\"uint256 Amount of synthetic tokens one would get for staking {_stakedAmount} given a totalSupply of {_totalSRare}.\"}},\"calculateSaleReturn(uint256,uint256,uint256)\":{\"params\":{\"_totalRareStakedByUser\":\"Total Amount of RARE staked by the given user.\",\"_totalSRareByUser\":\"Current balance of sRARE held by the given user.\",\"_unstakeAmount\":\"Amount of sRare being traded in.\"},\"returns\":{\"_0\":\"uint256 Amount of $RARE tokens one would get for unstaking {_unstakeAmount} given {_totalSRareByUser} and {_totalRareStakedByUser}.\"}},\"claimRewardsForRounds(address,uint256[])\":{\"params\":{\"_rounds\":\"List of uint256 round Ids to claim a reward for.\",\"_user\":\"Address of user to claim on behalf of.\"}},\"getAllStakers()\":{\"returns\":{\"_0\":\"list of addresses of all the users who are being staked on.\"}},\"getAllTimeRewards()\":{\"returns\":{\"_0\":\"uint256 Amount of $RARE tokens allocated as rewards.\"}},\"getAmountStakedByUser(address)\":{\"params\":{\"_user\":\"Address of staker.\"},\"returns\":{\"_0\":\"uint256 Amount of $RARE staked.\"}},\"getClaimRounds()\":{\"returns\":{\"_0\":\"uint256[] claim round ids.\"}},\"getClaimableRewardsForUserForRounds(address,uint256[])\":{\"params\":{\"_rounds\":\"List of uint256 round ids to look up the rewards.\",\"_user\":\"Address of the user to get rewards.\"},\"returns\":{\"_0\":\"uint256 Amount of $RARE tokens rewarded.\"}},\"getCreationTime()\":{\"returns\":{\"_0\":\"uint256 unix creation time of the contract.\"}},\"getCurrentRound()\":{\"returns\":{\"_0\":\"uint256 Claim round id.\"}},\"getHistoricalRewardsForUserForRounds(address,uint256[])\":{\"params\":{\"_rounds\":\"List of uint256 round ids to look up the rewards.\",\"_user\":\"Address of the user to get rewards.\"},\"returns\":{\"_0\":\"uint256 Amount of $RARE tokens rewarded.\"}},\"getLastSnapshotTimestamp()\":{\"returns\":{\"_0\":\"uint256 unix time of the most recent snapshot.\"}},\"getRoundRewards(uint256)\":{\"returns\":{\"_0\":\"uint256 Amount of $RARE tokens allocated as rewards for round.\"}},\"getSumOfAllClaimed()\":{\"returns\":{\"_0\":\"uint256 amount of rewards claimed.\"}},\"getTargetBeingStakedOn()\":{\"returns\":{\"_0\":\"Address of target being staked on;\"}},\"name()\":{\"returns\":{\"_0\":\"Name of the synthetic asset.\"}},\"stake(uint256)\":{\"params\":{\"_amount\":\"Amount of $RARE being staked.\"}},\"stakerHasClaimedForRound(address,uint256)\":{\"params\":{\"_round\":\"The round being checked for.\",\"_staker\":\"Address of user being checked.\"}},\"symbol()\":{\"returns\":{\"_0\":\"Symbol of the synthetic asset.\"}},\"totalSupply()\":{\"details\":\"Returns the amount of tokens in existence.\"},\"transfer(address,uint256)\":{\"details\":\"Moves `amount` tokens from the caller's account to `to`. Returns a boolean value indicating whether the operation succeeded. Emits a {Transfer} event.\"},\"transferFrom(address,address,uint256)\":{\"details\":\"Moves `amount` tokens from `from` to `to` using the allowance mechanism. `amount` is then deducted from the caller's allowance. Returns a boolean value indicating whether the operation succeeded. Emits a {Transfer} event.\"},\"unstake(uint256)\":{\"params\":{\"_amount\":\"Amount of synthetic tokens to unstake.\"}}},\"title\":\"IRarityPool\",\"version\":1},\"userdoc\":{\"errors\":{\"CannotAddZeroRewards()\":[{\"notice\":\"Error emitted via {addRewards} if adding 0 rewards.\"}],\"CannotClaimCurrentRound()\":[{\"notice\":\"Error emitted via {claimRewardsForRounds} if claiming current round.\"}],\"ClaimingTooManyRounds()\":[{\"notice\":\"Error emitted via {claimRewardsForRounds} if too many rounds are supplied.\"}],\"ClaimingZeroRounds()\":[{\"notice\":\"Error emitted via {claimRewardsForRounds} if claiming no rounds.\"}],\"InsufficientStakedRare()\":[{\"notice\":\"Error emitted via {unstake} when the sale return proves greater than the amount staked. This should be impossible.\"}],\"InsufficientSyntheticRare()\":[{\"notice\":\"Error emitted via {unstake} when unstaking more synthetic tokens than is in their balance.\"}],\"RewardAlreadyClaimed()\":[{\"notice\":\"Error emitted via {claimRewardsForRounds} if sender has already claimed their reward one of the supplied rounds.\"}],\"Unauthorized()\":[{\"notice\":\"Error emitted when user doesnt meet the criteria for call.\"}]},\"kind\":\"user\",\"methods\":{\"addRewards(address,uint256)\":{\"notice\":\"Allocates rewards for the current round with the given amount.\"},\"calculatePurchaseReturn(uint256,uint256)\":{\"notice\":\"Calculates the number of sRare yielded from staking.\"},\"calculateSaleReturn(uint256,uint256,uint256)\":{\"notice\":\"Calculates the number of rare yielded from unstaking.\"},\"claimRewardsForRounds(address,uint256[])\":{\"notice\":\"Claim rewards due to the _user for the supplied rounds. Rewards are proportional to the synthetic tokens held during the snapshot associated with each round. Throws if user has already claimed for a given round. Throws if current round is being claimed.\"},\"getAllStakers()\":{\"notice\":\"Retrieves a list of all the users that have staked.\"},\"getAllTimeRewards()\":{\"notice\":\"Total rewards snapshotted since con.\"},\"getAmountStakedByUser(address)\":{\"notice\":\"Query total amount of $RARE a user has staked on this contract.\"},\"getClaimRounds()\":{\"notice\":\"List of all rounds with claim associated with them.\"},\"getClaimableRewardsForUserForRounds(address,uint256[])\":{\"notice\":\"Query rewards for the supplied user address for the round supplied rounds. Throws if any round has already been claimed.\"},\"getCreationTime()\":{\"notice\":\"Get the unix creation time of the staking contract.\"},\"getCurrentRound()\":{\"notice\":\"Query current round. The current round is accumulating rewards.\"},\"getHistoricalRewardsForUserForRounds(address,uint256[])\":{\"notice\":\"Query rewards for the supplied user address for the round supplied rounds. Does not omit rewards for rounds that have already been claimed. Allows for easier historical lookups.\"},\"getLastSnapshotTimestamp()\":{\"notice\":\"Get the unix time of the most recent snapshot.\"},\"getRoundRewards(uint256)\":{\"notice\":\"Total rewards available for the supplied round.\"},\"getSumOfAllClaimed()\":{\"notice\":\"Total amount of Rewards claimed.\"},\"getTargetBeingStakedOn()\":{\"notice\":\"Query the target being staked on by this contract.\"},\"name()\":{\"notice\":\"Name of the synthetic asset.\"},\"stake(uint256)\":{\"notice\":\"Stake $RARE tokens to the target associated with the contract and receive synthetic tokens in return.\"},\"stakerHasClaimedForRound(address,uint256)\":{\"notice\":\"Query if a user has claimed their reward for a given round.\"},\"symbol()\":{\"notice\":\"Symbol of the synthetic asset.\"},\"takeSnapshot()\":{\"notice\":\"Snapshots the rewards for the current round. Anyone can call this.\"},\"unstake(uint256)\":{\"notice\":\"Unstake by returning synthetic tokens and receiving previously staked $RARE in return.\"}},\"notice\":\"The Rare Staking Pool ERC20 (Rarity Pool) interface containing all functions, events, etc.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/staking/token/IRarityPool.sol\":\"IRarityPool\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/buffer/=lib/buffer/\",\":@ensdomains/ens-contracts/=lib/ens-contracts/contracts/\",\":@manifoldxyz/libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/\",\":@openzeppelin/=lib/openzeppelin-contracts/\",\":@openzeppelin/contracts-upgradeable/=lib/royalty-registry-solidity/lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/royalty-registry-solidity/lib/openzeppelin-contracts/contracts/\",\":@uniswap/v3-core/=lib/v3-core/contracts/\",\":@uniswap/v3-core/contracts/=lib/v3-core/contracts/\",\":@uniswap/v3-periphery/=lib/v3-periphery/contracts/\",\":arachnid/solidity-stringutils/=lib/solidity-stringutils/\",\":assets/=lib/assets/\",\":aux/=lib/aux/\",\":buffer/=lib/buffer/contracts/\",\":create2-helpers/=lib/royalty-registry-solidity/lib/create2-helpers/\",\":create2-scripts/=lib/royalty-registry-solidity/lib/create2-helpers/script/\",\":ds-test/=lib/ds-test/src/\",\":ens-contracts/=lib/ens-contracts/contracts/\",\":ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/\",\":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/contracts/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":openzeppelin/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":rareprotocol/assets/=lib/assets/src/\",\":rareprotocol/aux/=lib/aux/src/\",\":royalty-guard/=lib/aux/lib/royalty-guard/src/\",\":royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/\",\":royalty-registry/=lib/royalty-registry-solidity/contracts/\",\":solidity-stringutils/=lib/solidity-stringutils/\",\":solmate/=lib/solmate/src/\",\":v3-core/=lib/v3-core/\",\":v3-periphery/=lib/v3-periphery/contracts/\"]},\"sources\":{\"lib/openzeppelin-contracts-upgradeable/contracts/interfaces/IERC20Upgradeable.sol\":{\"keccak256\":\"0xe73087c5001a37cf7186b3709377c7ceb01a0d38fb908723d1464cea66b4958c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b835a1929ca2c7c978085e58f08f48855df8a82ef6a426ac71393cf032ea0fc5\",\"dweb:/ipfs/QmUMXRN9g8u9wm63wc7PMaSs7oG2nqnM1VVvktaWkvF68v\"]},\"lib/openzeppelin-contracts-upgradeable/contracts/token/ERC20/IERC20Upgradeable.sol\":{\"keccak256\":\"0x0e1f0f5f62f67a881cd1a9597acbc0a5e4071f3c2c10449a183b922ae7272e3f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c25f742ff154998d19a669e2508c3597b363e123ce9144cd0fcf6521229f401f\",\"dweb:/ipfs/QmQXRuFzStEWqeEPbhQU6cAg9PaSowxJVo4PDKyRod7dco\"]},\"src/staking/token/IRarityPool.sol\":{\"keccak256\":\"0xf08b96167873596abf9bb5cb377258fff453b11a8edbb89f466af0cbabfbd663\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://df48bab3b28bb3b50a37548c1f241889a75f6e9e15f3b2c593b9e0babda7fe58\",\"dweb:/ipfs/QmXWgnfBC2B6MXegJYz5ZnPxyE557xQkpkXB2i4fhck9j4\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.15+commit.e14f2714"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "CannotAddZeroRewards"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "CannotClaimCurrentRound"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "ClaimingTooManyRounds"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "ClaimingZeroRounds"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "InsufficientStakedRare"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "InsufficientSyntheticRare"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "RewardAlreadyClaimed"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "Unauthorized"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_donor",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "_round",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "_totalAmountAdded",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "_newRoundRewardAmount",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "AddRewards",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Approval",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_msgSender",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "_claimer",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountToStaker",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountToClaimer",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountToStakee",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "RewardClaimed",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_staker",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountStaking",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "_totalAmountStaked",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountSRareReceived",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Stake",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_lastSnapshotTimestamp",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "_currentSnapshotTimestamp",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "_round",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "StakingSnapshot",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Transfer",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_staker",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountUnstaking",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "_totalAmountStaked",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountRareBurned",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountSRareSold",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Unstake",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_donor",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "addRewards"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "allowance",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "approve",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "balanceOf",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_totalSRare",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_stakedAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "pure",
+          "type": "function",
+          "name": "calculatePurchaseReturn",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_totalSRareByUser",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_totalRareStakedByUser",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_unstakeAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "pure",
+          "type": "function",
+          "name": "calculateSaleReturn",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_rounds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "claimRewardsForRounds"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getAllStakers",
+          "outputs": [
+            {
+              "internalType": "address[]",
+              "name": "",
+              "type": "address[]"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getAllTimeRewards",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getAmountStakedByUser",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getClaimRounds",
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "",
+              "type": "uint256[]"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_rounds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getClaimableRewardsForUserForRounds",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getCreationTime",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getCurrentRound",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_rounds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getHistoricalRewardsForUserForRounds",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getLastSnapshotTimestamp",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_round",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getRoundRewards",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getSumOfAllClaimed",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getTargetBeingStakedOn",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_rare",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_userStakedTo",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_stakingRegistry",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_creator",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "initialize"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "name",
+          "outputs": [
+            {
+              "internalType": "string",
+              "name": "",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "stake"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_staker",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_round",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "stakerHasClaimedForRound",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "symbol",
+          "outputs": [
+            {
+              "internalType": "string",
+              "name": "",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "takeSnapshot"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "totalSupply",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "transfer",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "transferFrom",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "unstake"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "addRewards(address,uint256)": {
+            "params": {
+              "_amount": "Amount of $RARE being staked.",
+              "_donor": "Address of the account donating the $RARE."
+            }
+          },
+          "allowance(address,address)": {
+            "details": "Returns the remaining number of tokens that `spender` will be allowed to spend on behalf of `owner` through {transferFrom}. This is zero by default. This value changes when {approve} or {transferFrom} are called."
+          },
+          "approve(address,uint256)": {
+            "details": "Sets `amount` as the allowance of `spender` over the caller's tokens. Returns a boolean value indicating whether the operation succeeded. IMPORTANT: Beware that changing an allowance with this method brings the risk that someone may use both the old and the new allowance by unfortunate transaction ordering. One possible solution to mitigate this race condition is to first reduce the spender's allowance to 0 and set the desired value afterwards: https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729 Emits an {Approval} event."
+          },
+          "balanceOf(address)": {
+            "details": "Returns the amount of tokens owned by `account`."
+          },
+          "calculatePurchaseReturn(uint256,uint256)": {
+            "params": {
+              "_stakedAmount": "Amount of RARE being staked.",
+              "_totalSRare": "Current supply of sRare."
+            },
+            "returns": {
+              "_0": "uint256 Amount of synthetic tokens one would get for staking {_stakedAmount} given a totalSupply of {_totalSRare}."
+            }
+          },
+          "calculateSaleReturn(uint256,uint256,uint256)": {
+            "params": {
+              "_totalRareStakedByUser": "Total Amount of RARE staked by the given user.",
+              "_totalSRareByUser": "Current balance of sRARE held by the given user.",
+              "_unstakeAmount": "Amount of sRare being traded in."
+            },
+            "returns": {
+              "_0": "uint256 Amount of $RARE tokens one would get for unstaking {_unstakeAmount} given {_totalSRareByUser} and {_totalRareStakedByUser}."
+            }
+          },
+          "claimRewardsForRounds(address,uint256[])": {
+            "params": {
+              "_rounds": "List of uint256 round Ids to claim a reward for.",
+              "_user": "Address of user to claim on behalf of."
+            }
+          },
+          "getAllStakers()": {
+            "returns": {
+              "_0": "list of addresses of all the users who are being staked on."
+            }
+          },
+          "getAllTimeRewards()": {
+            "returns": {
+              "_0": "uint256 Amount of $RARE tokens allocated as rewards."
+            }
+          },
+          "getAmountStakedByUser(address)": {
+            "params": {
+              "_user": "Address of staker."
+            },
+            "returns": {
+              "_0": "uint256 Amount of $RARE staked."
+            }
+          },
+          "getClaimRounds()": {
+            "returns": {
+              "_0": "uint256[] claim round ids."
+            }
+          },
+          "getClaimableRewardsForUserForRounds(address,uint256[])": {
+            "params": {
+              "_rounds": "List of uint256 round ids to look up the rewards.",
+              "_user": "Address of the user to get rewards."
+            },
+            "returns": {
+              "_0": "uint256 Amount of $RARE tokens rewarded."
+            }
+          },
+          "getCreationTime()": {
+            "returns": {
+              "_0": "uint256 unix creation time of the contract."
+            }
+          },
+          "getCurrentRound()": {
+            "returns": {
+              "_0": "uint256 Claim round id."
+            }
+          },
+          "getHistoricalRewardsForUserForRounds(address,uint256[])": {
+            "params": {
+              "_rounds": "List of uint256 round ids to look up the rewards.",
+              "_user": "Address of the user to get rewards."
+            },
+            "returns": {
+              "_0": "uint256 Amount of $RARE tokens rewarded."
+            }
+          },
+          "getLastSnapshotTimestamp()": {
+            "returns": {
+              "_0": "uint256 unix time of the most recent snapshot."
+            }
+          },
+          "getRoundRewards(uint256)": {
+            "returns": {
+              "_0": "uint256 Amount of $RARE tokens allocated as rewards for round."
+            }
+          },
+          "getSumOfAllClaimed()": {
+            "returns": {
+              "_0": "uint256 amount of rewards claimed."
+            }
+          },
+          "getTargetBeingStakedOn()": {
+            "returns": {
+              "_0": "Address of target being staked on;"
+            }
+          },
+          "name()": {
+            "returns": {
+              "_0": "Name of the synthetic asset."
+            }
+          },
+          "stake(uint256)": {
+            "params": {
+              "_amount": "Amount of $RARE being staked."
+            }
+          },
+          "stakerHasClaimedForRound(address,uint256)": {
+            "params": {
+              "_round": "The round being checked for.",
+              "_staker": "Address of user being checked."
+            }
+          },
+          "symbol()": {
+            "returns": {
+              "_0": "Symbol of the synthetic asset."
+            }
+          },
+          "totalSupply()": {
+            "details": "Returns the amount of tokens in existence."
+          },
+          "transfer(address,uint256)": {
+            "details": "Moves `amount` tokens from the caller's account to `to`. Returns a boolean value indicating whether the operation succeeded. Emits a {Transfer} event."
+          },
+          "transferFrom(address,address,uint256)": {
+            "details": "Moves `amount` tokens from `from` to `to` using the allowance mechanism. `amount` is then deducted from the caller's allowance. Returns a boolean value indicating whether the operation succeeded. Emits a {Transfer} event."
+          },
+          "unstake(uint256)": {
+            "params": {
+              "_amount": "Amount of synthetic tokens to unstake."
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "addRewards(address,uint256)": {
+            "notice": "Allocates rewards for the current round with the given amount."
+          },
+          "calculatePurchaseReturn(uint256,uint256)": {
+            "notice": "Calculates the number of sRare yielded from staking."
+          },
+          "calculateSaleReturn(uint256,uint256,uint256)": {
+            "notice": "Calculates the number of rare yielded from unstaking."
+          },
+          "claimRewardsForRounds(address,uint256[])": {
+            "notice": "Claim rewards due to the _user for the supplied rounds. Rewards are proportional to the synthetic tokens held during the snapshot associated with each round. Throws if user has already claimed for a given round. Throws if current round is being claimed."
+          },
+          "getAllStakers()": {
+            "notice": "Retrieves a list of all the users that have staked."
+          },
+          "getAllTimeRewards()": {
+            "notice": "Total rewards snapshotted since con."
+          },
+          "getAmountStakedByUser(address)": {
+            "notice": "Query total amount of $RARE a user has staked on this contract."
+          },
+          "getClaimRounds()": {
+            "notice": "List of all rounds with claim associated with them."
+          },
+          "getClaimableRewardsForUserForRounds(address,uint256[])": {
+            "notice": "Query rewards for the supplied user address for the round supplied rounds. Throws if any round has already been claimed."
+          },
+          "getCreationTime()": {
+            "notice": "Get the unix creation time of the staking contract."
+          },
+          "getCurrentRound()": {
+            "notice": "Query current round. The current round is accumulating rewards."
+          },
+          "getHistoricalRewardsForUserForRounds(address,uint256[])": {
+            "notice": "Query rewards for the supplied user address for the round supplied rounds. Does not omit rewards for rounds that have already been claimed. Allows for easier historical lookups."
+          },
+          "getLastSnapshotTimestamp()": {
+            "notice": "Get the unix time of the most recent snapshot."
+          },
+          "getRoundRewards(uint256)": {
+            "notice": "Total rewards available for the supplied round."
+          },
+          "getSumOfAllClaimed()": {
+            "notice": "Total amount of Rewards claimed."
+          },
+          "getTargetBeingStakedOn()": {
+            "notice": "Query the target being staked on by this contract."
+          },
+          "name()": {
+            "notice": "Name of the synthetic asset."
+          },
+          "stake(uint256)": {
+            "notice": "Stake $RARE tokens to the target associated with the contract and receive synthetic tokens in return."
+          },
+          "stakerHasClaimedForRound(address,uint256)": {
+            "notice": "Query if a user has claimed their reward for a given round."
+          },
+          "symbol()": {
+            "notice": "Symbol of the synthetic asset."
+          },
+          "takeSnapshot()": {
+            "notice": "Snapshots the rewards for the current round. Anyone can call this."
+          },
+          "unstake(uint256)": {
+            "notice": "Unstake by returning synthetic tokens and receiving previously staked $RARE in return."
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@ensdomains/buffer/=lib/buffer/",
+        ":@ensdomains/ens-contracts/=lib/ens-contracts/contracts/",
+        ":@manifoldxyz/libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/",
+        ":@openzeppelin/=lib/openzeppelin-contracts/",
+        ":@openzeppelin/contracts-upgradeable/=lib/royalty-registry-solidity/lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":@openzeppelin/contracts/=lib/royalty-registry-solidity/lib/openzeppelin-contracts/contracts/",
+        ":@uniswap/v3-core/=lib/v3-core/contracts/",
+        ":@uniswap/v3-core/contracts/=lib/v3-core/contracts/",
+        ":@uniswap/v3-periphery/=lib/v3-periphery/contracts/",
+        ":arachnid/solidity-stringutils/=lib/solidity-stringutils/",
+        ":assets/=lib/assets/",
+        ":aux/=lib/aux/",
+        ":buffer/=lib/buffer/contracts/",
+        ":create2-helpers/=lib/royalty-registry-solidity/lib/create2-helpers/",
+        ":create2-scripts/=lib/royalty-registry-solidity/lib/create2-helpers/script/",
+        ":ds-test/=lib/ds-test/src/",
+        ":ens-contracts/=lib/ens-contracts/contracts/",
+        ":ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/",
+        ":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/",
+        ":forge-std/=lib/forge-std/src/",
+        ":libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/contracts/",
+        ":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        ":openzeppelin/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":rareprotocol/assets/=lib/assets/src/",
+        ":rareprotocol/aux/=lib/aux/src/",
+        ":royalty-guard/=lib/aux/lib/royalty-guard/src/",
+        ":royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/",
+        ":royalty-registry/=lib/royalty-registry-solidity/contracts/",
+        ":solidity-stringutils/=lib/solidity-stringutils/",
+        ":solmate/=lib/solmate/src/",
+        ":v3-core/=lib/v3-core/",
+        ":v3-periphery/=lib/v3-periphery/contracts/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/staking/token/IRarityPool.sol": "IRarityPool"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "lib/openzeppelin-contracts-upgradeable/contracts/interfaces/IERC20Upgradeable.sol": {
+        "keccak256": "0xe73087c5001a37cf7186b3709377c7ceb01a0d38fb908723d1464cea66b4958c",
+        "urls": [
+          "bzz-raw://b835a1929ca2c7c978085e58f08f48855df8a82ef6a426ac71393cf032ea0fc5",
+          "dweb:/ipfs/QmUMXRN9g8u9wm63wc7PMaSs7oG2nqnM1VVvktaWkvF68v"
+        ],
+        "license": "MIT"
+      },
+      "lib/openzeppelin-contracts-upgradeable/contracts/token/ERC20/IERC20Upgradeable.sol": {
+        "keccak256": "0x0e1f0f5f62f67a881cd1a9597acbc0a5e4071f3c2c10449a183b922ae7272e3f",
+        "urls": [
+          "bzz-raw://c25f742ff154998d19a669e2508c3597b363e123ce9144cd0fcf6521229f401f",
+          "dweb:/ipfs/QmQXRuFzStEWqeEPbhQU6cAg9PaSowxJVo4PDKyRod7dco"
+        ],
+        "license": "MIT"
+      },
+      "src/staking/token/IRarityPool.sol": {
+        "keccak256": "0xf08b96167873596abf9bb5cb377258fff453b11a8edbb89f466af0cbabfbd663",
+        "urls": [
+          "bzz-raw://df48bab3b28bb3b50a37548c1f241889a75f6e9e15f3b2c593b9e0babda7fe58",
+          "dweb:/ipfs/QmXWgnfBC2B6MXegJYz5ZnPxyE557xQkpkXB2i4fhck9j4"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/staking/token/IRarityPool.sol",
+    "id": 54755,
+    "exportedSymbols": {
+      "IERC20Upgradeable": [
+        33025
+      ],
+      "IRarityPool": [
+        54754
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:9017:134",
+    "nodes": [
+      {
+        "id": 54494,
+        "nodeType": "PragmaDirective",
+        "src": "32:23:134",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 54496,
+        "nodeType": "ImportDirective",
+        "src": "57:102:134",
+        "nodes": [],
+        "absolutePath": "lib/openzeppelin-contracts-upgradeable/contracts/interfaces/IERC20Upgradeable.sol",
+        "file": "openzeppelin-contracts-upgradeable/interfaces/IERC20Upgradeable.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 54755,
+        "sourceUnit": 31476,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 54495,
+              "name": "IERC20Upgradeable",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 33025,
+              "src": "65:17:134",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 54754,
+        "nodeType": "ContractDefinition",
+        "src": "319:8729:134",
+        "nodes": [
+          {
+            "id": 54511,
+            "nodeType": "EventDefinition",
+            "src": "562:174:134",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "17db246e2b79d27e01c800967d89cbee46000807213e933b6e4c4fddac899a78",
+            "name": "RewardClaimed",
+            "nameLocation": "568:13:134",
+            "parameters": {
+              "id": 54510,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54501,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "_msgSender",
+                  "nameLocation": "603:10:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54511,
+                  "src": "587:26:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54500,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "587:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54503,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "_claimer",
+                  "nameLocation": "635:8:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54511,
+                  "src": "619:24:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54502,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "619:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54505,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_amountToStaker",
+                  "nameLocation": "657:15:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54511,
+                  "src": "649:23:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54504,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "649:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54507,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_amountToClaimer",
+                  "nameLocation": "686:16:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54511,
+                  "src": "678:24:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54506,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "678:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54509,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_amountToStakee",
+                  "nameLocation": "716:15:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54511,
+                  "src": "708:23:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54508,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "708:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "581:154:134"
+            }
+          },
+          {
+            "id": 54521,
+            "nodeType": "EventDefinition",
+            "src": "740:139:134",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "f556991011e831bcfac4f406d547e5e32cdd98267efab83935230d5f8d02c446",
+            "name": "Stake",
+            "nameLocation": "746:5:134",
+            "parameters": {
+              "id": 54520,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54513,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "_staker",
+                  "nameLocation": "773:7:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54521,
+                  "src": "757:23:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54512,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "757:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54515,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_amountStaking",
+                  "nameLocation": "794:14:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54521,
+                  "src": "786:22:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54514,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "786:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54517,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_totalAmountStaked",
+                  "nameLocation": "822:18:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54521,
+                  "src": "814:26:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54516,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "814:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54519,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_amountSRareReceived",
+                  "nameLocation": "854:20:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54521,
+                  "src": "846:28:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54518,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "846:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "751:127:134"
+            }
+          },
+          {
+            "id": 54533,
+            "nodeType": "EventDefinition",
+            "src": "883:170:134",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "05b744e3e9358bc00ba3cc0c6606a4d6536134dba00b2d2ee4b5de169acd6427",
+            "name": "Unstake",
+            "nameLocation": "889:7:134",
+            "parameters": {
+              "id": 54532,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54523,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "_staker",
+                  "nameLocation": "918:7:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54533,
+                  "src": "902:23:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54522,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "902:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54525,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_amountUnstaking",
+                  "nameLocation": "939:16:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54533,
+                  "src": "931:24:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54524,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "931:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54527,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_totalAmountStaked",
+                  "nameLocation": "969:18:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54533,
+                  "src": "961:26:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54526,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "961:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54529,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_amountRareBurned",
+                  "nameLocation": "1001:17:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54533,
+                  "src": "993:25:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54528,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "993:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54531,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_amountSRareSold",
+                  "nameLocation": "1032:16:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54533,
+                  "src": "1024:24:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54530,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1024:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "896:156:134"
+            }
+          },
+          {
+            "id": 54541,
+            "nodeType": "EventDefinition",
+            "src": "1057:105:134",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "f93143fb49fc8d2b453d1e417424c14ace8efd210d63494dbaa7998e5affe025",
+            "name": "StakingSnapshot",
+            "nameLocation": "1063:15:134",
+            "parameters": {
+              "id": 54540,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54535,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_lastSnapshotTimestamp",
+                  "nameLocation": "1087:22:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54541,
+                  "src": "1079:30:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54534,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1079:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54537,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_currentSnapshotTimestamp",
+                  "nameLocation": "1119:25:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54541,
+                  "src": "1111:33:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54536,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1111:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54539,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_round",
+                  "nameLocation": "1154:6:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54541,
+                  "src": "1146:14:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54538,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1146:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1078:83:134"
+            }
+          },
+          {
+            "id": 54553,
+            "nodeType": "EventDefinition",
+            "src": "1166:164:134",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "8f1f72719a43990ee22667a803313283dbcb7402f1ab7dbf4ab92527e7414aa1",
+            "name": "AddRewards",
+            "nameLocation": "1172:10:134",
+            "parameters": {
+              "id": 54552,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54543,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "_donor",
+                  "nameLocation": "1204:6:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54553,
+                  "src": "1188:22:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54542,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1188:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54545,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "_round",
+                  "nameLocation": "1232:6:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54553,
+                  "src": "1216:22:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54544,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1216:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54547,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "1252:7:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54553,
+                  "src": "1244:15:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54546,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1244:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54549,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_totalAmountAdded",
+                  "nameLocation": "1273:17:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54553,
+                  "src": "1265:25:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54548,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1265:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54551,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_newRoundRewardAmount",
+                  "nameLocation": "1304:21:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54553,
+                  "src": "1296:29:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54550,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1296:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1182:147:134"
+            }
+          },
+          {
+            "id": 54556,
+            "nodeType": "ErrorDefinition",
+            "src": "1608:21:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54554,
+              "nodeType": "StructuredDocumentation",
+              "src": "1535:70:134",
+              "text": "@notice Error emitted when user doesnt meet the criteria for call."
+            },
+            "errorSelector": "82b42900",
+            "name": "Unauthorized",
+            "nameLocation": "1614:12:134",
+            "parameters": {
+              "id": 54555,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1626:2:134"
+            }
+          },
+          {
+            "id": 54559,
+            "nodeType": "ErrorDefinition",
+            "src": "1760:29:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54557,
+              "nodeType": "StructuredDocumentation",
+              "src": "1633:124:134",
+              "text": "@notice Error emitted via {claimRewardsForRounds} if sender has already claimed their reward one of the supplied rounds."
+            },
+            "errorSelector": "b3f8c0dc",
+            "name": "RewardAlreadyClaimed",
+            "nameLocation": "1766:20:134",
+            "parameters": {
+              "id": 54558,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1786:2:134"
+            }
+          },
+          {
+            "id": 54562,
+            "nodeType": "ErrorDefinition",
+            "src": "1882:30:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54560,
+              "nodeType": "StructuredDocumentation",
+              "src": "1793:86:134",
+              "text": "@notice Error emitted via {claimRewardsForRounds} if too many rounds are supplied."
+            },
+            "errorSelector": "fcbc706a",
+            "name": "ClaimingTooManyRounds",
+            "nameLocation": "1888:21:134",
+            "parameters": {
+              "id": 54561,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1909:2:134"
+            }
+          },
+          {
+            "id": 54565,
+            "nodeType": "ErrorDefinition",
+            "src": "1999:32:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54563,
+              "nodeType": "StructuredDocumentation",
+              "src": "1916:80:134",
+              "text": "@notice Error emitted via {claimRewardsForRounds} if claiming current round."
+            },
+            "errorSelector": "bbbbe824",
+            "name": "CannotClaimCurrentRound",
+            "nameLocation": "2005:23:134",
+            "parameters": {
+              "id": 54564,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2028:2:134"
+            }
+          },
+          {
+            "id": 54568,
+            "nodeType": "ErrorDefinition",
+            "src": "2114:27:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54566,
+              "nodeType": "StructuredDocumentation",
+              "src": "2035:76:134",
+              "text": "@notice Error emitted via {claimRewardsForRounds} if claiming no rounds."
+            },
+            "errorSelector": "54801204",
+            "name": "ClaimingZeroRounds",
+            "nameLocation": "2120:18:134",
+            "parameters": {
+              "id": 54567,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2138:2:134"
+            }
+          },
+          {
+            "id": 54571,
+            "nodeType": "ErrorDefinition",
+            "src": "2250:34:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54569,
+              "nodeType": "StructuredDocumentation",
+              "src": "2145:102:134",
+              "text": "@notice Error emitted via {unstake} when unstaking more synthetic tokens than is in their balance."
+            },
+            "errorSelector": "2d292826",
+            "name": "InsufficientSyntheticRare",
+            "nameLocation": "2256:25:134",
+            "parameters": {
+              "id": 54570,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2281:2:134"
+            }
+          },
+          {
+            "id": 54574,
+            "nodeType": "ErrorDefinition",
+            "src": "2417:31:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54572,
+              "nodeType": "StructuredDocumentation",
+              "src": "2288:126:134",
+              "text": "@notice Error emitted via {unstake} when the sale return proves greater than the amount staked. This should be impossible."
+            },
+            "errorSelector": "4d83a5dc",
+            "name": "InsufficientStakedRare",
+            "nameLocation": "2423:22:134",
+            "parameters": {
+              "id": 54573,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2445:2:134"
+            }
+          },
+          {
+            "id": 54577,
+            "nodeType": "ErrorDefinition",
+            "src": "2518:29:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54575,
+              "nodeType": "StructuredDocumentation",
+              "src": "2452:63:134",
+              "text": "@notice Error emitted via {addRewards} if adding 0 rewards."
+            },
+            "errorSelector": "db1985f8",
+            "name": "CannotAddZeroRewards",
+            "nameLocation": "2524:20:134",
+            "parameters": {
+              "id": 54576,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2544:2:134"
+            }
+          },
+          {
+            "id": 54588,
+            "nodeType": "FunctionDefinition",
+            "src": "2751:131:134",
+            "nodes": [],
+            "functionSelector": "f8c8765e",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "initialize",
+            "nameLocation": "2760:10:134",
+            "parameters": {
+              "id": 54586,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54579,
+                  "mutability": "mutable",
+                  "name": "_rare",
+                  "nameLocation": "2784:5:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54588,
+                  "src": "2776:13:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54578,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2776:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54581,
+                  "mutability": "mutable",
+                  "name": "_userStakedTo",
+                  "nameLocation": "2803:13:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54588,
+                  "src": "2795:21:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54580,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2795:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54583,
+                  "mutability": "mutable",
+                  "name": "_stakingRegistry",
+                  "nameLocation": "2830:16:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54588,
+                  "src": "2822:24:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54582,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2822:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54585,
+                  "mutability": "mutable",
+                  "name": "_creator",
+                  "nameLocation": "2860:8:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54588,
+                  "src": "2852:16:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54584,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2852:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2770:102:134"
+            },
+            "returnParameters": {
+              "id": 54587,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2881:0:134"
+            },
+            "scope": 54754,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54596,
+            "nodeType": "FunctionDefinition",
+            "src": "3287:62:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54589,
+              "nodeType": "StructuredDocumentation",
+              "src": "3096:188:134",
+              "text": "@notice Allocates rewards for the current round with the given amount.\n @param _donor Address of the account donating the $RARE.\n @param _amount Amount of $RARE being staked."
+            },
+            "functionSelector": "a9fc507b",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "addRewards",
+            "nameLocation": "3296:10:134",
+            "parameters": {
+              "id": 54594,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54591,
+                  "mutability": "mutable",
+                  "name": "_donor",
+                  "nameLocation": "3315:6:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54596,
+                  "src": "3307:14:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54590,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3307:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54593,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "3331:7:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54596,
+                  "src": "3323:15:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54592,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3323:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3306:33:134"
+            },
+            "returnParameters": {
+              "id": 54595,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3348:0:134"
+            },
+            "scope": 54754,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54600,
+            "nodeType": "FunctionDefinition",
+            "src": "3434:33:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54597,
+              "nodeType": "StructuredDocumentation",
+              "src": "3353:78:134",
+              "text": "@notice Snapshots the rewards for the current round. Anyone can call this."
+            },
+            "functionSelector": "b3d3d37e",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "takeSnapshot",
+            "nameLocation": "3443:12:134",
+            "parameters": {
+              "id": 54598,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3455:2:134"
+            },
+            "returnParameters": {
+              "id": 54599,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3466:0:134"
+            },
+            "scope": 54754,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54606,
+            "nodeType": "FunctionDefinition",
+            "src": "3638:41:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54601,
+              "nodeType": "StructuredDocumentation",
+              "src": "3471:164:134",
+              "text": "@notice Stake $RARE tokens to the target associated with the contract and receive synthetic tokens in return.\n @param _amount Amount of $RARE being staked."
+            },
+            "functionSelector": "a694fc3a",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "stake",
+            "nameLocation": "3647:5:134",
+            "parameters": {
+              "id": 54604,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54603,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "3661:7:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54606,
+                  "src": "3653:15:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54602,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3653:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3652:17:134"
+            },
+            "returnParameters": {
+              "id": 54605,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3678:0:134"
+            },
+            "scope": 54754,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54612,
+            "nodeType": "FunctionDefinition",
+            "src": "3844:43:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54607,
+              "nodeType": "StructuredDocumentation",
+              "src": "3683:158:134",
+              "text": "@notice Unstake by returning synthetic tokens and receiving previously staked $RARE in return.\n @param _amount Amount of synthetic tokens to unstake."
+            },
+            "functionSelector": "2e17de78",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "unstake",
+            "nameLocation": "3853:7:134",
+            "parameters": {
+              "id": 54610,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54609,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "3869:7:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54612,
+                  "src": "3861:15:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54608,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3861:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3860:17:134"
+            },
+            "returnParameters": {
+              "id": 54611,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3886:0:134"
+            },
+            "scope": 54754,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54621,
+            "nodeType": "FunctionDefinition",
+            "src": "4287:81:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54613,
+              "nodeType": "StructuredDocumentation",
+              "src": "3891:393:134",
+              "text": "@notice Claim rewards due to the _user for the supplied rounds. Rewards are proportional to the synthetic tokens held during the snapshot associated with each round. Throws if user has already claimed for a given round. Throws if current round is being claimed.\n @param _user Address of user to claim on behalf of.\n @param _rounds List of uint256 round Ids to claim a reward for."
+            },
+            "functionSelector": "c5557883",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "claimRewardsForRounds",
+            "nameLocation": "4296:21:134",
+            "parameters": {
+              "id": 54619,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54615,
+                  "mutability": "mutable",
+                  "name": "_user",
+                  "nameLocation": "4326:5:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54621,
+                  "src": "4318:13:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54614,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4318:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54618,
+                  "mutability": "mutable",
+                  "name": "_rounds",
+                  "nameLocation": "4350:7:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54621,
+                  "src": "4333:24:134",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 54616,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "4333:7:134",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 54617,
+                    "nodeType": "ArrayTypeName",
+                    "src": "4333:9:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4317:41:134"
+            },
+            "returnParameters": {
+              "id": 54620,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "4367:0:134"
+            },
+            "scope": 54754,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54631,
+            "nodeType": "FunctionDefinition",
+            "src": "4756:96:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54622,
+              "nodeType": "StructuredDocumentation",
+              "src": "4581:172:134",
+              "text": "@notice Query if a user has claimed their reward for a given round.\n @param _staker Address of user being checked.\n @param _round The round being checked for."
+            },
+            "functionSelector": "ad23785b",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "stakerHasClaimedForRound",
+            "nameLocation": "4765:24:134",
+            "parameters": {
+              "id": 54627,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54624,
+                  "mutability": "mutable",
+                  "name": "_staker",
+                  "nameLocation": "4798:7:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54631,
+                  "src": "4790:15:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54623,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4790:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54626,
+                  "mutability": "mutable",
+                  "name": "_round",
+                  "nameLocation": "4815:6:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54631,
+                  "src": "4807:14:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54625,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4807:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4789:33:134"
+            },
+            "returnParameters": {
+              "id": 54630,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54629,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54631,
+                  "src": "4846:4:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 54628,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4846:4:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4845:6:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54639,
+            "nodeType": "FunctionDefinition",
+            "src": "5018:78:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54632,
+              "nodeType": "StructuredDocumentation",
+              "src": "4856:159:134",
+              "text": "@notice Query total amount of $RARE a user has staked on this contract.\n @param _user Address of staker.\n @return uint256 Amount of $RARE staked."
+            },
+            "functionSelector": "399d99ec",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getAmountStakedByUser",
+            "nameLocation": "5027:21:134",
+            "parameters": {
+              "id": 54635,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54634,
+                  "mutability": "mutable",
+                  "name": "_user",
+                  "nameLocation": "5057:5:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54639,
+                  "src": "5049:13:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54633,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5049:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5048:15:134"
+            },
+            "returnParameters": {
+              "id": 54638,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54637,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54639,
+                  "src": "5087:7:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54636,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5087:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5086:9:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54645,
+            "nodeType": "FunctionDefinition",
+            "src": "5216:59:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54640,
+              "nodeType": "StructuredDocumentation",
+              "src": "5100:113:134",
+              "text": "@notice Query current round. The current round is accumulating rewards.\n @return uint256 Claim round id."
+            },
+            "functionSelector": "a32bf597",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getCurrentRound",
+            "nameLocation": "5225:15:134",
+            "parameters": {
+              "id": 54641,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5240:2:134"
+            },
+            "returnParameters": {
+              "id": 54644,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54643,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54645,
+                  "src": "5266:7:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54642,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5266:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5265:9:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54651,
+            "nodeType": "FunctionDefinition",
+            "src": "5365:54:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54646,
+              "nodeType": "StructuredDocumentation",
+              "src": "5279:83:134",
+              "text": "@notice Name of the synthetic asset.\n @return Name of the synthetic asset."
+            },
+            "functionSelector": "06fdde03",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "name",
+            "nameLocation": "5374:4:134",
+            "parameters": {
+              "id": 54647,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5378:2:134"
+            },
+            "returnParameters": {
+              "id": 54650,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54649,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54651,
+                  "src": "5404:13:134",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 54648,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5404:6:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5403:15:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54657,
+            "nodeType": "FunctionDefinition",
+            "src": "5513:56:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54652,
+              "nodeType": "StructuredDocumentation",
+              "src": "5423:87:134",
+              "text": "@notice Symbol of the synthetic asset.\n @return Symbol of the synthetic asset."
+            },
+            "functionSelector": "95d89b41",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "symbol",
+            "nameLocation": "5522:6:134",
+            "parameters": {
+              "id": 54653,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5528:2:134"
+            },
+            "returnParameters": {
+              "id": 54656,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54655,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54657,
+                  "src": "5554:13:134",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 54654,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5554:6:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5553:15:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54663,
+            "nodeType": "FunctionDefinition",
+            "src": "5687:66:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54658,
+              "nodeType": "StructuredDocumentation",
+              "src": "5573:111:134",
+              "text": "@notice Query the target being staked on by this contract.\n @return Address of target being staked on;"
+            },
+            "functionSelector": "3b248c76",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getTargetBeingStakedOn",
+            "nameLocation": "5696:22:134",
+            "parameters": {
+              "id": 54659,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5718:2:134"
+            },
+            "returnParameters": {
+              "id": 54662,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54661,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54663,
+                  "src": "5744:7:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54660,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5744:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5743:9:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54670,
+            "nodeType": "FunctionDefinition",
+            "src": "5897:66:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54664,
+              "nodeType": "StructuredDocumentation",
+              "src": "5757:137:134",
+              "text": "@notice Retrieves a list of all the users that have staked.\n @return list of addresses of all the users who are being staked on."
+            },
+            "functionSelector": "6e4f88c8",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getAllStakers",
+            "nameLocation": "5906:13:134",
+            "parameters": {
+              "id": 54665,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5919:2:134"
+            },
+            "returnParameters": {
+              "id": 54669,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54668,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54670,
+                  "src": "5945:16:134",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                    "typeString": "address[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 54666,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "5945:7:134",
+                      "stateMutability": "nonpayable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "id": 54667,
+                    "nodeType": "ArrayTypeName",
+                    "src": "5945:9:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                      "typeString": "address[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5944:18:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54678,
+            "nodeType": "FunctionDefinition",
+            "src": "6106:73:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54671,
+              "nodeType": "StructuredDocumentation",
+              "src": "5967:136:134",
+              "text": "@notice Total rewards available for the supplied round.\n @return uint256 Amount of $RARE tokens allocated as rewards for round."
+            },
+            "functionSelector": "91e2057e",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getRoundRewards",
+            "nameLocation": "6115:15:134",
+            "parameters": {
+              "id": 54674,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54673,
+                  "mutability": "mutable",
+                  "name": "_round",
+                  "nameLocation": "6139:6:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54678,
+                  "src": "6131:14:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54672,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6131:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "6130:16:134"
+            },
+            "returnParameters": {
+              "id": 54677,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54676,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54678,
+                  "src": "6170:7:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54675,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6170:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "6169:9:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54689,
+            "nodeType": "FunctionDefinition",
+            "src": "6556:131:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54679,
+              "nodeType": "StructuredDocumentation",
+              "src": "6183:370:134",
+              "text": "@notice Query rewards for the supplied user address for the round supplied rounds. Does not omit rewards for rounds that have already been claimed. Allows for easier historical lookups.\n @param _user Address of the user to get rewards.\n @param _rounds List of uint256 round ids to look up the rewards.\n @return uint256 Amount of $RARE tokens rewarded."
+            },
+            "functionSelector": "cae06944",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getHistoricalRewardsForUserForRounds",
+            "nameLocation": "6565:36:134",
+            "parameters": {
+              "id": 54685,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54681,
+                  "mutability": "mutable",
+                  "name": "_user",
+                  "nameLocation": "6610:5:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54689,
+                  "src": "6602:13:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54680,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6602:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54684,
+                  "mutability": "mutable",
+                  "name": "_rounds",
+                  "nameLocation": "6634:7:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54689,
+                  "src": "6617:24:134",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 54682,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "6617:7:134",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 54683,
+                    "nodeType": "ArrayTypeName",
+                    "src": "6617:9:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "6601:41:134"
+            },
+            "returnParameters": {
+              "id": 54688,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54687,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54689,
+                  "src": "6678:7:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54686,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6678:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "6677:9:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54700,
+            "nodeType": "FunctionDefinition",
+            "src": "7007:118:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54690,
+              "nodeType": "StructuredDocumentation",
+              "src": "6691:313:134",
+              "text": "@notice Query rewards for the supplied user address for the round supplied rounds. Throws if any round has already been claimed.\n @param _user Address of the user to get rewards.\n @param _rounds List of uint256 round ids to look up the rewards.\n @return uint256 Amount of $RARE tokens rewarded."
+            },
+            "functionSelector": "4f7395ce",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getClaimableRewardsForUserForRounds",
+            "nameLocation": "7016:35:134",
+            "parameters": {
+              "id": 54696,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54692,
+                  "mutability": "mutable",
+                  "name": "_user",
+                  "nameLocation": "7060:5:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54700,
+                  "src": "7052:13:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54691,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7052:7:134",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54695,
+                  "mutability": "mutable",
+                  "name": "_rounds",
+                  "nameLocation": "7084:7:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54700,
+                  "src": "7067:24:134",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 54693,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "7067:7:134",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 54694,
+                    "nodeType": "ArrayTypeName",
+                    "src": "7067:9:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7051:41:134"
+            },
+            "returnParameters": {
+              "id": 54699,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54698,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54700,
+                  "src": "7116:7:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54697,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7116:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7115:9:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54710,
+            "nodeType": "FunctionDefinition",
+            "src": "7431:109:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54701,
+              "nodeType": "StructuredDocumentation",
+              "src": "7129:299:134",
+              "text": "@notice Calculates the number of sRare yielded from staking.\n @param _totalSRare Current supply of sRare.\n @param _stakedAmount Amount of RARE being staked.\n @return uint256 Amount of synthetic tokens one would get for staking {_stakedAmount} given a totalSupply of {_totalSRare}."
+            },
+            "functionSelector": "ace4e824",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "calculatePurchaseReturn",
+            "nameLocation": "7440:23:134",
+            "parameters": {
+              "id": 54706,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54703,
+                  "mutability": "mutable",
+                  "name": "_totalSRare",
+                  "nameLocation": "7472:11:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54710,
+                  "src": "7464:19:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54702,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7464:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54705,
+                  "mutability": "mutable",
+                  "name": "_stakedAmount",
+                  "nameLocation": "7493:13:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54710,
+                  "src": "7485:21:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54704,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7485:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7463:44:134"
+            },
+            "returnParameters": {
+              "id": 54709,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54708,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54710,
+                  "src": "7531:7:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54707,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7531:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7530:9:134"
+            },
+            "scope": 54754,
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54722,
+            "nodeType": "FunctionDefinition",
+            "src": "7982:160:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54711,
+              "nodeType": "StructuredDocumentation",
+              "src": "7544:435:134",
+              "text": "@notice Calculates the number of rare yielded from unstaking.\n @param _totalSRareByUser Current balance of sRARE held by the given user.\n @param _totalRareStakedByUser Total Amount of RARE staked by the given user.\n @param _unstakeAmount Amount of sRare being traded in.\n @return uint256 Amount of $RARE tokens one would get for unstaking {_unstakeAmount} given {_totalSRareByUser} and {_totalRareStakedByUser}."
+            },
+            "functionSelector": "74293bf8",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "calculateSaleReturn",
+            "nameLocation": "7991:19:134",
+            "parameters": {
+              "id": 54718,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54713,
+                  "mutability": "mutable",
+                  "name": "_totalSRareByUser",
+                  "nameLocation": "8024:17:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54722,
+                  "src": "8016:25:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54712,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "8016:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54715,
+                  "mutability": "mutable",
+                  "name": "_totalRareStakedByUser",
+                  "nameLocation": "8055:22:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54722,
+                  "src": "8047:30:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54714,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "8047:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 54717,
+                  "mutability": "mutable",
+                  "name": "_unstakeAmount",
+                  "nameLocation": "8091:14:134",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54722,
+                  "src": "8083:22:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54716,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "8083:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "8010:99:134"
+            },
+            "returnParameters": {
+              "id": 54721,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54720,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54722,
+                  "src": "8133:7:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54719,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "8133:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "8132:9:134"
+            },
+            "scope": 54754,
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54728,
+            "nodeType": "FunctionDefinition",
+            "src": "8264:61:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54723,
+              "nodeType": "StructuredDocumentation",
+              "src": "8146:115:134",
+              "text": "@notice Total rewards snapshotted since con.\n @return uint256 Amount of $RARE tokens allocated as rewards."
+            },
+            "functionSelector": "94616420",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getAllTimeRewards",
+            "nameLocation": "8273:17:134",
+            "parameters": {
+              "id": 54724,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "8290:2:134"
+            },
+            "returnParameters": {
+              "id": 54727,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54726,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54728,
+                  "src": "8316:7:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54725,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "8316:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "8315:9:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54735,
+            "nodeType": "FunctionDefinition",
+            "src": "8436:67:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54729,
+              "nodeType": "StructuredDocumentation",
+              "src": "8329:104:134",
+              "text": "@notice List of all rounds with claim associated with them.\n @return uint256[] claim round ids."
+            },
+            "functionSelector": "d78744d6",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getClaimRounds",
+            "nameLocation": "8445:14:134",
+            "parameters": {
+              "id": 54730,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "8459:2:134"
+            },
+            "returnParameters": {
+              "id": 54734,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54733,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54735,
+                  "src": "8485:16:134",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 54731,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "8485:7:134",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 54732,
+                    "nodeType": "ArrayTypeName",
+                    "src": "8485:9:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "8484:18:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54741,
+            "nodeType": "FunctionDefinition",
+            "src": "8631:59:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54736,
+              "nodeType": "StructuredDocumentation",
+              "src": "8507:121:134",
+              "text": "@notice Get the unix creation time of the staking contract.\n @return uint256 unix creation time of the contract."
+            },
+            "functionSelector": "e6519a35",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getCreationTime",
+            "nameLocation": "8640:15:134",
+            "parameters": {
+              "id": 54737,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "8655:2:134"
+            },
+            "returnParameters": {
+              "id": 54740,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54739,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54741,
+                  "src": "8681:7:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54738,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "8681:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "8680:9:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54747,
+            "nodeType": "FunctionDefinition",
+            "src": "8816:68:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54742,
+              "nodeType": "StructuredDocumentation",
+              "src": "8694:119:134",
+              "text": "@notice Get the unix time of the most recent snapshot.\n @return uint256 unix time of the most recent snapshot."
+            },
+            "functionSelector": "7c27ff86",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getLastSnapshotTimestamp",
+            "nameLocation": "8825:24:134",
+            "parameters": {
+              "id": 54743,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "8849:2:134"
+            },
+            "returnParameters": {
+              "id": 54746,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54745,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54747,
+                  "src": "8875:7:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54744,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "8875:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "8874:9:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 54753,
+            "nodeType": "FunctionDefinition",
+            "src": "8984:62:134",
+            "nodes": [],
+            "documentation": {
+              "id": 54748,
+              "nodeType": "StructuredDocumentation",
+              "src": "8888:93:134",
+              "text": "@notice Total amount of Rewards claimed.\n @return uint256 amount of rewards claimed."
+            },
+            "functionSelector": "3b1c612e",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getSumOfAllClaimed",
+            "nameLocation": "8993:18:134",
+            "parameters": {
+              "id": 54749,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "9011:2:134"
+            },
+            "returnParameters": {
+              "id": 54752,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54751,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54753,
+                  "src": "9037:7:134",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 54750,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "9037:7:134",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "9036:9:134"
+            },
+            "scope": 54754,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 54498,
+              "name": "IERC20Upgradeable",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 33025,
+              "src": "344:17:134"
+            },
+            "id": 54499,
+            "nodeType": "InheritanceSpecifier",
+            "src": "344:17:134"
+          }
+        ],
+        "canonicalName": "IRarityPool",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 54497,
+          "nodeType": "StructuredDocumentation",
+          "src": "161:158:134",
+          "text": "@author koloz, charlescrain\n @title IRarityPool\n @notice The Rare Staking Pool ERC20 (Rarity Pool) interface containing all functions, events, etc."
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          54754,
+          33025
+        ],
+        "name": "IRarityPool",
+        "nameLocation": "329:11:134",
+        "scope": 54755,
+        "usedErrors": [
+          54556,
+          54559,
+          54562,
+          54565,
+          54568,
+          54571,
+          54574,
+          54577
+        ]
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 134
+}

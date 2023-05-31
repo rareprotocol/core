@@ -2,14 +2,14 @@
 pragma solidity ^0.8.0;
 
 /// @author charlescrain
-/// @title IRewardSwap
-/// @notice The Staked ERC20 interface containing all functions, events, etc.
-interface IRewardSwap {
+/// @title IRewardAccumulator
+/// @notice The reward accumulator interface containing all functions, events, etc. for accumulating and swapping rewards.
+interface IRewardAccumulator {
   /*//////////////////////////////////////////////////////////////////////////
                               Events
   //////////////////////////////////////////////////////////////////////////*/
 
-  event RewardSwap(address indexed _msgSender, address indexed _tokenOut, uint256 _amountOut, uint256 _rareIn);
+  event RewardAccumulator(address indexed _msgSender, address indexed _tokenOut, uint256 _amountOut, uint256 _rareIn);
 
   /*//////////////////////////////////////////////////////////////////////////
                             Custom Errors

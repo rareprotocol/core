@@ -3,11 +3,11 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 
-import "../../staking/reward/RewardSwap.sol";
+import "../../staking/reward/RewardAccumulator.sol";
 import "../../staking/token/RarityPool.sol";
 import "../../staking/registry/RareStakingRegistry.sol";
 import "../../staking/factory/RarityPoolFactory.sol";
-import "../../staking/factory/RewardSwapFactory.sol";
+import "../../staking/factory/RewardAccumulatorFactory.sol";
 import "rareprotocol/assets/token/ERC20/SuperRareGovToken.sol";
 import {ERC1967Proxy} from "openzeppelin-contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {IERC20} from "openzeppelin-contracts/interfaces/IERC20.sol";
@@ -46,9 +46,9 @@ contract RareStakeTest is Test {
     // Deploy Logic Contracts
     RareStakingRegistry registryLogic = new RareStakingRegistry();
     RarityPoolFactory factoryLogic = new RarityPoolFactory();
-    RewardSwapFactory rewardSwapFactoryLogic = new RewardSwapFactory();
+    RewardAccumulatorFactory rewardSwapFactoryLogic = new RewardAccumulatorFactory();
     RarityPool sRareTemp = new RarityPool();
-    RewardSwap rewardSwapTemp = new RewardSwap();
+    RewardAccumulator rewardSwapTemp = new RewardAccumulator();
 
     // Deploy Proxies
     ERC1967Proxy registryProxy = new ERC1967Proxy(address(registryLogic), "");
@@ -67,7 +67,7 @@ contract RareStakeTest is Test {
       weth,
       defaultPayee
     );
-    RewardSwapFactory(address(rewardSwapFactoryProxy)).initialize(
+    RewardAccumulatorFactory(address(rewardSwapFactoryProxy)).initialize(
       address(registryProxy),
       address(rewardSwapTemp),
       tokenOwner

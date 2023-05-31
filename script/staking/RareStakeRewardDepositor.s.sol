@@ -6,10 +6,10 @@ import "forge-std/Script.sol";
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
 import {RarityPool} from "../../src/staking/token/RarityPool.sol";
-import {RewardSwap} from "../../src/staking/reward/RewardSwap.sol";
+import {RewardAccumulator} from "../../src/staking/reward/RewardAccumulator.sol";
 import {RareStakingRegistry} from "../../src/staking/registry/RareStakingRegistry.sol";
 import {RarityPoolFactory} from "../../src/staking/factory/RarityPoolFactory.sol";
-import {RewardSwapFactory} from "../../src/staking/factory/RewardSwapFactory.sol";
+import {RewardAccumulatorFactory} from "../../src/staking/factory/RewardAccumulatorFactory.sol";
 
 contract RareStakeRewardDepositor is Script {
   function run() external {

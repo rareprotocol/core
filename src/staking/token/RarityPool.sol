@@ -92,7 +92,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   //////////////////////////////////////////////////////////////////////////*/
 
   function addRewards(address _donor, uint256 _amount) public {
-    if (_donor != msg.sender && msg.sender != stakingRegistry.getStakingInfoForUser(targetStakedTo).rewardSwapAddress) {
+    if (_donor != msg.sender && msg.sender != stakingRegistry.getStakingInfoForUser(targetStakedTo).rewardAddress) {
       revert IRarityPool.Unauthorized();
     }
 

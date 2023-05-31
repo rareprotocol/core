@@ -6,8 +6,8 @@ help: ## Ask for help!
 clean: ## clean.
 	@bash -l -c 'forge clean'
 
-.PHONY: build-local
-build-local: ## Build the smart contracts with foundry.
+.PHONY: build
+build: ## Build the smart contracts with foundry.
 	@bash -l -c 'forge build'
 	script/copy_abis.sh
 

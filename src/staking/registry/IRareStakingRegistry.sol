@@ -15,7 +15,7 @@ interface IRareStakingRegistry {
     string name;
     string symbol;
     address stakingAddress;
-    address rewardSwapAddress;
+    address rewardAddress;
   }
 
   /*//////////////////////////////////////////////////////////////////////////

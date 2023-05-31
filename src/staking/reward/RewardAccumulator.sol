@@ -10,15 +10,15 @@ import "@uniswap/v3-core/interfaces/IUniswapV3Factory.sol";
 import "@uniswap/v3-core/interfaces/IUniswapV3Pool.sol";
 import "@uniswap/v3-periphery/libraries/OracleLibrary.sol";
 
-import {IRewardSwap} from "./IRewardSwap.sol";
+import {IRewardAccumulator} from "./IRewardAccumulator.sol";
 import {IRarityPool} from "../token/IRarityPool.sol";
 import {IRareStakingRegistry} from "../registry/IRareStakingRegistry.sol";
 
 /// @author charlescrain
-/// @title RewardSwap
-/// @notice The Staked ERC20 contract that allows users to stake/unstake/claim rewards/reward swaps.
+/// @title RewardAccumulator
+/// @notice The reward accumulator accumulates rewards and allows for swapping of ETH or ERC20 tokens in exchange for RARE.
 /// @dev It is one base user per contract. This is the implementation contract for a beacon proxy.
-contract RewardSwap is IRewardSwap, ReentrancyGuard, Initializable {
+contract RewardAccumulator is IRewardAccumulator, ReentrancyGuard, Initializable {
   using SafeCast for uint256;
   using SafeCast for uint128;
 
@@ -42,7 +42,7 @@ contract RewardSwap is IRewardSwap, ReentrancyGuard, Initializable {
   /*//////////////////////////////////////////////////////////////////////////
                           Public Write Functions
   //////////////////////////////////////////////////////////////////////////*/
-  /// @inheritdoc IRewardSwap
+  /// @inheritdoc IRewardAccumulator
   function rewardSwap(
     address _tokenOut,
     uint256 _minAmountOut,
@@ -88,13 +88,13 @@ contract RewardSwap is IRewardSwap, ReentrancyGuard, Initializable {
       IERC20(_tokenOut).transfer(msg.sender, amountOut);
     }
 
-    emit RewardSwap(msg.sender, _tokenOut, amountOut, _rareIn);
+    emit RewardAccumulator(msg.sender, _tokenOut, amountOut, _rareIn);
   }
 
   /*//////////////////////////////////////////////////////////////////////////
                           External/Public Read Functions
   //////////////////////////////////////////////////////////////////////////*/
-  /// @inheritdoc IRewardSwap
+  /// @inheritdoc IRewardAccumulator
   function estimateRarePrice(address _tokenOut, uint128 _rareAmountIn) public view returns (uint256) {
     address weth = stakingRegistry.getWethAddress();
     // Null address implies ETH

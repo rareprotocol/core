@@ -3,11 +3,11 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 
-import "../../staking/reward/RewardSwap.sol";
+import "../../staking/reward/RewardAccumulator.sol";
 import "../../staking/token/RarityPool.sol";
 import "../../staking/registry/RareStakingRegistry.sol";
 import "../../staking/factory/RarityPoolFactory.sol";
-import "../../staking/factory/RewardSwapFactory.sol";
+import "../../staking/factory/RewardAccumulatorFactory.sol";
 import "rareprotocol/assets/token/ERC20/SuperRareGovToken.sol";
 import {ERC1967Proxy} from "openzeppelin-contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {IERC20} from "openzeppelin-contracts/interfaces/IERC20.sol";
@@ -18,7 +18,7 @@ import {strings} from "arachnid/solidity-stringutils/src/strings.sol";
 
 contract RewardSwapTest is Test {
   using strings for *;
-  RewardSwap rewardSwap;
+  RewardAccumulator rewardSwap;
   RareStakingRegistry registry;
   RarityPoolFactory factory;
   SuperRareToken rare;
@@ -53,8 +53,8 @@ contract RewardSwapTest is Test {
 
     // Deploy Logic Contracts
     RareStakingRegistry registryLogic = new RareStakingRegistry();
-    RewardSwapFactory rewardSwapFactoryLogic = new RewardSwapFactory();
-    RewardSwap rewardSwapTemp = new RewardSwap();
+    RewardAccumulatorFactory rewardSwapFactoryLogic = new RewardAccumulatorFactory();
+    RewardAccumulator rewardSwapTemp = new RewardAccumulator();
     // Deploy Proxies
     ERC1967Proxy registryProxy = new ERC1967Proxy(address(registryLogic), "");
     ERC1967Proxy rewardSwapFactoryProxy = new ERC1967Proxy(address(rewardSwapFactoryLogic), "");
@@ -71,7 +71,7 @@ contract RewardSwapTest is Test {
       weth,
       defaultPayee
     );
-    RewardSwapFactory(address(rewardSwapFactoryProxy)).initialize(
+    RewardAccumulatorFactory(address(rewardSwapFactoryProxy)).initialize(
       address(registryProxy),
       address(rewardSwapTemp),
       tokenOwner
@@ -121,7 +121,7 @@ contract RewardSwapTest is Test {
     RareStakingRegistry(address(registryProxy)).setSwapPool(usdcEthPool, address(usdc));
     RareStakingRegistry(address(registryProxy)).setSwapPool(generalErc20Pool, address(erc20Token)); // Reuse USDC pool for simplicity
 
-    rewardSwap = RewardSwap(RewardSwapFactory(address(rewardSwapFactoryProxy)).deployRewardSwap(fakeStakingPool));
+    rewardSwap = RewardAccumulator(RewardAccumulatorFactory(address(rewardSwapFactoryProxy)).deployRewardSwap(fakeStakingPool));
 
     vm.etch(reverseRegistrar, address(factory).code);
     vm.etch(resolver, address(factory).code);

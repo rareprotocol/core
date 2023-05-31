@@ -7,10 +7,10 @@ import {IAccessControlUpgradeable} from "openzeppelin-contracts-upgradeable/acce
 import {ERC1967Proxy} from "openzeppelin-contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
 import {RarityPool} from "../../src/staking/token/RarityPool.sol";
-import {RewardSwap} from "../../src/staking/reward/RewardSwap.sol";
+import {RewardAccumulator} from "../../src/staking/reward/RewardAccumulator.sol";
 import {RareStakingRegistry} from "../../src/staking/registry/RareStakingRegistry.sol";
 import {RarityPoolFactory} from "../../src/staking/factory/RarityPoolFactory.sol";
-import {RewardSwapFactory} from "../../src/staking/factory/RewardSwapFactory.sol";
+import {RewardAccumulatorFactory} from "../../src/staking/factory/RewardAccumulatorFactory.sol";
 
 contract RareStakingDeploy is Script {
   function run() external {
@@ -19,9 +19,9 @@ contract RareStakingDeploy is Script {
     // Deploy Logic Contracts
     RareStakingRegistry registry = new RareStakingRegistry();
     RarityPoolFactory factory = new RarityPoolFactory();
-    RewardSwapFactory rewardSwapFactoryLogic = new RewardSwapFactory();
+    RewardAccumulatorFactory rewardSwapFactoryLogic = new RewardAccumulatorFactory();
     RarityPool sRare = new RarityPool();
-    RewardSwap rewardSwapTemp = new RewardSwap();
+    RewardAccumulator rewardSwapTemp = new RewardAccumulator();
 
     // Deploy Proxies
     ERC1967Proxy registryProxy = new ERC1967Proxy(address(registry), "");
@@ -40,7 +40,7 @@ contract RareStakingDeploy is Script {
       vm.envAddress("WETH_ADDRESS"),
       vm.envAddress("DEFAULT_PAYEE")
     );
-    RewardSwapFactory(address(rewardSwapFactoryProxy)).initialize(
+    RewardAccumulatorFactory(address(rewardSwapFactoryProxy)).initialize(
       address(registryProxy),
       address(rewardSwapTemp),
       vm.addr(vm.envUint("PRIVATE_KEY"))
