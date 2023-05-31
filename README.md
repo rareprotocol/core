@@ -11,10 +11,10 @@ The `RarityPool` provides functions for initializing the contract, adding reward
 
 The `RarityPool` is where users can stake tokens, earn rewards, and claim them based on their stake during the round.
 
-#### Reward Swap
-The contract provides functions for initializing the contract, performing a reward swap, and estimating the discounted price of RARE for a given token. The reward swap function allows users to specify the token they want to receive, the minimum amount they are willing to accept, and the amount of RARE they want to trade. The contract also includes a read function to estimate the discounted price of RARE for a specific token.
+#### Reward Accumulator
+The contract provides functions for initializing the contract, accumulates rewards and performs a reward swap, and estimates the discounted price of RARE for a given token. The reward swap function allows users to specify the token they want to receive, the minimum amount they are willing to accept, and the amount of RARE they want to trade. The contract also includes a read function to estimate the discounted price of RARE for a specific token.
 
-Overall, the contract serves as an interface for a reward swapping mechanism where users can trade their RARE tokens for other ERC20 tokens and ether at a discounted price.
+Overall, the contract serves as an interface for a sending rewards and reward swapping where users can trade their RARE tokens for other ERC20 tokens and ether at a discounted price.
 
 ### Bazaar
 The Bazaar is the interface to Rare Protocol's market mechanisms which include: offers, general and direct sale prices/purchases, Coldie Auctions (aka Reserve auctions), and scheduled auctions.
