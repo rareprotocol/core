@@ -8,7 +8,6 @@ import "../../staking/token/RarityPool.sol";
 import "../../staking/registry/RareStakingRegistry.sol";
 import "../../staking/factory/RarityPoolFactory.sol";
 import "../../staking/factory/RewardAccumulatorFactory.sol";
-import "rareprotocol/assets/token/ERC20/SuperRareGovToken.sol";
 import {ERC1967Proxy} from "openzeppelin-contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {IERC20} from "openzeppelin-contracts/interfaces/IERC20.sol";
 import "openzeppelin-contracts/utils/math/Math.sol";
@@ -16,6 +15,17 @@ import "@ensdomains/ens-contracts/registry/ReverseRegistrar.sol";
 import "@ensdomains/ens-contracts/resolvers/Resolver.sol";
 import "@uniswap/v3-core/interfaces/pool/IUniswapV3PoolImmutables.sol";
 import {strings} from "arachnid/solidity-stringutils/src/strings.sol";
+import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
+
+contract TestRare is ERC20 {
+  constructor() ERC20("Rare", "RARE") {
+    _mint(msg.sender, 1_000_000_000 ether);
+  }
+
+  function burn(uint256 amount) public {
+    _burn(msg.sender, amount);
+  } 
+}
 
 contract RareStakeTest is Test {
   using strings for *;
@@ -23,7 +33,7 @@ contract RareStakeTest is Test {
   RarityPool public rareStake;
   RareStakingRegistry public registry;
   RarityPoolFactory public factory;
-  SuperRareToken public rare;
+  TestRare public rare;
 
   address public tokenOwner = address(0xabadabab);
   address public alice = address(0xbeef);
@@ -39,9 +49,8 @@ contract RareStakeTest is Test {
   function contractDeploy() internal {
     vm.startPrank(tokenOwner);
 
-    // Deploy SuperRareToken
-    rare = new SuperRareToken();
-    rare.init(tokenOwner);
+    // Deploy TestRare
+    rare = new TestRare();
 
     // Deploy Logic Contracts
     RareStakingRegistry registryLogic = new RareStakingRegistry();

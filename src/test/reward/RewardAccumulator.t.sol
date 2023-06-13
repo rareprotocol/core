@@ -8,20 +8,26 @@ import "../../staking/token/RarityPool.sol";
 import "../../staking/registry/RareStakingRegistry.sol";
 import "../../staking/factory/RarityPoolFactory.sol";
 import "../../staking/factory/RewardAccumulatorFactory.sol";
-import "rareprotocol/assets/token/ERC20/SuperRareGovToken.sol";
 import {ERC1967Proxy} from "openzeppelin-contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {IERC20} from "openzeppelin-contracts/interfaces/IERC20.sol";
+import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-contracts/utils/math/Math.sol";
 import "@ensdomains/ens-contracts/registry/ReverseRegistrar.sol";
 import "@ensdomains/ens-contracts/resolvers/Resolver.sol";
 import {strings} from "arachnid/solidity-stringutils/src/strings.sol";
+
+contract TestRare is ERC20 {
+  constructor() ERC20("Rare", "RARE") {
+    _mint(msg.sender, 1_000_000_000 ether);
+  }
+}
 
 contract RewardSwapTest is Test {
   using strings for *;
   RewardAccumulator rewardSwap;
   RareStakingRegistry registry;
   RarityPoolFactory factory;
-  SuperRareToken rare;
+  TestRare rare;
   IERC20 erc20Token;
 
   address tokenOwner = address(0xabadabab);
@@ -42,13 +48,11 @@ contract RewardSwapTest is Test {
   function contractDeploy() internal {
     vm.startPrank(tokenOwner);
 
-    // Deploy SuperRareToken
-    rare = new SuperRareToken();
-    rare.init(tokenOwner);
+    // Deploy TestRare
+    rare = new TestRare();
 
     // Deploy Arbitrary ERC20 Token. We use Rare token again for simpl
-    SuperRareToken tmpToken = new SuperRareToken();
-    tmpToken.init(tokenOwner);
+    TestRare tmpToken = new TestRare();
     erc20Token = IERC20(address(tmpToken));
 
     // Deploy Logic Contracts

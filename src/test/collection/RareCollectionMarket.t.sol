@@ -126,6 +126,7 @@ contract TestRareCollectionMarket is Test {
   }
 
   function testMakeCollectionOfferSenderDoesNotHaveEnoughApprovedCurrency() public {
+    mockPayout(amount, charlie);  
     // mock isApprovedToken
     vm.mockCall(
       approvedTokenRegistry,
