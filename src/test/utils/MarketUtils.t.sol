@@ -12,8 +12,8 @@ import {Payments} from "rareprotocol/aux/payments/Payments.sol";
 import {ISpaceOperatorRegistry} from "rareprotocol/aux/registry/interfaces/ISpaceOperatorRegistry.sol";
 import {IApprovedTokenRegistry} from "rareprotocol/aux/registry/interfaces/IApprovedTokenRegistry.sol";
 import {IRoyaltyEngineV1} from "royalty-registry/IRoyaltyEngineV1.sol";
+import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
-import "rareprotocol/assets/token/ERC20/SuperRareGovToken.sol";
 import {MarketUtils} from "../../utils/MarketUtils.sol";
 import {MarketConfig} from "../../utils/structs/MarketConfig.sol";
 import {IRareStakingRegistry} from "../../staking/registry/IRareStakingRegistry.sol";
@@ -65,10 +65,20 @@ contract TestContract {
   }
 }
 
+contract TestRare is ERC20 {
+  constructor() ERC20("Rare", "RARE") {
+    _mint(msg.sender, 1_000_000_000 ether);
+  }
+
+  function burn(uint256 amount) public {
+    _burn(msg.sender, amount);
+  } 
+}
+
 contract SuperRareBazaarBaseTest is Test {
   TestContract tc;
   Payments payments;
-  SuperRareToken public rare;
+  TestRare public rare;
   uint256 constant initialRare = 1000 * 1e18;
 
   address deployer = address(0xabadabab);
@@ -88,9 +98,8 @@ contract SuperRareBazaarBaseTest is Test {
   function contractDeploy() internal {
     vm.startPrank(deployer);
 
-    // Deploy SuperRareToken
-    rare = new SuperRareToken();
-    rare.init(deployer);
+    // Deploy TestRare
+    rare = new TestRare();
 
     // Deploy Payments
     payments = new Payments();

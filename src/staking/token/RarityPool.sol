@@ -9,6 +9,7 @@ import {ERC20BurnableUpgradeable, ERC20Upgradeable} from "openzeppelin-contracts
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
 import {Address} from "openzeppelin-contracts/utils/Address.sol";
 import {IERC20} from "openzeppelin-contracts/interfaces/IERC20.sol";
+import {SafeERC20Upgradeable} from "openzeppelin-contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 
 import {IRarityPool} from "./IRarityPool.sol";
 import {IRareStakingRegistry} from "../registry/IRareStakingRegistry.sol";
@@ -207,7 +208,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
 
     // Return staked RARE
     uint256 amountDue = amountRareReturned - burnAmount;
-    rare.transfer(msg.sender, amountDue);
+    SafeERC20Upgradeable.safeTransfer(ERC20Upgradeable(rare), msg.sender, amountDue);
 
     emit Unstake(msg.sender, amountRareReturned, amtStaked - amountRareReturned, burnAmount, _amount);
   }
@@ -221,12 +222,11 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
 
     // Build total rewards for claim
     uint256 rewards = 0;
-    uint256 currentRound = getCurrentRound();
     uint256 currentSnapshotId = _getCurrentSnapshotId();
     for (uint8 i = 0; i < _rounds.length; i++) {
-      if (_rounds[i] == currentRound) revert IRarityPool.CannotClaimCurrentRound();
+      if (_rounds[i] == getCurrentRound()) revert IRarityPool.CannotClaimCurrentRound();
       if (stakerClaimedRound[_rounds[i]][_user]) revert IRarityPool.RewardAlreadyClaimed();
-      rewards += _getRewardsForUserForRound(_user, _rounds[i], currentRound, currentSnapshotId);
+      rewards += _getRewardsForUserForRound(_user, _rounds[i], currentSnapshotId);
       stakerClaimedRound[_rounds[i]][_user] = true;
     }
 
@@ -236,9 +236,9 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     uint256 owedToStaker = rewards - owedToStakee - owedToClaimer;
 
     // Transfer rewards
-    rare.transfer(msg.sender, owedToClaimer);
-    rare.transfer(_user, owedToStaker);
-    rare.transfer(targetStakedTo, owedToStakee);
+    SafeERC20Upgradeable.safeTransfer(ERC20Upgradeable(rare), msg.sender, owedToClaimer);
+    SafeERC20Upgradeable.safeTransfer(ERC20Upgradeable(rare), _user, owedToStaker);
+    SafeERC20Upgradeable.safeTransfer(ERC20Upgradeable(rare), targetStakedTo, owedToStakee);
 
     // Update total claim amounts
     sumOfAllClaimed += rewards;
@@ -297,16 +297,14 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   }
 
   /// @inheritdoc IRarityPool
-  function getHistoricalRewardsForUserForRounds(address _user, uint256[] memory _rounds)
-    external
-    view
-    returns (uint256)
-  {
+  function getHistoricalRewardsForUserForRounds(
+    address _user,
+    uint256[] memory _rounds
+  ) external view returns (uint256) {
     uint256 rewards = 0;
-    uint256 currentRound = getCurrentRound();
     uint256 currentSnapshotId = _getCurrentSnapshotId();
     for (uint8 i = 0; i < _rounds.length; i++) {
-      rewards += _getRewardsForUserForRound(_user, _rounds[i], currentRound, currentSnapshotId);
+      rewards += _getRewardsForUserForRound(_user, _rounds[i], currentSnapshotId);
     }
     return rewards;
   }
@@ -314,12 +312,11 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   /// @inheritdoc IRarityPool
   function getClaimableRewardsForUserForRounds(address _user, uint256[] memory _rounds) public view returns (uint256) {
     uint256 rewards = 0;
-    uint256 currentRound = getCurrentRound();
     uint256 currentSnapshotId = _getCurrentSnapshotId();
     for (uint8 i = 0; i < _rounds.length; i++) {
-      if (_rounds[i] == currentRound) revert IRarityPool.CannotClaimCurrentRound();
+      if (_rounds[i] == getCurrentRound()) revert IRarityPool.CannotClaimCurrentRound();
       if (stakerClaimedRound[_rounds[i]][_user]) revert IRarityPool.RewardAlreadyClaimed();
-      rewards += _getRewardsForUserForRound(_user, _rounds[i], currentRound, currentSnapshotId);
+      rewards += _getRewardsForUserForRound(_user, _rounds[i], currentSnapshotId);
     }
     return rewards;
   }
@@ -336,7 +333,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   /// @dev Calculated based on a sqrt token bonding curve.
   function calculatePurchaseReturn(uint256 _totalSRare, uint256 _stakedAmount) public pure returns (uint256) {
     //
-    return (((_sqrt(2e28 * _stakedAmount + _totalSRare**2) - _totalSRare) * _sqrt(_stakedAmount)) / 1e13); // We multiply by a factor of 1e5 to floor out decimals for last 5 digits
+    return (((_sqrt(2e28 * _stakedAmount + _totalSRare ** 2) - _totalSRare) * _sqrt(_stakedAmount)) / 1e13); // We multiply by a factor of 1e5 to floor out decimals for last 5 digits
   }
 
   /// @inheritdoc IRarityPool
@@ -379,11 +376,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   //////////////////////////////////////////////////////////////////////////*/
 
   /// @dev Transfer function for moving synthetic tokens.
-  function _transfer(
-    address from,
-    address to,
-    uint256 amount
-  ) internal virtual override {
+  function _transfer(address from, address to, uint256 amount) internal virtual override {
     if (msg.sender != address(this)) revert IRarityPool.Unauthorized();
     super._transfer(from, to, amount);
   }
@@ -394,20 +387,16 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   function _getRewardsForUserForRound(
     address _user,
     uint256 _round,
-    uint256 _currentRound,
     uint256 _currentSnapshotId
   ) internal view returns (uint256) {
-    // If asking for a future round, there can be no rewards
-    if (_round > _currentRound) return 0;
-
     // If current round is greater that the snapshot ID, there is no snapshot to use so grab current
-    uint256 totalSRareSupply = _currentRound > _currentSnapshotId ? totalSupply() : totalSupplyAt(_round);
+    uint256 totalSRareSupply = _round > _currentSnapshotId ? totalSupply() : totalSupplyAt(_round);
 
     // If there is no SRARE supply, return 0
     if (totalSRareSupply == 0) return 0;
 
     // If current round is greater that the snapshot ID, there is no snapshot to use so grab current
-    uint256 senderBalance = _currentRound > _currentSnapshotId ? balanceOf(_user) : balanceOfAt(_user, _round);
+    uint256 senderBalance = _round > _currentSnapshotId ? balanceOf(_user) : balanceOfAt(_user, _round);
 
     // Here we multiply by 1e25 to pad zeroes for division
     return ((senderBalance * 1e25 * getRoundRewards(_round)) / totalSRareSupply) / 1e25;
