@@ -13,19 +13,15 @@ import {ISpaceOperatorRegistry} from "rareprotocol/aux/registry/interfaces/ISpac
 import {IApprovedTokenRegistry} from "rareprotocol/aux/registry/interfaces/IApprovedTokenRegistry.sol";
 import {IRoyaltyEngineV1} from "royalty-registry/IRoyaltyEngineV1.sol";
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
+import "../../bazaar/SuperRareBazaarBase.sol";
 
 import {MarketUtils} from "../../utils/MarketUtils.sol";
 import {MarketConfig} from "../../utils/structs/MarketConfig.sol";
 import {IRareStakingRegistry} from "../../staking/registry/IRareStakingRegistry.sol";
 
-contract TestContract {
-  using MarketUtils for MarketConfig.Config;
-
-  MarketConfig.Config config;
-
+contract TestContract is SuperRareBazaarBase {
   constructor(
     address _marketplaceSettings,
-    address _stakingSettings,
     address _royaltyEngine,
     address _spaceOperatorRegistry,
     address _approvedTokenRegistry,
@@ -33,23 +29,18 @@ contract TestContract {
     address _stakingRegistry,
     address _networkBeneficiary
   ) {
-    require(_marketplaceSettings != address(0));
-    require(_stakingSettings != address(0));
-    require(_royaltyEngine != address(0));
-    require(_spaceOperatorRegistry != address(0));
-    require(_approvedTokenRegistry != address(0));
-    require(_payments != address(0));
-    require(_networkBeneficiary != address(0));
-    config = MarketConfig.generateMarketConfig(
-      _networkBeneficiary,
-      _marketplaceSettings,
-      _spaceOperatorRegistry,
-      _royaltyEngine,
-      _payments,
-      _approvedTokenRegistry,
-      _stakingSettings,
-      _stakingRegistry
-    );
+    marketplaceSettings = IMarketplaceSettings(_marketplaceSettings);
+    royaltyEngine = IRoyaltyEngineV1(_royaltyEngine);
+    spaceOperatorRegistry = ISpaceOperatorRegistry(_spaceOperatorRegistry);
+    approvedTokenRegistry = IApprovedTokenRegistry(_approvedTokenRegistry);
+    payments = IPayments(_payments);
+    stakingRegistry = _stakingRegistry;
+    networkBeneficiary = _networkBeneficiary;
+
+    minimumBidIncreasePercentage = 10;
+    maxAuctionLength = 7 days;
+    auctionLengthExtension = 15 minutes;
+    offerCancelationDelay = 5 minutes;
   }
 
   function payout(
@@ -61,7 +52,7 @@ contract TestContract {
     address payable[] memory _splitAddrs,
     uint8[] memory _splitRatios
   ) public payable {
-    config.payout(_originContract, _tokenId, _currencyAddress, _amount, _seller, _splitAddrs, _splitRatios);
+    _payout(_originContract, _tokenId, _currencyAddress, _amount, _seller, _splitAddrs, _splitRatios);
   }
 }
 
@@ -75,7 +66,7 @@ contract TestRare is ERC20 {
   } 
 }
 
-contract MarketUtilsTest is Test {
+contract RareBazaarBaseTest is Test {
   TestContract tc;
   Payments payments;
   TestRare public rare;
@@ -85,7 +76,6 @@ contract MarketUtilsTest is Test {
   address alice = address(0xbeef);
   address bob = address(0xcafe);
   address charlie = address(0xdead);
-  address stakingSettings = address(0xabadaba0);
   address marketplaceSettings = address(0xabadaba1);
   address royaltyRegistry = address(0xabadaba2);
   address royaltyEngine = address(0xabadaba3);
@@ -106,7 +96,6 @@ contract MarketUtilsTest is Test {
 
     tc = new TestContract(
       marketplaceSettings,
-      stakingSettings,
       royaltyEngine,
       spaceOperatorRegistry,
       approvedTokenRegistry,
@@ -117,7 +106,6 @@ contract MarketUtilsTest is Test {
 
     // etch code into these so we can stub out methods. Need some
     vm.etch(marketplaceSettings, address(rare).code);
-    vm.etch(stakingSettings, address(rare).code);
     vm.etch(stakingRegistry, address(rare).code);
     vm.etch(royaltyRegistry, address(rare).code);
     vm.etch(royaltyEngine, address(rare).code);
@@ -158,14 +146,14 @@ contract MarketUtilsTest is Test {
 
     // setup calculateMarketplacePayoutFee call -- 3%
     vm.mockCall(
-      stakingSettings,
+      marketplaceSettings,
       abi.encodeWithSelector(IStakingSettings.calculateMarketplacePayoutFee.selector, amount),
       abi.encode((amount * 3) / 100)
     );
 
     // setup calculateStakingFee call -- 3%
     vm.mockCall(
-      stakingSettings,
+      marketplaceSettings,
       abi.encodeWithSelector(IStakingSettings.calculateStakingFee.selector, amount),
       abi.encode(0)
     );
@@ -235,14 +223,14 @@ contract MarketUtilsTest is Test {
 
     // setup calculateMarketplacePayoutFee call -- 3%
     vm.mockCall(
-      stakingSettings,
+      marketplaceSettings,
       abi.encodeWithSelector(IStakingSettings.calculateMarketplacePayoutFee.selector, amount),
       abi.encode((amount * 3) / 100)
     );
 
     // setup calculateStakingFee call -- 0%
     vm.mockCall(
-      stakingSettings,
+      marketplaceSettings,
       abi.encodeWithSelector(IStakingSettings.calculateStakingFee.selector, amount),
       abi.encode(0)
     );
@@ -323,14 +311,14 @@ contract MarketUtilsTest is Test {
 
     // setup calculateMarketplacePayoutFee call -- 3%
     vm.mockCall(
-      stakingSettings,
+      marketplaceSettings,
       abi.encodeWithSelector(IStakingSettings.calculateMarketplacePayoutFee.selector, amount),
       abi.encode((amount * 3) / 100)
     );
 
     // setup calculateStakingFee call -- 3%
     vm.mockCall(
-      stakingSettings,
+      marketplaceSettings,
       abi.encodeWithSelector(IStakingSettings.calculateStakingFee.selector, amount),
       abi.encode(0)
     );
@@ -396,14 +384,14 @@ contract MarketUtilsTest is Test {
 
     // setup calculateMarketplacePayoutFee call -- 3%
     vm.mockCall(
-      stakingSettings,
+      marketplaceSettings,
       abi.encodeWithSelector(IStakingSettings.calculateMarketplacePayoutFee.selector, amount),
       abi.encode((amount * 2) / 100)
     );
 
     // setup calculateStakingFee call -- 1%
     vm.mockCall(
-      stakingSettings,
+      marketplaceSettings,
       abi.encodeWithSelector(IStakingSettings.calculateStakingFee.selector, amount),
       abi.encode(amount / 100)
     );
@@ -473,14 +461,14 @@ contract MarketUtilsTest is Test {
 
     // setup calculateMarketplacePayoutFee call -- 3%
     vm.mockCall(
-      stakingSettings,
+      marketplaceSettings,
       abi.encodeWithSelector(IStakingSettings.calculateMarketplacePayoutFee.selector, amount),
       abi.encode((amount * 2) / 100)
     );
 
     // setup calculateStakingFee call -- 1%
     vm.mockCall(
-      stakingSettings,
+      marketplaceSettings,
       abi.encodeWithSelector(IStakingSettings.calculateStakingFee.selector, amount),
       abi.encode(amount / 100)
     );

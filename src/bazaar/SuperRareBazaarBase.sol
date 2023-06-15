@@ -6,6 +6,8 @@ import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 import {IPayments} from "rareprotocol/aux/payments/IPayments.sol";
 import {SuperRareBazaarStorage} from "./SuperRareBazaarStorage.sol";
+import {IStakingSettings} from "rareprotocol/aux/marketplace/IStakingSettings.sol";
+import {IRareStakingRegistry} from "../staking/registry/IRareStakingRegistry.sol";
 
 /// @author koloz
 /// @title SuperRareBazaarBase
@@ -165,20 +167,27 @@ abstract contract SuperRareBazaarBase is SuperRareBazaarStorage {
             3. Calculate the amount for each _splitAddr based on remaining amount and payout
          */
 
+    // Recipients of marketplace fee
     uint256 remainingAmount = _amount;
 
     // Marketplace fee
+
+    // Amounts for recipients of marketplace fee
     uint256 marketplaceFee = marketplaceSettings.calculateMarketplaceFee(_amount);
 
-    address payable[] memory mktFeeRecip = new address payable[](1);
+    address payable[] memory mktFeeRecip = new address payable[](2);
     mktFeeRecip[0] = payable(networkBeneficiary);
-    uint256[] memory mktFee = new uint256[](1);
-    mktFee[0] = marketplaceFee;
+    mktFeeRecip[1] = payable(IRareStakingRegistry(stakingRegistry).getStakingInfoForUser(_seller).rewardAddress);
+    uint256[] memory mktFee = new uint256[](2);
+    mktFee[0] = IStakingSettings(address(marketplaceSettings)).calculateMarketplacePayoutFee(_amount);
+    mktFee[1] = IStakingSettings(address(marketplaceSettings)).calculateStakingFee(_amount);
 
     _performPayouts(_currencyAddress, marketplaceFee, mktFeeRecip, mktFee);
 
     if (!marketplaceSettings.hasERC721TokenSold(_originContract, _tokenId)) {
       uint256[] memory platformFee = new uint256[](1);
+      address payable[] memory platformRecip = new address payable[](1);
+      platformRecip[0] = mktFeeRecip[0];
 
       if (spaceOperatorRegistry.isApprovedSpaceOperator(_seller)) {
         uint256 platformCommission = spaceOperatorRegistry.getPlatformCommission(_seller);
@@ -187,7 +196,7 @@ abstract contract SuperRareBazaarBase is SuperRareBazaarStorage {
 
         platformFee[0] = (_amount * platformCommission) / 100;
 
-        _performPayouts(_currencyAddress, platformFee[0], mktFeeRecip, platformFee);
+        _performPayouts(_currencyAddress, platformFee[0], platformRecip, platformFee);
       } else {
         uint256 platformCommission = marketplaceSettings.getERC721ContractPrimarySaleFeePercentage(_originContract);
 
@@ -195,7 +204,7 @@ abstract contract SuperRareBazaarBase is SuperRareBazaarStorage {
 
         platformFee[0] = (_amount * platformCommission) / 100;
 
-        _performPayouts(_currencyAddress, platformFee[0], mktFeeRecip, platformFee);
+        _performPayouts(_currencyAddress, platformFee[0], platformRecip, platformFee);
       }
     } else {
       (address payable[] memory receivers, uint256[] memory royalties) = royaltyEngine.getRoyalty(
