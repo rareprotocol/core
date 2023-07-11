@@ -9,6 +9,7 @@ import {ERC20BurnableUpgradeable, ERC20Upgradeable} from "openzeppelin-contracts
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
 import {Address} from "openzeppelin-contracts/utils/Address.sol";
 import {IERC20} from "openzeppelin-contracts/interfaces/IERC20.sol";
+import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 
 import {IRarityPool} from "./IRarityPool.sol";
 import {IRareStakingRegistry} from "../registry/IRareStakingRegistry.sol";
@@ -207,7 +208,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
 
     // Return staked RARE
     uint256 amountDue = amountRareReturned - burnAmount;
-    rare.transfer(msg.sender, amountDue);
+    SafeERC20.safeTransfer(IERC20(address(rare)), msg.sender, amountDue);
 
     emit Unstake(msg.sender, amountRareReturned, amtStaked - amountRareReturned, burnAmount, _amount);
   }
@@ -236,9 +237,9 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     uint256 owedToStaker = rewards - owedToStakee - owedToClaimer;
 
     // Transfer rewards
-    rare.transfer(msg.sender, owedToClaimer);
-    rare.transfer(_user, owedToStaker);
-    rare.transfer(targetStakedTo, owedToStakee);
+    SafeERC20.safeTransfer(IERC20(address(rare)), msg.sender, owedToClaimer);
+    SafeERC20.safeTransfer(IERC20(address(rare)), _user, owedToStaker);
+    SafeERC20.safeTransfer(IERC20(address(rare)), targetStakedTo, owedToStakee);
 
     // Update total claim amounts
     sumOfAllClaimed += rewards;
@@ -297,11 +298,10 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   }
 
   /// @inheritdoc IRarityPool
-  function getHistoricalRewardsForUserForRounds(address _user, uint256[] memory _rounds)
-    external
-    view
-    returns (uint256)
-  {
+  function getHistoricalRewardsForUserForRounds(
+    address _user,
+    uint256[] memory _rounds
+  ) external view returns (uint256) {
     uint256 rewards = 0;
     uint256 currentRound = getCurrentRound();
     uint256 currentSnapshotId = _getCurrentSnapshotId();
@@ -336,7 +336,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   /// @dev Calculated based on a sqrt token bonding curve.
   function calculatePurchaseReturn(uint256 _totalSRare, uint256 _stakedAmount) public pure returns (uint256) {
     //
-    return (((_sqrt(2e28 * _stakedAmount + _totalSRare**2) - _totalSRare) * _sqrt(_stakedAmount)) / 1e13); // We multiply by a factor of 1e5 to floor out decimals for last 5 digits
+    return (((_sqrt(2e28 * _stakedAmount + _totalSRare ** 2) - _totalSRare) * _sqrt(_stakedAmount)) / 1e13); // We multiply by a factor of 1e5 to floor out decimals for last 5 digits
   }
 
   /// @inheritdoc IRarityPool
@@ -379,11 +379,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   //////////////////////////////////////////////////////////////////////////*/
 
   /// @dev Transfer function for moving synthetic tokens.
-  function _transfer(
-    address from,
-    address to,
-    uint256 amount
-  ) internal virtual override {
+  function _transfer(address from, address to, uint256 amount) internal virtual override {
     if (msg.sender != address(this)) revert IRarityPool.Unauthorized();
     super._transfer(from, to, amount);
   }
