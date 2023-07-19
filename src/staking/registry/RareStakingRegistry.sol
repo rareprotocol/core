@@ -83,17 +83,17 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
   // Mapping of user address to the percentage of rewards they want to give to the claimer.
   mapping(address => uint256) private claimerRewardByStaker;
 
+  // Mapping of total RARE staked by a user.
+  mapping(address => uint256) private amountStakedByUser;
+
+  // Mapping of total RARE staked by on a target.
+  mapping(address => uint256) private amountStakedOnTarget;
+
   // Mapping of user address to the percentage of rewards to go to target being staked on.
   mapping(address => uint256) private stakeeRewards;
 
   // Enumerable set of staking contracts.
   EnumerableSetUpgradeable.AddressSet private stakingContracts;
-
-  // Enumerable map of total RARE staked by a user.
-  EnumerableMapUpgradeable.AddressToUintMap private amountStakedByUser;
-
-  // Enumerable map of total RARE staked by on a target.
-  EnumerableMapUpgradeable.AddressToUintMap private amountStakedOnTarget;
 
   // ENS reverse registrar
   ReverseRegistrar private reverseRegistrar;
@@ -188,11 +188,8 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
     uint256 _amount
   ) external {
     if (!hasRole(STAKING_STAT_SETTER_ROLE, msg.sender)) revert Unauthorized();
-    (, uint256 amtStaked) = amountStakedByUser.tryGet(_staker);
-    amountStakedByUser.set(_staker, amtStaked + _amount);
-
-    (, uint256 amtStakedOn) = amountStakedOnTarget.tryGet(_stakedOn);
-    amountStakedOnTarget.set(_stakedOn, amtStakedOn + _amount);
+    amountStakedByUser[_staker] += _amount;
+    amountStakedOnTarget[_stakedOn] += _amount;
   }
 
   /// @inheritdoc IRareStakingRegistry
@@ -203,21 +200,8 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
     uint256 _amount
   ) external {
     if (!hasRole(STAKING_STAT_SETTER_ROLE, msg.sender)) revert Unauthorized();
-    (, uint256 amtStaked) = amountStakedByUser.tryGet(_staker);
-
-    if (amtStaked - _amount == 0) {
-      amountStakedByUser.remove(_staker);
-    } else {
-      amountStakedByUser.set(_staker, amtStaked - _amount);
-    }
-
-    (, uint256 amtStakedOn) = amountStakedOnTarget.tryGet(_stakedOn);
-
-    if (amtStakedOn - _amount == 0) {
-      amountStakedOnTarget.remove(_stakedOn);
-    } else {
-      amountStakedOnTarget.set(_stakedOn, amtStakedOn - _amount);
-    }
+    amountStakedByUser[_staker] -= _amount;
+    amountStakedOnTarget[_stakedOn] -= _amount;
   }
 
   /// @inheritdoc IRareStakingRegistry
@@ -381,12 +365,12 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
 
   /// @inheritdoc IRareStakingRegistry
   function getTotalAmountStakedByUser(address _user) external view returns (uint256 amount) {
-    (, amount) = amountStakedByUser.tryGet(_user);
+    return amountStakedByUser[_user];
   }
 
   /// @inheritdoc IRareStakingRegistry
   function getTotalAmountStakedOnUser(address _user) external view returns (uint256 amount) {
-    (, amount) = amountStakedOnTarget.tryGet(_user);
+    return amountStakedOnTarget[_user];
   }
 
   /// @inheritdoc IRareStakingRegistry
@@ -394,35 +378,6 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
     return stakingContracts.values();
   }
 
-  /// @inheritdoc IRareStakingRegistry
-  /// @dev This function is intended to be called off chain.
-  function getAllStakers() external view returns (address[] memory) {
-    uint256 length = amountStakedByUser.length();
-
-    address[] memory stakers = new address[](length);
-
-    for (uint256 i = 0; i < length; i++) {
-      (address staker, ) = amountStakedByUser.at(i);
-      stakers[i] = staker;
-    }
-
-    return stakers;
-  }
-
-  /// @inheritdoc IRareStakingRegistry
-  /// @dev This function is intended to be called off chain.
-  function getAllStakedOn() external view returns (address[] memory) {
-    uint256 length = amountStakedOnTarget.length();
-
-    address[] memory stakedOn = new address[](length);
-
-    for (uint256 i = 0; i < length; i++) {
-      (address staker, ) = amountStakedOnTarget.at(i);
-      stakedOn[i] = staker;
-    }
-
-    return stakedOn;
-  }
 
   /// @inheritdoc IRareStakingRegistry
   /// @dev Order maintained and zero address returned if it doesnt exist.
