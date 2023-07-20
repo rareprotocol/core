@@ -18,7 +18,7 @@ import {IRareStakingRegistry} from "../registry/IRareStakingRegistry.sol";
 /// @title RarityPool
 /// @notice The Staked ERC20 contract that allows users to stake/unstake/claim rewards/reward swaps.
 /// @dev It is one base user per contract. This is the implementation contract for a beacon proxy.
-contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
+contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard { 
   using EnumerableMapUpgradeable for EnumerableMapUpgradeable.AddressToUintMap;
   using EnumerableSetUpgradeable for EnumerableSetUpgradeable.UintSet;
 
@@ -27,17 +27,14 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   /*//////////////////////////////////////////////////////////////////////////
                           Private Contract Storage
   //////////////////////////////////////////////////////////////////////////*/
-  // Round # -> User -> HasClaimed
-  mapping(uint256 => mapping(address => bool)) private stakerClaimedRound;
-
   // Round # -> Reward Amount
   mapping(uint256 => uint256) private roundRewardAmount;
 
   // Amount staked per user
-  EnumerableMapUpgradeable.AddressToUintMap private amountStakedByUser;
-
-  // Enumerable set of rounds that can be claimed
-  EnumerableSetUpgradeable.UintSet private claimRounds;
+  mapping(address => uint256) private amountStakedByUser;
+  
+  // Last round claimed by user
+  mapping(address => uint256) private lastRoundClaimedByUser;
 
   // The address of the target being staked on
   address private targetStakedTo;
@@ -57,9 +54,6 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   // Sum of the total amount claimed
   uint256 private sumOfAllClaimed;
 
-  // Intial start for rounds
-  uint256 private periodStart;
-
   // Last snapshot timestamp
   uint256 private lastSnapshotTimestamp;
 
@@ -76,10 +70,8 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     targetStakedTo = _userStakedTo;
     rare = ERC20BurnableUpgradeable(_rare);
     stakingRegistry = IRareStakingRegistry(_stakingRegistry);
-    periodStart = block.timestamp;
     lastSnapshotTimestamp = 0;
     _mint(_creator, 1 ether);
-    amountStakedByUser.set(_creator, 0);
     _snapshot(); // we do this increment the counter so rounds and snapshot IDs are equal.
     takeSnapshot();
   }
@@ -132,10 +124,6 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     // Transfer the RARE in
     stakingRegistry.transferRareTo(_donor, address(this), _amount);
 
-    // If this function has been called, then the round has RARE to claim
-    if (!claimRounds.contains(roundToUpdate)) {
-      claimRounds.add(roundToUpdate);
-    }
     emit AddRewards(_donor, roundToUpdate, _amount, additionalRoundRewards, roundRewardAmount[roundToUpdate]);
   }
 
@@ -164,13 +152,14 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     stakingRegistry.transferRareTo(msg.sender, address(this), _amount);
 
     // Update amount staked by user on pool and on registry
-    (, uint256 amtStaked) = amountStakedByUser.tryGet(msg.sender);
-    amountStakedByUser.set(msg.sender, amtStaked + _amount);
+    // (, uint256 amtStaked) = amountStakedByUser.tryGet(msg.sender);
+    // amountStakedByUser.set(msg.sender, amtStaked + _amount);
+    amountStakedByUser[msg.sender] += _amount;
     stakingRegistry.increaseAmountStaked(msg.sender, targetStakedTo, _amount);
 
     // Mint new SRARE to staker
     _mint(msg.sender, amountSRare);
-    emit Stake(msg.sender, _amount, amtStaked + _amount, amountSRare);
+    emit Stake(msg.sender, _amount, amountStakedByUser[msg.sender], amountSRare);
   }
 
   /// @inheritdoc IRarityPool
@@ -187,16 +176,14 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     }
 
     // Calculate and check amount of staked RARE to return
-    (, uint256 amtStaked) = amountStakedByUser.tryGet(msg.sender);
+    uint256 amtStaked = amountStakedByUser[msg.sender];
     uint256 amountRareReturned = calculateSaleReturn(balanceOf(msg.sender), amtStaked, _amount);
     if (amountRareReturned > amtStaked) {
       revert InsufficientStakedRare();
     }
 
     // Clean up staked amount on pool and on registry
-    amtStaked - amountRareReturned == 0
-      ? amountStakedByUser.remove(msg.sender)
-      : amountStakedByUser.set(msg.sender, amtStaked - amountRareReturned);
+    amountStakedByUser[msg.sender] = amtStaked - amountRareReturned;
     stakingRegistry.decreaseAmountStaked(msg.sender, targetStakedTo, amountRareReturned);
 
     // Burn SRARE
@@ -210,27 +197,27 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     uint256 amountDue = amountRareReturned - burnAmount;
     SafeERC20.safeTransfer(IERC20(address(rare)), msg.sender, amountDue);
 
-    emit Unstake(msg.sender, amountRareReturned, amtStaked - amountRareReturned, burnAmount, _amount);
+    emit Unstake(msg.sender, amountRareReturned, amountStakedByUser[msg.sender], burnAmount, _amount);
   }
 
   /// @inheritdoc IRarityPool
   /// @dev Will snapshot a new round if possible.
-  function claimRewardsForRounds(address _user, uint256[] memory _rounds) external nonReentrant {
+  function claimRewards(address _user, uint8 _numRounds) external nonReentrant {
     takeSnapshot();
-    if (_rounds.length == 0) revert IRarityPool.ClaimingZeroRounds();
-    if (_rounds.length > 255) revert IRarityPool.ClaimingTooManyRounds();
+    if (_numRounds == 0) revert IRarityPool.ClaimingZeroRounds();
+
+    uint256 currentRound = getCurrentRound();
+    if (lastRoundClaimedByUser[_user] >= currentRound) revert IRarityPool.RewardAlreadyClaimed();
+
+    uint256 roundToClaimTo = currentRound - lastRoundClaimedByUser[_user] > _numRounds ? lastRoundClaimedByUser[_user] + _numRounds : currentRound;
 
     // Build total rewards for claim
     uint256 rewards = 0;
-    uint256 currentRound = getCurrentRound();
     uint256 currentSnapshotId = _getCurrentSnapshotId();
-    for (uint8 i = 0; i < _rounds.length; i++) {
-      if (_rounds[i] == currentRound) revert IRarityPool.CannotClaimCurrentRound();
-      if (stakerClaimedRound[_rounds[i]][_user]) revert IRarityPool.RewardAlreadyClaimed();
-      rewards += _getRewardsForUserForRound(_user, _rounds[i], currentRound, currentSnapshotId);
-      stakerClaimedRound[_rounds[i]][_user] = true;
+    for (uint256 i = lastRoundClaimedByUser[_user]+1 ; i <= roundToClaimTo; i++) {
+      rewards += _getRewardsForUserForRound(_user, i, currentRound, currentSnapshotId);
     }
-
+    lastRoundClaimedByUser[_user] = roundToClaimTo;
     // Build percentage breakdowns for all who have claim on the claims
     uint256 owedToStakee = (rewards * stakingRegistry.getStakeePercentage(targetStakedTo)) / 100_00;
     uint256 owedToClaimer = (rewards * stakingRegistry.getClaimerPercentage(_user)) / 100_00;
@@ -251,14 +238,8 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   //////////////////////////////////////////////////////////////////////////*/
 
   /// @inheritdoc IRarityPool
-  function stakerHasClaimedForRound(address _staker, uint256 _round) external view returns (bool) {
-    return stakerClaimedRound[_round][_staker];
-  }
-
-  /// @inheritdoc IRarityPool
   function getAmountStakedByUser(address _user) external view returns (uint256) {
-    (, uint256 amtStaked) = amountStakedByUser.tryGet(_user);
-    return amtStaked;
+    return amountStakedByUser[_user];
   }
 
   /// @inheritdoc IRarityPool
@@ -276,20 +257,6 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   /// @inheritdoc IRarityPool
   function getTargetBeingStakedOn() external view returns (address) {
     return targetStakedTo;
-  }
-
-  /// @inheritdoc IRarityPool
-  function getAllStakers() external view returns (address[] memory) {
-    uint256 length = amountStakedByUser.length();
-
-    address[] memory stakers = new address[](length);
-
-    for (uint256 i = 0; i < length; i++) {
-      (address staker, ) = amountStakedByUser.at(i);
-      stakers[i] = staker;
-    }
-
-    return stakers;
   }
 
   /// @inheritdoc IRarityPool
@@ -312,14 +279,25 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   }
 
   /// @inheritdoc IRarityPool
-  function getClaimableRewardsForUserForRounds(address _user, uint256[] memory _rounds) public view returns (uint256) {
+  function getClaimableRewardsForUser(address _user) public view returns (uint256) {
     uint256 rewards = 0;
     uint256 currentRound = getCurrentRound();
     uint256 currentSnapshotId = _getCurrentSnapshotId();
-    for (uint8 i = 0; i < _rounds.length; i++) {
-      if (_rounds[i] == currentRound) revert IRarityPool.CannotClaimCurrentRound();
-      if (stakerClaimedRound[_rounds[i]][_user]) revert IRarityPool.RewardAlreadyClaimed();
-      rewards += _getRewardsForUserForRound(_user, _rounds[i], currentRound, currentSnapshotId);
+    for (uint256 i = lastRoundClaimedByUser[_user]+1 ; i <= currentRound; i++) {
+      rewards += _getRewardsForUserForRound(_user, i, currentRound, currentSnapshotId);
+    }
+    return rewards;
+  }
+
+  /// @inheritdoc IRarityPool
+  function getClaimableRewardsForRounds(address _user, uint256 _numRounds) public view returns (uint256) {
+    uint256 rewards = 0;
+    uint256 currentRound = getCurrentRound();
+    uint256 currentSnapshotId = _getCurrentSnapshotId();
+    uint256 roundToClaimTo = currentRound - lastRoundClaimedByUser[_user] > _numRounds ? lastRoundClaimedByUser[_user] + _numRounds : currentRound;
+
+    for (uint256 i = lastRoundClaimedByUser[_user]+1 ; i <= roundToClaimTo; i++) {
+      rewards += _getRewardsForUserForRound(_user, i, currentRound, currentSnapshotId);
     }
     return rewards;
   }
@@ -352,16 +330,6 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   /// @inheritdoc IRarityPool
   function getAllTimeRewards() external view returns (uint256) {
     return sumOfAllRewards;
-  }
-
-  /// @inheritdoc IRarityPool
-  function getClaimRounds() external view returns (uint256[] memory) {
-    return claimRounds.values();
-  }
-
-  /// @inheritdoc IRarityPool
-  function getCreationTime() external view returns (uint256) {
-    return periodStart;
   }
 
   /// IRarityPool

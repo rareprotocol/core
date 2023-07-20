@@ -464,7 +464,7 @@ contract RareStakeTest is Test {
     }
   }
 
-  function test_claim_multiple_rounds() public {
+  function test_claim_multiple_roundtest_claim_multiple_roundss() public {
     uint256 depositedReward = 100 * 1e18;
 
     // Clear token owner's stake since is very little
@@ -485,34 +485,27 @@ contract RareStakeTest is Test {
     // Move forward 1 period
     forwardNPeriods(1);
     rareStake.takeSnapshot();
+    uint256 maxRounds = 100;
+    uint256[] memory rounds = new uint256[](maxRounds);
+    for (uint256 i=0; i<maxRounds; i++) {
+      vm.startPrank(tokenOwner);
+      rare.increaseAllowance(address(registry), 2 * depositedReward);
+      rareStake.addRewards(tokenOwner, depositedReward);
+      rareStake.addRewards(tokenOwner, depositedReward);
+      vm.stopPrank();
 
-    vm.startPrank(tokenOwner);
-    rare.increaseAllowance(address(registry), 2 * depositedReward);
-    rareStake.addRewards(tokenOwner, depositedReward);
-    rareStake.addRewards(tokenOwner, depositedReward);
-    vm.stopPrank();
+      // Move forward 1 period and takesnapshot so future rewards accumulate next round
+      forwardNPeriods(1);
+      rareStake.takeSnapshot();
+    }
 
-    // Move forward 1 period and takesnapshot so future rewards accumulate next round
-    forwardNPeriods(1);
-    rareStake.takeSnapshot();
-
-    // Add more rewards for found 3
-    vm.startPrank(tokenOwner);
-    rare.increaseAllowance(address(registry), 2 * depositedReward);
-    rareStake.addRewards(tokenOwner, depositedReward);
-    rareStake.addRewards(tokenOwner, depositedReward);
-    vm.stopPrank();
-
-    uint256[] memory rounds = new uint256[](2);
-    rounds[0] = 2;
-    rounds[1] = 3;
 
     // Move forward 1 to claim
     forwardNPeriods(1);
 
     uint256 balanceBefore = rare.balanceOf(bob);
-    uint256 rewardsBob = rareStake.getClaimableRewardsForUserForRounds(bob, rounds);
-    rareStake.claimRewardsForRounds(bob, rounds);
+    uint256 rewardsBob = rareStake.getClaimableRewardsForUser(bob);
+    rareStake.claimRewards(bob, 255);
     uint256 balanceAfter = rare.balanceOf(bob);
 
     if (balanceAfter - balanceBefore != rewardsBob) {
@@ -567,12 +560,12 @@ contract RareStakeTest is Test {
     registry.setStakeePercentage(1_00);
 
     uint256 balanceBefore = rare.balanceOf(tokenOwner);
-    uint256 rewardsBob = rareStake.getClaimableRewardsForUserForRounds(bob, rounds);
+    uint256 rewardsBob = rareStake.getClaimableRewardsForUser(bob);
     uint256 stakeeRewards = (1_00 * rewardsBob) / 100_00;
 
     // Claim for bob
     vm.prank(bob);
-    rareStake.claimRewardsForRounds(bob, rounds);
+    rareStake.claimRewards(bob, 150);
 
     uint256 balanceAfter = rare.balanceOf(tokenOwner);
 
@@ -628,12 +621,12 @@ contract RareStakeTest is Test {
     registry.setClaimerPercentage(1_00);
 
     uint256 balanceBefore = rare.balanceOf(alice);
-    uint256 rewardsBob = rareStake.getClaimableRewardsForUserForRounds(bob, rounds);
+    uint256 rewardsBob = rareStake.getClaimableRewardsForUser(bob);
     uint256 claimerRewards = (1_00 * rewardsBob) / 100_00;
 
     // Claim for bob
     vm.prank(alice);
-    rareStake.claimRewardsForRounds(bob, rounds);
+    rareStake.claimRewards(bob, 150);
 
     uint256 balanceAfter = rare.balanceOf(alice);
 
@@ -699,10 +692,10 @@ contract RareStakeTest is Test {
     // Move forward 1 to claim
     forwardNPeriods(1);
 
-    uint256 rewardsBob = rareStake.getClaimableRewardsForUserForRounds(bob, rounds);
-    rareStake.claimRewardsForRounds(bob, rounds);
+    uint256 rewardsBob = rareStake.getClaimableRewardsForUser(bob);
+    rareStake.claimRewards(bob, 150);
     vm.expectRevert();
-    rareStake.claimRewardsForRounds(bob, rounds);
+    rareStake.claimRewards(bob, 150);
   }
 
   function test_cannot_claim_current_round() public {
@@ -737,7 +730,7 @@ contract RareStakeTest is Test {
     rounds[0] = 2;
 
     vm.expectRevert();
-    rareStake.claimRewardsForRounds(bob, rounds);
+    rareStake.claimRewards(bob, 150);
   }
 
   function test_name_look_up_with_ens_name() public {
