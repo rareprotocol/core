@@ -486,7 +486,6 @@ contract RareStakeTest is Test {
     forwardNPeriods(1);
     rareStake.takeSnapshot();
     uint256 maxRounds = 100;
-    uint256[] memory rounds = new uint256[](maxRounds);
     for (uint256 i=0; i<maxRounds; i++) {
       vm.startPrank(tokenOwner);
       rare.increaseAllowance(address(registry), 2 * depositedReward);
@@ -549,9 +548,6 @@ contract RareStakeTest is Test {
     forwardNPeriods(1);
     rareStake.takeSnapshot();
 
-    uint256[] memory rounds = new uint256[](1);
-    rounds[0] = 2;
-
     // Move forward 1 to claim
     forwardNPeriods(1);
 
@@ -609,9 +605,6 @@ contract RareStakeTest is Test {
     // Move forward 1 period and takesnapshot so future rewards accumulate next round
     forwardNPeriods(1);
     rareStake.takeSnapshot();
-
-    uint256[] memory rounds = new uint256[](1);
-    rounds[0] = 2;
 
     // Move forward 1 to claim
     forwardNPeriods(1);
@@ -685,10 +678,6 @@ contract RareStakeTest is Test {
     rareStake.addRewards(tokenOwner, depositedReward);
     vm.stopPrank();
 
-    uint256[] memory rounds = new uint256[](2);
-    rounds[0] = 2;
-    rounds[1] = 3;
-
     // Move forward 1 to claim
     forwardNPeriods(1);
 
@@ -725,9 +714,6 @@ contract RareStakeTest is Test {
     rareStake.addRewards(tokenOwner, depositedReward);
     rareStake.addRewards(tokenOwner, depositedReward);
     vm.stopPrank();
-
-    uint256[] memory rounds = new uint256[](1);
-    rounds[0] = 2;
 
     vm.expectRevert();
     rareStake.claimRewards(bob, 150);
