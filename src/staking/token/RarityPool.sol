@@ -27,17 +27,14 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   /*//////////////////////////////////////////////////////////////////////////
                           Private Contract Storage
   //////////////////////////////////////////////////////////////////////////*/
-  // Round # -> User -> HasClaimed
-  mapping(uint256 => mapping(address => bool)) private stakerClaimedRound;
-
   // Round # -> Reward Amount
   mapping(uint256 => uint256) private roundRewardAmount;
 
+  // Last round claimed by user
+  mapping(address => uint256) private lastRoundClaimedByUser;
+
   // Amount staked per user
   EnumerableMapUpgradeable.AddressToUintMap private amountStakedByUser;
-
-  // Enumerable set of rounds that can be claimed
-  EnumerableSetUpgradeable.UintSet private claimRounds;
 
   // The address of the target being staked on
   address private targetStakedTo;
@@ -132,10 +129,6 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     // Transfer the RARE in
     stakingRegistry.transferRareTo(_donor, address(this), _amount);
 
-    // If this function has been called, then the round has RARE to claim
-    if (!claimRounds.contains(roundToUpdate)) {
-      claimRounds.add(roundToUpdate);
-    }
     emit AddRewards(_donor, roundToUpdate, _amount, additionalRoundRewards, roundRewardAmount[roundToUpdate]);
   }
 
@@ -157,6 +150,11 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   /// @dev Amount of synthetic token received is determined by a sqrt bonding curve.
   function stake(uint256 _amount) external nonReentrant {
     takeSnapshot();
+
+    // Set the last round claimed so the when the user claims they do not have to claim for prior rounds with no stake.
+    if (totalSupply() == 0) {
+      lastRoundClaimedByUser[msg.sender] = getCurrentRound() - 1;
+    }
     // Calculate SRARE to mint
     uint256 amountSRare = calculatePurchaseReturn(totalSupply(), _amount);
 
@@ -215,20 +213,30 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
 
   /// @inheritdoc IRarityPool
   /// @dev Will snapshot a new round if possible.
-  function claimRewardsForRounds(address _user, uint256[] memory _rounds) external nonReentrant {
+  function claimRewards(address _user, uint8 _numRounds) external nonReentrant {
     takeSnapshot();
-    if (_rounds.length == 0) revert IRarityPool.ClaimingZeroRounds();
-    if (_rounds.length > 255) revert IRarityPool.ClaimingTooManyRounds();
+    // Throw if claiming no rounds
+    if (_numRounds == 0) revert IRarityPool.ClaimingZeroRounds();
+
+    uint256 claimableRound = getCurrentRound() - 1;
+
+    // Throw if claiming current round or later. Implies that all available rounds have been claimed
+    if (lastRoundClaimedByUser[_user] >= claimableRound) revert IRarityPool.RewardAlreadyClaimed();
+
+    // Round to claim to is either the current claimable round or the last round claimed + the number of rounds to claim
+    uint256 roundToClaimTo = claimableRound - lastRoundClaimedByUser[_user] <= _numRounds
+      ? claimableRound
+      : lastRoundClaimedByUser[_user] + _numRounds;
 
     // Build total rewards for claim
     uint256 rewards = 0;
     uint256 currentSnapshotId = _getCurrentSnapshotId();
-    for (uint8 i = 0; i < _rounds.length; i++) {
-      if (_rounds[i] == getCurrentRound()) revert IRarityPool.CannotClaimCurrentRound();
-      if (stakerClaimedRound[_rounds[i]][_user]) revert IRarityPool.RewardAlreadyClaimed();
-      rewards += _getRewardsForUserForRound(_user, _rounds[i], currentSnapshotId);
-      stakerClaimedRound[_rounds[i]][_user] = true;
+    for (uint256 i = lastRoundClaimedByUser[_user] + 1; i <= roundToClaimTo; i++) {
+      rewards += _getRewardsForUserForRound(_user, i, currentSnapshotId);
     }
+
+    // Set the last round claimed by user to the round they are claiming to
+    lastRoundClaimedByUser[_user] = roundToClaimTo;
 
     // Build percentage breakdowns for all who have claim on the claims
     uint256 owedToStakee = (rewards * stakingRegistry.getStakeePercentage(targetStakedTo)) / 100_00;
@@ -248,11 +256,6 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   /*//////////////////////////////////////////////////////////////////////////
                           External/Public Read Functions
   //////////////////////////////////////////////////////////////////////////*/
-
-  /// @inheritdoc IRarityPool
-  function stakerHasClaimedForRound(address _staker, uint256 _round) external view returns (bool) {
-    return stakerClaimedRound[_round][_staker];
-  }
 
   /// @inheritdoc IRarityPool
   function getAmountStakedByUser(address _user) external view returns (uint256) {
@@ -310,13 +313,16 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   }
 
   /// @inheritdoc IRarityPool
-  function getClaimableRewardsForUserForRounds(address _user, uint256[] memory _rounds) public view returns (uint256) {
+  function getClaimableRewardsForUser(address _user, uint256 _numRounds) public view returns (uint256) {
     uint256 rewards = 0;
+    uint256 currentRound = getCurrentRound();
     uint256 currentSnapshotId = _getCurrentSnapshotId();
-    for (uint8 i = 0; i < _rounds.length; i++) {
-      if (_rounds[i] == getCurrentRound()) revert IRarityPool.CannotClaimCurrentRound();
-      if (stakerClaimedRound[_rounds[i]][_user]) revert IRarityPool.RewardAlreadyClaimed();
-      rewards += _getRewardsForUserForRound(_user, _rounds[i], currentSnapshotId);
+    uint256 roundToClaimTo = currentRound - lastRoundClaimedByUser[_user] > _numRounds
+      ? lastRoundClaimedByUser[_user] + _numRounds
+      : currentRound;
+
+    for (uint256 i = lastRoundClaimedByUser[_user] + 1; i <= roundToClaimTo; i++) {
+      rewards += _getRewardsForUserForRound(_user, i, currentSnapshotId);
     }
     return rewards;
   }
@@ -349,11 +355,6 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   /// @inheritdoc IRarityPool
   function getAllTimeRewards() external view returns (uint256) {
     return sumOfAllRewards;
-  }
-
-  /// @inheritdoc IRarityPool
-  function getClaimRounds() external view returns (uint256[] memory) {
-    return claimRounds.values();
   }
 
   /// @inheritdoc IRarityPool

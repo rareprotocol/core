@@ -102,19 +102,14 @@ interface IRarityPool is IERC20Upgradeable {
   /// @param _amount Amount of synthetic tokens to unstake.
   function unstake(uint256 _amount) external;
 
-  /// @notice Claim rewards due to the _user for the supplied rounds. Rewards are proportional to the synthetic tokens held during the snapshot associated with each round. Throws if user has already claimed for a given round. Throws if current round is being claimed.
+  /// @notice Claim rewards for the _user for the number of rounds supplied since last claim. Rewards are proportional to the synthetic tokens held during the snapshot associated with each round. Throws if user has already claimed the latest round. Throws if current round is being claimed.
   /// @param _user Address of user to claim on behalf of.
-  /// @param _rounds List of uint256 round Ids to claim a reward for.
-  function claimRewardsForRounds(address _user, uint256[] memory _rounds) external;
+  /// @param _numRounds uint256 number of rounds to claim since last claim.
+  function claimRewards(address _user, uint8 _numRounds) external;
 
   /*//////////////////////////////////////////////////////////////////////////
                           External Read Functions
   //////////////////////////////////////////////////////////////////////////*/
-
-  /// @notice Query if a user has claimed their reward for a given round.
-  /// @param _staker Address of user being checked.
-  /// @param _round The round being checked for.
-  function stakerHasClaimedForRound(address _staker, uint256 _round) external view returns (bool);
 
   /// @notice Query total amount of $RARE a user has staked on this contract.
   /// @param _user Address of staker.
@@ -154,11 +149,11 @@ interface IRarityPool is IERC20Upgradeable {
     view
     returns (uint256);
 
-  /// @notice Query rewards for the supplied user address for the round supplied rounds. Throws if any round has already been claimed.
+  /// @notice Query the available rewards for claim of the supplied user address for the number of rounds supplied. 
   /// @param _user Address of the user to get rewards.
-  /// @param _rounds List of uint256 round ids to look up the rewards.
+  /// @param _numRounds Address of the user to get rewards.
   /// @return uint256 Amount of $RARE tokens rewarded.
-  function getClaimableRewardsForUserForRounds(address _user, uint256[] memory _rounds) external view returns (uint256);
+  function getClaimableRewardsForUser(address _user, uint256 _numRounds) external view returns (uint256);
 
   /// @notice Calculates the number of sRare yielded from staking.
   /// @param _totalSRare Current supply of sRare.
@@ -180,10 +175,6 @@ interface IRarityPool is IERC20Upgradeable {
   /// @notice Total rewards snapshotted since con.
   /// @return uint256 Amount of $RARE tokens allocated as rewards.
   function getAllTimeRewards() external view returns (uint256);
-
-  /// @notice List of all rounds with claim associated with them.
-  /// @return uint256[] claim round ids.
-  function getClaimRounds() external view returns (uint256[] memory);
 
   /// @notice Get the unix creation time of the staking contract.
   /// @return uint256 unix creation time of the contract.
