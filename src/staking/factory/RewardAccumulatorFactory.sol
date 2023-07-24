@@ -59,9 +59,10 @@ contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeab
 
   /// @inheritdoc IRewardAccumulatorFactory
   /// @dev Requires the caller to be the owner of the contract.
-  function setRewardSwapTemplate(address _rewardTemplate) external onlyOwner {
-    require(_rewardTemplate != address(0), "setRewardSwapTemplate::_rewardTemplate cannot be zero address");
+  function setRewardAccumulatorTemplate(address _rewardTemplate) external onlyOwner {
+    require(_rewardTemplate != address(0), "setRewardAccumulatorTemplate::_rewardTemplate cannot be zero address");
     rewardTemplate = _rewardTemplate;
+    emit RewardAccumulatorTemplateUpdated(_rewardTemplate);
   }
 
   /*//////////////////////////////////////////////////////////////////////////

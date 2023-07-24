@@ -69,20 +69,22 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, OwnableUpg
   /// @inheritdoc IRarityPoolFactory
   /// @dev Requires the caller to be the owner of the contract.
   function setStakingRegistry(address _stakingRegistry) external onlyOwner {
-    require(_stakingRegistry != address(0), "setStakingRegistry::_stakingRegistry cannot be zero address");
-    require(
-      (rewardSwapFactory.getStakingRegistryAddress() == _stakingRegistry),
-      "setStakingRegistry::StakingRegistries must match"
-    );
-    stakingRegistry = IRareStakingRegistry(_stakingRegistry);
-  }
+        require(_stakingRegistry != address(0), "setStakingRegistry::_stakingRegistry cannot be zero address");
+        require(
+            (rewardSwapFactory.getStakingRegistryAddress() == _stakingRegistry),
+            "setStakingRegistry::StakingRegistries must match"
+        );
+        stakingRegistry = IRareStakingRegistry(_stakingRegistry);
+        emit StakingRegistryUpdated(_stakingRegistry);
+    }
 
   /// @inheritdoc IRarityPoolFactory
   /// @dev Requires the caller to be the owner of the contract.
   function setRareStakingTemplate(address _rareStakingTemplate) external onlyOwner {
-    require(_rareStakingTemplate != address(0), "setRareStakingTemplate::_rareStakingTemplate cannot be zero address");
-    rareStakingTemplate = _rareStakingTemplate;
-  }
+        require(_rareStakingTemplate != address(0), "setRareStakingTemplate::_rareStakingTemplate cannot be zero address");
+        rareStakingTemplate = _rareStakingTemplate;
+        emit RareStakingTemplateUpdated(_rareStakingTemplate);
+    }
 
   /*//////////////////////////////////////////////////////////////////////////
                           External Write Functions

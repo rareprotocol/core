@@ -12,6 +12,9 @@ interface IRewardAccumulatorFactory {
   /// @notice Emitted via {deployRewardSwap} when a new RewardAccumulator contract is deployed.
   event RewardSwapContractCreated(address indexed _stakingAddress);
 
+  /// @notice Emitted via {setRewardAccumulatorTemplate} when the RewardAccumulatorTemplate is upaded.
+  event RewardAccumulatorTemplateUpdated(address indexed rewardTemplate);
+
   /*//////////////////////////////////////////////////////////////////////////
                           External Write Functions
   //////////////////////////////////////////////////////////////////////////*/
@@ -27,7 +30,7 @@ interface IRewardAccumulatorFactory {
 
   /// @notice Set the RewardAccumulator template address to be used.
   /// @param _rewardTemplate Address of the RewardAccumulator template.
-  function setRewardSwapTemplate(address _rewardTemplate) external;
+  function setRewardAccumulatorTemplate(address _rewardTemplate) external;
 
   /*//////////////////////////////////////////////////////////////////////////
                           External Read Functions
