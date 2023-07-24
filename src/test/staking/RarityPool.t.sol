@@ -77,7 +77,6 @@ contract RareStakeTest is Test {
       defaultPayee
     );
     RewardAccumulatorFactory(address(rewardSwapFactoryProxy)).initialize(
-      address(registryProxy),
       address(rewardSwapTemp),
       tokenOwner
     );

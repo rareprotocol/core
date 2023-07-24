@@ -76,7 +76,6 @@ contract RewardSwapTest is Test {
       defaultPayee
     );
     RewardAccumulatorFactory(address(rewardSwapFactoryProxy)).initialize(
-      address(registryProxy),
       address(rewardSwapTemp),
       tokenOwner
     );
@@ -121,9 +120,15 @@ contract RewardSwapTest is Test {
       abi.encode(address(weth))
     );
 
+    vm.mockCall(
+      fakeStakingPool,
+      abi.encodeWithSelector(RarityPool.getStakingRegistry.selector),
+      abi.encode(address(registryProxy))
+    );
+
     RareStakingRegistry(address(registryProxy)).setSwapPool(srWethPool, address(rare));
     RareStakingRegistry(address(registryProxy)).setSwapPool(usdcEthPool, address(usdc));
-    RareStakingRegistry(address(registryProxy)).setSwapPool(generalErc20Pool, address(erc20Token)); // Reuse USDC pool for simplicity
+    RareStakingRegistry(address(registryProxy)).setSwapPool(generalErc20Pool, address(erc20Token));
 
     rewardSwap = RewardAccumulator(RewardAccumulatorFactory(address(rewardSwapFactoryProxy)).deployRewardSwap(fakeStakingPool));
 
@@ -132,6 +137,7 @@ contract RewardSwapTest is Test {
     vm.etch(srWethPool, address(factory).code);
     vm.etch(usdcEthPool, address(factory).code);
     vm.etch(generalErc20Pool, address(factory).code);
+    vm.etch(fakeStakingPool, address(factory).code);
 
     vm.stopPrank();
   }

@@ -76,7 +76,6 @@ interface IRarityPool is IERC20Upgradeable {
                               Initializer
   //////////////////////////////////////////////////////////////////////////*/
   function initialize(
-    address _rare,
     address _userStakedTo,
     address _stakingRegistry,
     address _creator
@@ -196,4 +195,8 @@ interface IRarityPool is IERC20Upgradeable {
   /// @notice Total amount of Rewards claimed.
   /// @return uint256 amount of rewards claimed.
   function getSumOfAllClaimed() external view returns (uint256);
+
+  /// @notice Return the staking registry of the pool
+  /// @return address of the staking registry.
+  function getStakingRegistry() external view returns (address); 
 }

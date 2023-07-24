@@ -25,17 +25,13 @@ contract RewardAccumulator is IRewardAccumulator, ReentrancyGuard, Initializable
   /*//////////////////////////////////////////////////////////////////////////
                           Private Contract Storage
   //////////////////////////////////////////////////////////////////////////*/
-  // Address of the staking registry
-  IRareStakingRegistry private stakingRegistry;
-
   // Address of the staking pool
   IRarityPool private stakingPool;
 
   /*//////////////////////////////////////////////////////////////////////////
                               Initializer
   //////////////////////////////////////////////////////////////////////////*/
-  function initialize(address _stakingRegistry, address _stakingPool) external initializer {
-    stakingRegistry = IRareStakingRegistry(_stakingRegistry);
+  function initialize(address _stakingPool) external initializer {
     stakingPool = IRarityPool(_stakingPool);
   }
 
@@ -48,7 +44,7 @@ contract RewardAccumulator is IRewardAccumulator, ReentrancyGuard, Initializable
     uint256 _minAmountOut,
     uint128 _rareIn
   ) external nonReentrant {
-    IERC20 rare = IERC20(stakingRegistry.getRareAddress());
+    IERC20 rare = IERC20(IRareStakingRegistry(stakingPool.getStakingRegistry()).getRareAddress());
 
     // Empty any excess $RARE to the staking pool
     if (rare.balanceOf(address(this)) > 0) {
@@ -96,13 +92,13 @@ contract RewardAccumulator is IRewardAccumulator, ReentrancyGuard, Initializable
   //////////////////////////////////////////////////////////////////////////*/
   /// @inheritdoc IRewardAccumulator
   function estimateRarePrice(address _tokenOut, uint128 _rareAmountIn) public view returns (uint256) {
+    IRareStakingRegistry stakingRegistry = IRareStakingRegistry(stakingPool.getStakingRegistry());
     address weth = stakingRegistry.getWethAddress();
     // Null address implies ETH
     address tokenOut = _tokenOut == address(0) ? weth : _tokenOut;
-    address poolOut = stakingRegistry.getSwapPool(tokenOut);
 
     // If poolOut is the null address and the token out isn't the WETH addres, it's unsupported
-    if (poolOut == address(0) && tokenOut != weth) {
+    if (stakingRegistry.getSwapPool(tokenOut) == address(0) && tokenOut != weth) {
       revert UnsupportedERC20Token();
     }
 
@@ -134,7 +130,7 @@ contract RewardAccumulator is IRewardAccumulator, ReentrancyGuard, Initializable
     }
 
     // If checking for Other_Token/RARE price, look up pool pair for Other_token/WETH
-    (int56[] memory otherTickCumulatives, ) = IUniswapV3Pool(poolOut).observe(secondsAgos);
+    (int56[] memory otherTickCumulatives, ) = IUniswapV3Pool(stakingRegistry.getSwapPool(tokenOut)).observe(secondsAgos);
     int56 otherTickCumulativesDelta = otherTickCumulatives[1] - otherTickCumulatives[0];
     int24 otherTick = int24(otherTickCumulativesDelta / int32(secondsAgo));
 
