@@ -14,6 +14,7 @@ import {Payments} from "rareprotocol/aux/payments/Payments.sol";
 import {ISpaceOperatorRegistry} from "rareprotocol/aux/registry/interfaces/ISpaceOperatorRegistry.sol";
 import {IApprovedTokenRegistry} from "rareprotocol/aux/registry/interfaces/IApprovedTokenRegistry.sol";
 import {IRoyaltyEngineV1} from "royalty-registry/IRoyaltyEngineV1.sol";
+import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
 import {MarketUtils} from "../../utils/MarketUtils.sol";
 import {MarketConfig} from "../../utils/structs/MarketConfig.sol";
@@ -21,8 +22,16 @@ import {IRareStakingRegistry} from "../../staking/registry/IRareStakingRegistry.
 import {RareCollectionMarket} from "../../collection/RareCollectionMarket.sol";
 import {IRareCollectionMarket} from "../../collection/IRareCollectionMarket.sol";
 
+contract TestCurrency is ERC20 {
+  constructor() ERC20("Currency", "CUR") {
+    _mint(msg.sender, 1_000_000_000 ether);
+  }
+}
+
+
 contract TestRareCollectionMarket is Test {
   RareCollectionMarket market;
+  TestCurrency currency;
 
   address deployer = address(0xabadabab);
   address alice = address(0xbeef);
@@ -39,16 +48,26 @@ contract TestRareCollectionMarket is Test {
 
   address originContract = address(0xaaaa);
   address zeroAddress = address(0);
-  address currencyAddress = address(0x9876);
   uint256 tokenId = 1;
   uint256 amount = 1 ether;
   uint8 marketplaceFeePercentage = 3;
 
+  address currencyAddress;
+
   function setUp() public {
+    // Deploy TestCurrency
+    currency = new TestCurrency();
+    currencyAddress = address(currency);
+
     deal(deployer, 100 ether);
     deal(alice, 100 ether);
     deal(bob, 100 ether);
     deal(charlie, 100 ether);
+
+    currency.transfer(alice, 1000000 ether);
+    currency.transfer(bob, 1000000 ether);
+    currency.transfer(charlie, 1000000 ether);
+
     vm.startPrank(deployer);
     market = new RareCollectionMarket();
     market.initialize(
@@ -70,7 +89,6 @@ contract TestRareCollectionMarket is Test {
     vm.etch(spaceOperatorRegistry, address(market).code);
     vm.etch(approvedTokenRegistry, address(market).code);
     vm.etch(originContract, address(market).code);
-    vm.etch(currencyAddress, address(market).code);
 
     vm.stopPrank();
   }
@@ -130,16 +148,10 @@ contract TestRareCollectionMarket is Test {
     // mock isApprovedToken
     vm.mockCall(
       approvedTokenRegistry,
-      abi.encodeWithSelector(IApprovedTokenRegistry.isApprovedToken.selector, address(0x9876)),
+      abi.encodeWithSelector(IApprovedTokenRegistry.isApprovedToken.selector, currencyAddress),
       abi.encode(true)
     );
 
-    // mock allowance
-    vm.mockCall(
-      currencyAddress,
-      abi.encodeWithSelector(IERC20.allowance.selector, alice, address(market)),
-      abi.encode(1)
-    );
     // Call the makeCollectionOffer function with an amount greater than the approved amount for the sender
     vm.startPrank(alice);
     vm.expectRevert(bytes("sender needs to approve marketplace for currency"));
@@ -156,25 +168,10 @@ contract TestRareCollectionMarket is Test {
       abi.encode(true)
     );
 
-    // mock IERC20.allowance
-    vm.mockCall(
-      currencyAddress,
-      abi.encodeWithSelector(IERC20.allowance.selector, alice, address(market)),
-      abi.encode(10 ether)
-    );
-
-    // mock IERC20.balanceOf
-    vm.mockCall(currencyAddress, abi.encodeWithSelector(IERC20.balanceOf.selector, alice), abi.encode(10 ether));
-
-    // mock IERC20.transferFrom
-    vm.mockCall(
-      currencyAddress,
-      abi.encodeWithSelector(IERC20.transferFrom.selector, alice, address(market), amount + ((amount * 3) / 100)),
-      abi.encode()
-    );
 
     // Make an initial collection offer
     vm.startPrank(alice);
+    currency.increaseAllowance(address(market), 100 ether);
     market.makeCollectionOffer{value: amount + ((amount * 3) / 100)}(originContract, zeroAddress, amount);
     vm.stopPrank();
 
@@ -214,37 +211,9 @@ contract TestRareCollectionMarket is Test {
       abi.encode(true)
     );
 
-    // mock IERC20.allowance
-    vm.mockCall(
-      currencyAddress,
-      abi.encodeWithSelector(IERC20.allowance.selector, alice, address(market)),
-      abi.encode(10 ether)
-    );
-
-    // mock IERC20.balanceOf
-    vm.mockCall(currencyAddress, abi.encodeWithSelector(IERC20.balanceOf.selector, alice), abi.encode(10 ether));
-
-    // mock IERC20.transferFrom initial
-    vm.mockCall(
-      currencyAddress,
-      abi.encodeWithSelector(IERC20.transferFrom.selector, alice, address(market), amount + ((amount * 3) / 100)),
-      abi.encode()
-    );
-
-    // mock IERC20.transferFrom second
-    vm.mockCall(
-      currencyAddress,
-      abi.encodeWithSelector(
-        IERC20.transferFrom.selector,
-        alice,
-        address(market),
-        (increasedAmount - amount) + (((increasedAmount - amount) * 3) / 100)
-      ),
-      abi.encode()
-    );
-
     // Make an initial collection offer
     vm.startPrank(alice);
+    currency.increaseAllowance(address(market), 100 ether);
     market.makeCollectionOffer(originContract, currencyAddress, amount);
     vm.stopPrank();
 
@@ -285,36 +254,10 @@ contract TestRareCollectionMarket is Test {
       abi.encode(true)
     );
 
-    // mock IERC20.allowance
-    vm.mockCall(
-      currencyAddress,
-      abi.encodeWithSelector(IERC20.allowance.selector, alice, address(market)),
-      abi.encode(10 ether)
-    );
-
-    // mock IERC20.balanceOf
-    vm.mockCall(currencyAddress, abi.encodeWithSelector(IERC20.balanceOf.selector, alice), abi.encode(10 ether));
-
-    // mock IERC20.transferFrom initial
-    vm.mockCall(
-      currencyAddress,
-      abi.encodeWithSelector(IERC20.transferFrom.selector, alice, address(market), amount + ((amount * 3) / 100)),
-      abi.encode()
-    );
-
-    // mock IERC20.transferFrom second
-    vm.mockCall(
-      currencyAddress,
-      abi.encodeWithSelector(
-        IERC20.transfer.selector,
-        alice,
-        (amount - decreasedAmount) + (((amount - decreasedAmount) * 3) / 100)
-      ),
-      abi.encode()
-    );
 
     // Make an initial collection offer
     vm.startPrank(alice);
+    currency.increaseAllowance(address(market), 100 ether);
     market.makeCollectionOffer(originContract, currencyAddress, amount);
     vm.stopPrank();
 
