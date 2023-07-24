@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import {AccessControlUpgradeable} from "openzeppelin-contracts-upgradeable/access/AccessControlUpgradeable.sol";
+import {AccessControlEnumerableUpgradeable, IAccessControlUpgradeable, AccessControlUpgradeable} from "openzeppelin-contracts-upgradeable/access/AccessControlEnumerableUpgradeable.sol";
 import {EnumerableMapUpgradeable} from "openzeppelin-contracts-upgradeable/utils/structs/EnumerableMapUpgradeable.sol";
 import {EnumerableSetUpgradeable} from "openzeppelin-contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
 import {SafeERC20Upgradeable} from "openzeppelin-contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
@@ -25,7 +25,7 @@ import {IRareStakingRegistry} from "./IRareStakingRegistry.sol";
 /// @title RareStakingRegistry
 /// @notice The Staking Registry contract that holds info such as the staking contract for a given user and global staking stats.
 /// @dev Made to be used with a UUPS Proxy.
-contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, UUPSUpgradeable {
+contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpgradeable, UUPSUpgradeable {
   // ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
   // ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣤⣶⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀
   // ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣾⠟⠋⠁⠀⠀⠀⠀⠀⠙⠻⣷⣄⠀⠀⠀⠀⠀⠀
@@ -152,7 +152,7 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
     weth = _weth;
     discountedPercent = _discountedPercent;
     defaultPayee = _defaultPayee;
-    __AccessControl_init();
+    __AccessControlEnumerable_init();
   }
 
   /*//////////////////////////////////////////////////////////////////////////
@@ -168,12 +168,16 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
                             Admin Write Functions
   //////////////////////////////////////////////////////////////////////////*/
 
+  function renounceRole(bytes32 role, address account) public virtual override(IAccessControlUpgradeable, AccessControlUpgradeable) {
+    if (role == DEFAULT_ADMIN_ROLE && getRoleMemberCount(role) == 1) {
+      revert RenouncingAdmin();
+    }
+
+    super.renounceRole(role, account);
+  }
+
   /// @dev Requires the caller to have the {STAKING_INFO_SETTER_ROLE} access control role.
-  function setStakingAddresses(
-    address _user,
-    address _stakingAddress,
-    address _rewardSwapAddress
-  ) external {
+  function setStakingAddresses(address _user, address _stakingAddress, address _rewardSwapAddress) external {
     if (!hasRole(STAKING_INFO_SETTER_ROLE, msg.sender)) revert Unauthorized();
     if (userToStakingInfo[_user].stakingAddress != address(0)) revert StakingContractAlreadyExists();
     userToStakingInfo[_user] = Info("", "", _stakingAddress, _rewardSwapAddress);
@@ -182,11 +186,7 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
 
   /// @inheritdoc IRareStakingRegistry
   /// @dev Requires the caller to have the {STAKING_STAT_SETTER_ROLE} access control role.
-  function increaseAmountStaked(
-    address _staker,
-    address _stakedOn,
-    uint256 _amount
-  ) external {
+  function increaseAmountStaked(address _staker, address _stakedOn, uint256 _amount) external {
     if (!hasRole(STAKING_STAT_SETTER_ROLE, msg.sender)) revert Unauthorized();
     (, uint256 amtStaked) = amountStakedByUser.tryGet(_staker);
     amountStakedByUser.set(_staker, amtStaked + _amount);
@@ -197,11 +197,7 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
 
   /// @inheritdoc IRareStakingRegistry
   /// @dev Requires the caller to have the {STAKING_STAT_SETTER_ROLE} access control role.
-  function decreaseAmountStaked(
-    address _staker,
-    address _stakedOn,
-    uint256 _amount
-  ) external {
+  function decreaseAmountStaked(address _staker, address _stakedOn, uint256 _amount) external {
     if (!hasRole(STAKING_STAT_SETTER_ROLE, msg.sender)) revert Unauthorized();
     (, uint256 amtStaked) = amountStakedByUser.tryGet(_staker);
 
@@ -310,11 +306,7 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
 
   /// @inheritdoc IRareStakingRegistry
   /// @dev Only staking pool contracts can call this.
-  function transferRareTo(
-    address _from,
-    address _to,
-    uint256 _amount
-  ) external {
+  function transferRareTo(address _from, address _to, uint256 _amount) external {
     if (IERC20Upgradeable(rare).allowance(_from, address(this)) < _amount) {
       revert InsufficientRareAllowance();
     }
@@ -483,11 +475,7 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
   /// @param _length The length of the sub string to be extracted from the base
   /// @param _offset The starting point to extract the sub string from
   /// @return string The extracted sub string
-  function _substring(
-    string memory _base,
-    int256 _length,
-    int256 _offset
-  ) internal pure returns (string memory) {
+  function _substring(string memory _base, int256 _length, int256 _offset) internal pure returns (string memory) {
     bytes memory _baseBytes = bytes(_base);
 
     assert(uint256(_offset + _length) <= _baseBytes.length);

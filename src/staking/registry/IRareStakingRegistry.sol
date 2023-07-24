@@ -74,6 +74,9 @@ interface IRareStakingRegistry {
   /// @notice Emitted when a Period Length is beyond the specified limit.
   error PeriodLengthBeyondLimit();
 
+  /// @notice Emitted when renouncing the admin role and no other account has the role.
+  error RenouncingAdmin();
+
   /*//////////////////////////////////////////////////////////////////////////
                           External Write Functions
   //////////////////////////////////////////////////////////////////////////*/
