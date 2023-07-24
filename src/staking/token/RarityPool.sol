@@ -39,9 +39,6 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   // The address of the target being staked on
   address private targetStakedTo;
 
-  // Address of the RARE contract
-  ERC20BurnableUpgradeable private rare;
-
   // Address of the staking registry
   IRareStakingRegistry private stakingRegistry;
 
@@ -64,14 +61,12 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
                               Initializer
   //////////////////////////////////////////////////////////////////////////*/
   function initialize(
-    address _rare,
     address _userStakedTo,
     address _stakingRegistry,
     address _creator
   ) public initializer {
     __ERC20Snapshot_init();
     targetStakedTo = _userStakedTo;
-    rare = ERC20BurnableUpgradeable(_rare);
     stakingRegistry = IRareStakingRegistry(_stakingRegistry);
     periodStart = block.timestamp;
     lastSnapshotTimestamp = 0;
@@ -81,14 +76,11 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     takeSnapshot();
   }
 
-  function getStakingRegistry() public view returns (address) {
-    return address(stakingRegistry);
-  }
-
   /*//////////////////////////////////////////////////////////////////////////
                           Public Write Functions
   //////////////////////////////////////////////////////////////////////////*/
 
+  /// @inheritdoc IRarityPool
   function addRewards(address _donor, uint256 _amount) public {
     if (_donor != msg.sender && msg.sender != stakingRegistry.getStakingInfoForUser(targetStakedTo).rewardAddress) {
       revert IRarityPool.Unauthorized();
@@ -118,7 +110,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     // Attribute rewards and any excess RARE stored in the contract
     // excess rare = Total RARE balance - RARE staked - unclaimed RARE aka (all rewards - claimed rewards)
     uint256 additionalRoundRewards = _amount +
-      (rare.balanceOf(address(this)) -
+      (ERC20BurnableUpgradeable(stakingRegistry.getRareAddress()).balanceOf(address(this)) -
         stakingRegistry.getTotalAmountStakedOnUser(targetStakedTo) -
         (sumOfAllRewards - sumOfAllClaimed));
 
@@ -200,13 +192,15 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     // Burn SRARE
     _burn(msg.sender, _amount);
 
+
     // Perform burn of RARE
+    ERC20BurnableUpgradeable rare = ERC20BurnableUpgradeable(stakingRegistry.getRareAddress());
     uint256 burnAmount = (amountRareReturned * stakingRegistry.getDeflationaryPercentage()) / 100_00;
     rare.burn(burnAmount);
 
     // Return staked RARE
     uint256 amountDue = amountRareReturned - burnAmount;
-    SafeERC20Upgradeable.safeTransfer(ERC20Upgradeable(rare), msg.sender, amountDue);
+    SafeERC20Upgradeable.safeTransfer(rare, msg.sender, amountDue);
 
     emit Unstake(msg.sender, amountRareReturned, amtStaked - amountRareReturned, burnAmount, _amount);
   }
@@ -244,9 +238,10 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     uint256 owedToStaker = rewards - owedToStakee - owedToClaimer;
 
     // Transfer rewards
-    SafeERC20Upgradeable.safeTransfer(ERC20Upgradeable(rare), msg.sender, owedToClaimer);
-    SafeERC20Upgradeable.safeTransfer(ERC20Upgradeable(rare), _user, owedToStaker);
-    SafeERC20Upgradeable.safeTransfer(ERC20Upgradeable(rare), targetStakedTo, owedToStakee);
+    ERC20BurnableUpgradeable rare = ERC20BurnableUpgradeable(stakingRegistry.getRareAddress());
+    SafeERC20Upgradeable.safeTransfer(rare, msg.sender, owedToClaimer);
+    SafeERC20Upgradeable.safeTransfer(rare, _user, owedToStaker);
+    SafeERC20Upgradeable.safeTransfer(rare, targetStakedTo, owedToStakee);
 
     // Update total claim amounts
     sumOfAllClaimed += rewards;
@@ -362,15 +357,21 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     return periodStart;
   }
 
-  /// IRarityPool
+  /// @inheritdoc IRarityPool
   function getLastSnapshotTimestamp() external view returns (uint256) {
     return lastSnapshotTimestamp;
   }
 
-  /// IRarityPool
+  /// @inheritdoc IRarityPool
   function getSumOfAllClaimed() external view returns (uint256) {
     return sumOfAllClaimed;
   }
+
+  /// @inheritdoc IRarityPool
+  function getStakingRegistry() public view returns (address) {
+    return address(stakingRegistry);
+  }
+
 
   /*//////////////////////////////////////////////////////////////////////////
                           Internal Write Functions

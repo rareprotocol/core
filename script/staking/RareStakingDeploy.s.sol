@@ -41,7 +41,6 @@ contract RareStakingDeploy is Script {
       vm.envAddress("DEFAULT_PAYEE")
     );
     RewardAccumulatorFactory(address(rewardSwapFactoryProxy)).initialize(
-      address(registryProxy),
       address(rewardSwapTemp),
       vm.addr(vm.envUint("PRIVATE_KEY"))
     );

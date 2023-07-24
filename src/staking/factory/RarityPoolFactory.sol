@@ -45,10 +45,6 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, OwnableUpg
     require(_rareStakingTemplate != address(0), "initialize::_rareStakingTemplate cannot be zero address");
     require(_rewardSwapFactory != address(0), "initialize::_rewardSwapFactory cannot be zero address");
     rewardSwapFactory = IRewardAccumulatorFactory(_rewardSwapFactory);
-    require(
-      (rewardSwapFactory.getStakingRegistryAddress() == _stakingRegistry),
-      "initialize::StakingRegistries must match"
-    );
     rareStakingTemplate = _rareStakingTemplate;
     stakingRegistry = IRareStakingRegistry(_stakingRegistry);
     __Ownable_init();
@@ -70,10 +66,6 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, OwnableUpg
   /// @dev Requires the caller to be the owner of the contract.
   function setStakingRegistry(address _stakingRegistry) external onlyOwner {
     require(_stakingRegistry != address(0), "setStakingRegistry::_stakingRegistry cannot be zero address");
-    require(
-      (rewardSwapFactory.getStakingRegistryAddress() == _stakingRegistry),
-      "setStakingRegistry::StakingRegistries must match"
-    );
     stakingRegistry = IRareStakingRegistry(_stakingRegistry);
   }
 
@@ -96,7 +88,6 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, OwnableUpg
       address(this),
       abi.encodeWithSelector(
         IRarityPool.initialize.selector,
-        stakingRegistry.getRareAddress(),
         _user,
         address(stakingRegistry),
         msg.sender
