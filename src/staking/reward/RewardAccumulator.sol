@@ -2,6 +2,7 @@
 pragma solidity 0.8.15;
 
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
+import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 import {IERC20} from "openzeppelin-contracts/interfaces/IERC20.sol";
 import {Address} from "openzeppelin-contracts/utils/Address.sol";
 import {SafeCast} from "openzeppelin-contracts/utils/math/SafeCast.sol";
@@ -51,7 +52,7 @@ contract RewardAccumulator is IRewardAccumulator, ReentrancyGuard, Initializable
 
     // Empty any excess $RARE to the staking pool
     if (rare.balanceOf(address(this)) > 0) {
-      rare.transfer(address(stakingPool), rare.balanceOf(address(this)));
+      SafeERC20.safeTransfer(IERC20(rare),address(stakingPool), rare.balanceOf(address(this)));
     }
     // If ETH, check balance
     if (_tokenOut == address(0) && address(this).balance < _minAmountOut) {
@@ -84,7 +85,7 @@ contract RewardAccumulator is IRewardAccumulator, ReentrancyGuard, Initializable
       Address.sendValue(payable(msg.sender), amountOut);
     } else {
       // Send the swap amount as ERC20
-      IERC20(_tokenOut).transfer(msg.sender, amountOut);
+      SafeERC20.safeTransfer(IERC20(_tokenOut), msg.sender, amountOut);
     }
 
     emit RewardAccumulator(msg.sender, _tokenOut, amountOut, _rareIn);
