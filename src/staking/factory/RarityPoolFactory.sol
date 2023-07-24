@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {Ownable2StepUpgradeable} from "openzeppelin-contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
 import {IAccessControlUpgradeable} from "openzeppelin-contracts-upgradeable/access/IAccessControlUpgradeable.sol";
 import {UUPSUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import {IBeaconUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol";
@@ -17,7 +17,7 @@ import {IRarityPool} from "../token/IRarityPool.sol";
 /// @title RarityPoolFactory
 /// @notice The Staking Factory Contract used to deploy new staking ERC20 contracts pertaining to a user.
 /// @dev Made to be used with a UUPS Proxy.
-contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
+contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, Ownable2StepUpgradeable, UUPSUpgradeable {
   /*//////////////////////////////////////////////////////////////////////////
                           Private Contract Storage
   //////////////////////////////////////////////////////////////////////////*/

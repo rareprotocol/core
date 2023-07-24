@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.15;
 
-import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {Ownable2StepUpgradeable} from "openzeppelin-contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
 import {UUPSUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import {IBeaconUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol";
 import {BeaconProxy} from "openzeppelin-contracts/proxy/beacon/BeaconProxy.sol";
@@ -13,7 +13,7 @@ import {RewardAccumulator} from "../reward/RewardAccumulator.sol";
 /// @author charlescrain
 /// @title RewardAccumulatorFactory
 /// @notice The RewardAccumulator Factory that creates RewardAccumulator contracts.
-contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
+contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeable, Ownable2StepUpgradeable, UUPSUpgradeable {
   /*//////////////////////////////////////////////////////////////////////////
                           Private Contract Storage
   //////////////////////////////////////////////////////////////////////////*/
