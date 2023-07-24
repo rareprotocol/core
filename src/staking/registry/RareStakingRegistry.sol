@@ -120,6 +120,13 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
   address private defaultPayee;
 
   /*//////////////////////////////////////////////////////////////////////////
+                              Constructor
+  //////////////////////////////////////////////////////////////////////////*/
+  constructor() {
+    _disableInitializers();
+  }
+
+  /*//////////////////////////////////////////////////////////////////////////
                               Initializer
   //////////////////////////////////////////////////////////////////////////*/
   function initialize(
@@ -169,11 +176,7 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
   //////////////////////////////////////////////////////////////////////////*/
 
   /// @dev Requires the caller to have the {STAKING_INFO_SETTER_ROLE} access control role.
-  function setStakingAddresses(
-    address _user,
-    address _stakingAddress,
-    address _rewardSwapAddress
-  ) external {
+  function setStakingAddresses(address _user, address _stakingAddress, address _rewardSwapAddress) external {
     if (!hasRole(STAKING_INFO_SETTER_ROLE, msg.sender)) revert Unauthorized();
     if (userToStakingInfo[_user].stakingAddress != address(0)) revert StakingContractAlreadyExists();
     userToStakingInfo[_user] = Info("", "", _stakingAddress, _rewardSwapAddress);
@@ -182,11 +185,7 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
 
   /// @inheritdoc IRareStakingRegistry
   /// @dev Requires the caller to have the {STAKING_STAT_SETTER_ROLE} access control role.
-  function increaseAmountStaked(
-    address _staker,
-    address _stakedOn,
-    uint256 _amount
-  ) external {
+  function increaseAmountStaked(address _staker, address _stakedOn, uint256 _amount) external {
     if (!hasRole(STAKING_STAT_SETTER_ROLE, msg.sender)) revert Unauthorized();
     (, uint256 amtStaked) = amountStakedByUser.tryGet(_staker);
     amountStakedByUser.set(_staker, amtStaked + _amount);
@@ -197,11 +196,7 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
 
   /// @inheritdoc IRareStakingRegistry
   /// @dev Requires the caller to have the {STAKING_STAT_SETTER_ROLE} access control role.
-  function decreaseAmountStaked(
-    address _staker,
-    address _stakedOn,
-    uint256 _amount
-  ) external {
+  function decreaseAmountStaked(address _staker, address _stakedOn, uint256 _amount) external {
     if (!hasRole(STAKING_STAT_SETTER_ROLE, msg.sender)) revert Unauthorized();
     (, uint256 amtStaked) = amountStakedByUser.tryGet(_staker);
 
@@ -304,11 +299,7 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
 
   /// @inheritdoc IRareStakingRegistry
   /// @dev Only staking pool contracts can call this.
-  function transferRareTo(
-    address _from,
-    address _to,
-    uint256 _amount
-  ) external {
+  function transferRareTo(address _from, address _to, uint256 _amount) external {
     if (IERC20Upgradeable(rare).allowance(_from, address(this)) < _amount) {
       revert InsufficientRareAllowance();
     }
@@ -477,11 +468,7 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
   /// @param _length The length of the sub string to be extracted from the base
   /// @param _offset The starting point to extract the sub string from
   /// @return string The extracted sub string
-  function _substring(
-    string memory _base,
-    int256 _length,
-    int256 _offset
-  ) internal pure returns (string memory) {
+  function _substring(string memory _base, int256 _length, int256 _offset) internal pure returns (string memory) {
     bytes memory _baseBytes = bytes(_base);
 
     assert(uint256(_offset + _length) <= _baseBytes.length);
