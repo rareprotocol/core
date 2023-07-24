@@ -44,6 +44,7 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, Ownable2St
     require(_stakingRegistry != address(0), "initialize::_stakingRegistry cannot be zero address");
     require(_rareStakingTemplate != address(0), "initialize::_rareStakingTemplate cannot be zero address");
     require(_rewardSwapFactory != address(0), "initialize::_rewardSwapFactory cannot be zero address");
+    require(_newOwner != address(0), "initialize::_newOwner cannot be zero address");
     rewardSwapFactory = IRewardAccumulatorFactory(_rewardSwapFactory);
     rareStakingTemplate = _rareStakingTemplate;
     stakingRegistry = IRareStakingRegistry(_stakingRegistry);
@@ -56,7 +57,9 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, Ownable2St
   //////////////////////////////////////////////////////////////////////////*/
 
   /// @inheritdoc UUPSUpgradeable
-  function _authorizeUpgrade(address) internal override onlyOwner {}
+  function _authorizeUpgrade(address _implementation) internal override onlyOwner {
+    require(_implementation != address(0), "_authorizeUpgrade::_implementation cannot be zero address");
+  }
 
   /*//////////////////////////////////////////////////////////////////////////
                           Admin Write Functions

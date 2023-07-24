@@ -15,6 +15,9 @@ interface IRewardAccumulator {
                             Custom Errors
   //////////////////////////////////////////////////////////////////////////*/
 
+  /// @notice Error emitted when a parameter is too low.
+  error ParameterValueTooLow();
+
   /// @notice Error emitted when user doesnt meet the criteria for call.
   error Unauthorized();
 

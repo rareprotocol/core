@@ -44,6 +44,9 @@ contract RewardAccumulator is IRewardAccumulator, ReentrancyGuard, Initializable
     uint256 _minAmountOut,
     uint128 _rareIn
   ) external nonReentrant {
+    if (_minAmountOut == 0) revert ParameterValueTooLow( );
+    if (_rareIn == 0) revert ParameterValueTooLow( );
+
     IERC20 rare = IERC20(IRareStakingRegistry(stakingPool.getStakingRegistry()).getRareAddress());
 
     // Empty any excess $RARE to the staking pool
