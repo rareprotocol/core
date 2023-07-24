@@ -65,6 +65,9 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     address _stakingRegistry,
     address _creator
   ) public initializer {
+    require(_userStakedTo != address(0), "User staked address cannot be zero");
+    require(_stakingRegistry != address(0), "Staking registry address cannot be zero");
+    require(_creator != address(0), "Creator address cannot be zero");
     __ERC20Snapshot_init();
     targetStakedTo = _userStakedTo;
     stakingRegistry = IRareStakingRegistry(_stakingRegistry);

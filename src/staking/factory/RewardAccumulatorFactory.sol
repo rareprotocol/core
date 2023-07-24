@@ -29,6 +29,7 @@ contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeab
     address _newOwner
   ) external initializer {
     require(_rewardTemplate != address(0), "initialize::_rewardTemplate cannot be zero address");
+    require(_newOwner != address(0), "initialize::_newOwner cannot be zero address");
     rewardTemplate = _rewardTemplate;
     __Ownable_init();
     _transferOwnership(_newOwner);
@@ -39,7 +40,9 @@ contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeab
   //////////////////////////////////////////////////////////////////////////*/
 
   /// @inheritdoc UUPSUpgradeable
-  function _authorizeUpgrade(address) internal override onlyOwner {}
+  function _authorizeUpgrade(address _implementation) internal override onlyOwner {
+    require(_implementation != address(0), "_authorizeUpgrade::_implementation cannot be zero address");
+  }
 
   /*//////////////////////////////////////////////////////////////////////////
                           Admin Write Functions

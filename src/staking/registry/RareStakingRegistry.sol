@@ -154,8 +154,9 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
   //////////////////////////////////////////////////////////////////////////*/
 
   /// @inheritdoc UUPSUpgradeable
-  function _authorizeUpgrade(address) internal view override {
+  function _authorizeUpgrade(address _implementation) internal view override {
     if (!hasRole(DEFAULT_ADMIN_ROLE, msg.sender)) revert Unauthorized();
+    if (_implementation == address(0)) revert ZeroAddressUnsupported();
   }
 
   /*//////////////////////////////////////////////////////////////////////////
@@ -173,6 +174,9 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
   /// @dev Requires the caller to have the {STAKING_INFO_SETTER_ROLE} access control role.
   function setStakingAddresses(address _user, address _stakingAddress, address _rewardSwapAddress) external {
     if (!hasRole(STAKING_INFO_SETTER_ROLE, msg.sender)) revert Unauthorized();
+    if (_user == address(0)) revert ZeroAddressUnsupported();
+    if (_stakingAddress == address(0)) revert ZeroAddressUnsupported();
+    if (_rewardSwapAddress == address(0)) revert ZeroAddressUnsupported();
     if (userToStakingInfo[_user].stakingAddress != address(0)) revert StakingContractAlreadyExists();
     userToStakingInfo[_user] = Info("", "", _stakingAddress, _rewardSwapAddress);
     stakingContracts.add(_stakingAddress);

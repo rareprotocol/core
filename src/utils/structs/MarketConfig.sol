@@ -32,6 +32,14 @@ library MarketConfig {
     address _stakingSettings,
     address _stakingRegistry
   ) public pure returns (Config memory) {
+    require(_networkBeneficiary != address(0), "generateMarketConfig::Network beneficiary address cannot be zero");
+    require(_marketplaceSettings != address(0), "generateMarketConfig::Marketplace settings address cannot be zero");
+    require(_spaceOperatorRegistry != address(0), "generateMarketConfig::Space operator registry address cannot be zero");
+    require(_royaltyEngine != address(0), "generateMarketConfig::Royalty engine address cannot be zero");
+    require(_payments != address(0), "generateMarketConfig::Payments address cannot be zero");
+    require(_approvedTokenRegistry != address(0), "generateMarketConfig::Approved token registry address cannot be zero");
+    require(_stakingSettings != address(0), "generateMarketConfig::Staking settings address cannot be zero");
+    require(_stakingRegistry != address(0), "generateMarketConfig::Staking registry address cannot be zero");
     return
       MarketConfig.Config(
         _networkBeneficiary,
