@@ -277,7 +277,13 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlUpgradeable, 
   /// @inheritdoc IRareStakingRegistry
   /// @dev Requires the caller to have the {SWAP_POOL_SETTER_ROLE} of the contract.
   function setSwapPool(address _uniswapPool, address _token) external {
-    if (IUniswapV3Pool(_uniswapPool).token0() != _token || IUniswapV3Pool(_uniswapPool).token1() != weth) {
+    // _token must be part of the pool
+    if (IUniswapV3Pool(_uniswapPool).token0() != _token && IUniswapV3Pool(_uniswapPool).token1() != _token) {
+      revert InvalidPool();
+    }
+
+    // weth must be part of the pool
+    if (IUniswapV3Pool(_uniswapPool).token0() != weth && IUniswapV3Pool(_uniswapPool).token1() != weth) {
       revert InvalidPool();
     }
     if (!hasRole(SWAP_POOL_SETTER_ROLE, msg.sender)) {
