@@ -80,12 +80,6 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
   // Mapping of ERC20 token address to the ETH/ERC20 Uniswap pool.
   mapping(address => address) private swapPools;
 
-  // Mapping of user address to the percentage of rewards they want to give to the claimer.
-  mapping(address => uint256) private claimerRewardByStaker;
-
-  // Mapping of user address to the percentage of rewards to go to target being staked on.
-  mapping(address => uint256) private stakeeRewards;
-
   // Enumerable set of staking contracts.
   EnumerableSetUpgradeable.AddressSet private stakingContracts;
 
@@ -290,21 +284,6 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
   }
 
   /// @inheritdoc IRareStakingRegistry
-  function setStakeePercentage(uint256 _stakeePercentage) external {
-    if (_stakeePercentage > 50_00) revert PercentageBeyondLimit();
-    stakeeRewards[msg.sender] = _stakeePercentage;
-    emit StakeePercentageUpdated(msg.sender, _stakeePercentage);
-  }
-
-  /// @inheritdoc IRareStakingRegistry
-  /// @dev Requires the caller to have the {SET_CLAIMER_PERCENTAGE_ROLE} of the contract.
-  function setClaimerPercentage(uint256 _claimerPercentage) external {
-    if (_claimerPercentage > 50_00) revert PercentageBeyondLimit();
-    claimerRewardByStaker[msg.sender] = _claimerPercentage;
-    emit ClaimerPercentageUpdated(msg.sender, _claimerPercentage);
-  }
-
-  /// @inheritdoc IRareStakingRegistry
   /// @dev Only staking pool contracts can call this.
   function transferRareTo(address _from, address _to, uint256 _amount) external {
     if (IERC20Upgradeable(rare).allowance(_from, address(this)) < _amount) {
@@ -373,11 +352,6 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
   }
 
   /// @inheritdoc IRareStakingRegistry
-  function getStakeePercentage(address _user) external view returns (uint256 amount) {
-    return stakeeRewards[_user];
-  }
-
-  /// @inheritdoc IRareStakingRegistry
   function getTotalAmountStakedByUser(address _user) external view returns (uint256 amount) {
     (, amount) = amountStakedByUser.tryGet(_user);
   }
@@ -437,11 +411,6 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
     }
 
     return users;
-  }
-
-  /// @inheritdoc IRareStakingRegistry
-  function getClaimerPercentage(address _user) external view returns (uint256) {
-    return claimerRewardByStaker[_user];
   }
 
   /*//////////////////////////////////////////////////////////////////////////
