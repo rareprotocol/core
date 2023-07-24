@@ -32,6 +32,7 @@ contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeab
     require(_newOwner != address(0), "initialize::_newOwner cannot be zero address");
     rewardTemplate = _rewardTemplate;
     __Ownable_init();
+    __UUPSUpgradeable_init();
     _transferOwnership(_newOwner);
   }
 
