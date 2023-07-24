@@ -93,7 +93,7 @@ interface IRarityPool is IERC20Upgradeable {
 
   /// @notice Stake $RARE tokens to the target associated with the contract and receive synthetic tokens in return.
   /// @param _amount Amount of $RARE being staked.
-  function stake(uint256 _amount) external;
+  function stake(uint120 _amount) external;
 
   /// @notice Unstake by returning synthetic tokens and receiving previously staked $RARE in return.
   /// @param _amount Amount of synthetic tokens to unstake.
@@ -156,7 +156,7 @@ interface IRarityPool is IERC20Upgradeable {
   /// @param _totalSRare Current supply of sRare.
   /// @param _stakedAmount Amount of RARE being staked.
   /// @return uint256 Amount of synthetic tokens one would get for staking {_stakedAmount} given a totalSupply of {_totalSRare}.
-  function calculatePurchaseReturn(uint256 _totalSRare, uint256 _stakedAmount) external pure returns (uint256);
+  function calculatePurchaseReturn(uint120 _totalSRare, uint120 _stakedAmount) external pure returns (uint256);
 
   /// @notice Calculates the number of rare yielded from unstaking.
   /// @param _totalSRareByUser Current balance of sRARE held by the given user.

@@ -8,6 +8,7 @@ import {ERC20SnapshotUpgradeable} from "openzeppelin-contracts-upgradeable/token
 import {ERC20BurnableUpgradeable, ERC20Upgradeable} from "openzeppelin-contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
 import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
 import {Address} from "openzeppelin-contracts/utils/Address.sol";
+import {SafeCast} from "openzeppelin-contracts/utils/math/SafeCast.sol";
 import {IERC20} from "openzeppelin-contracts/interfaces/IERC20.sol";
 import {SafeERC20Upgradeable} from "openzeppelin-contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 
@@ -23,6 +24,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   using EnumerableSetUpgradeable for EnumerableSetUpgradeable.UintSet;
 
   using Address for address payable;
+  using SafeCast for uint256;
 
   /*//////////////////////////////////////////////////////////////////////////
                           Private Contract Storage
@@ -143,7 +145,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
   /// @dev Caller must have given this contract allowance for their $RARE tokens.
   /// @dev On each call will check to see if the period needs to be updated.
   /// @dev Amount of synthetic token received is determined by a sqrt bonding curve.
-  function stake(uint256 _amount) external nonReentrant {
+  function stake(uint120 _amount) external nonReentrant {
     takeSnapshot();
 
     // Set the last round claimed so the when the user claims they do not have to claim for prior rounds with no stake.
@@ -151,7 +153,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
       lastRoundClaimedByUser[msg.sender] = getCurrentRound() - 1;
     }
     // Calculate SRARE to mint
-    uint256 amountSRare = calculatePurchaseReturn(totalSupply(), _amount);
+    uint256 amountSRare = calculatePurchaseReturn(totalSupply().toUint120(), _amount);
 
     // Move staked amount into pool
     stakingRegistry.transferRareTo(msg.sender, address(this), _amount);
@@ -327,9 +329,10 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
 
   /// @inheritdoc IRarityPool
   /// @dev Calculated based on a sqrt token bonding curve.
-  function calculatePurchaseReturn(uint256 _totalSRare, uint256 _stakedAmount) public pure returns (uint256) {
-    //
-    return (((_sqrt(2e28 * _stakedAmount + _totalSRare ** 2) - _totalSRare) * _sqrt(_stakedAmount)) / 1e13); // We multiply by a factor of 1e5 to floor out decimals for last 5 digits
+  function calculatePurchaseReturn(uint120 _totalSRare, uint120 _stakedAmount) public pure returns (uint256) {
+    uint256 totalSRare = uint256(_totalSRare);
+    uint256 stakedAmount = uint256(_stakedAmount);
+    return (((_sqrt(2e28 * stakedAmount + totalSRare ** 2) - totalSRare) * _sqrt(stakedAmount)) / 1e13); 
   }
 
   /// @inheritdoc IRarityPool
