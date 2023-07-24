@@ -14,9 +14,7 @@ interface IRarityPool is IERC20Upgradeable {
   event RewardClaimed(
     address indexed _msgSender,
     address indexed _claimer,
-    uint256 _amountToStaker,
-    uint256 _amountToClaimer,
-    uint256 _amountToStakee
+    uint256 _amountToStaker
   );
 
   event Stake(

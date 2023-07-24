@@ -232,20 +232,12 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
     // Set the last round claimed by user to the round they are claiming to
     lastRoundClaimedByUser[_user] = roundToClaimTo;
 
-    // Build percentage breakdowns for all who have claim on the claims
-    uint256 owedToStakee = (rewards * stakingRegistry.getStakeePercentage(targetStakedTo)) / 100_00;
-    uint256 owedToClaimer = (rewards * stakingRegistry.getClaimerPercentage(_user)) / 100_00;
-    uint256 owedToStaker = rewards - owedToStakee - owedToClaimer;
-
     // Transfer rewards
-    ERC20BurnableUpgradeable rare = ERC20BurnableUpgradeable(stakingRegistry.getRareAddress());
-    SafeERC20Upgradeable.safeTransfer(rare, msg.sender, owedToClaimer);
-    SafeERC20Upgradeable.safeTransfer(rare, _user, owedToStaker);
-    SafeERC20Upgradeable.safeTransfer(rare, targetStakedTo, owedToStakee);
+    SafeERC20Upgradeable.safeTransfer( ERC20BurnableUpgradeable(stakingRegistry.getRareAddress()), _user, rewards);
 
     // Update total claim amounts
     sumOfAllClaimed += rewards;
-    emit RewardClaimed(msg.sender, _user, owedToStaker, owedToClaimer, owedToStakee);
+    emit RewardClaimed(msg.sender, _user, rewards);
   }
 
   /*//////////////////////////////////////////////////////////////////////////
