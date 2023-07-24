@@ -49,6 +49,7 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, Ownable2St
     rareStakingTemplate = _rareStakingTemplate;
     stakingRegistry = IRareStakingRegistry(_stakingRegistry);
     __Ownable_init();
+    __UUPSUpgradeable_init();
     _transferOwnership(_newOwner);
   }
 

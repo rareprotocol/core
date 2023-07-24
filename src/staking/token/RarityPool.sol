@@ -6,7 +6,7 @@ import {EnumerableMapUpgradeable} from "openzeppelin-contracts-upgradeable/utils
 import {EnumerableSetUpgradeable} from "openzeppelin-contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
 import {ERC20SnapshotUpgradeable} from "openzeppelin-contracts-upgradeable/token/ERC20/extensions/ERC20SnapshotUpgradeable.sol";
 import {ERC20BurnableUpgradeable, ERC20Upgradeable} from "openzeppelin-contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
-import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
+import {ReentrancyGuardUpgradeable} from "openzeppelin-contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import {Address} from "openzeppelin-contracts/utils/Address.sol";
 import {SafeCast} from "openzeppelin-contracts/utils/math/SafeCast.sol";
 import {IERC20} from "openzeppelin-contracts/interfaces/IERC20.sol";
@@ -19,7 +19,7 @@ import {IRareStakingRegistry} from "../registry/IRareStakingRegistry.sol";
 /// @title RarityPool
 /// @notice The Staked ERC20 contract that allows users to stake/unstake/claim rewards/reward swaps.
 /// @dev It is one base user per contract. This is the implementation contract for a beacon proxy.
-contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuard {
+contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpgradeable {
   using EnumerableMapUpgradeable for EnumerableMapUpgradeable.AddressToUintMap;
   using EnumerableSetUpgradeable for EnumerableSetUpgradeable.UintSet;
 

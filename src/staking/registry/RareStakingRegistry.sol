@@ -9,7 +9,7 @@ import {IERC20Upgradeable} from "openzeppelin-contracts-upgradeable/token/ERC20/
 import {IBeaconUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol";
 import {Strings} from "openzeppelin-contracts/utils/Strings.sol";
 import {SafeCast} from "openzeppelin-contracts/utils/math/SafeCast.sol";
-import {UUPSUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "openzeppelin-contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import {strings} from "arachnid/solidity-stringutils/src/strings.sol";
 import "@ensdomains/ens-contracts/registry/ReverseRegistrar.sol";
 import "@ensdomains/ens-contracts/resolvers/profiles/INameResolver.sol";
@@ -147,6 +147,7 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
     discountedPercent = _discountedPercent;
     defaultPayee = _defaultPayee;
     __AccessControlEnumerable_init();
+    __UUPSUpgradeable_init();
   }
 
   /*//////////////////////////////////////////////////////////////////////////
