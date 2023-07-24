@@ -125,6 +125,7 @@ library MarketUtils {
   }
 
   /// @notice Sends a payout to all the necessary parties.
+  /// @dev Note that _splitAddrs and _splitRatios are not checked for validity. Make sure supplied values are correct by using _checkSplits. 
   /// @dev Sends payments to the network, royalty if applicable, and splits for the rest.
   /// @dev Forwards payments to the payment contract if payout is happening in eth.
   /// @dev Total amount of ratios should be 100 and is relative to the total ratio left.
