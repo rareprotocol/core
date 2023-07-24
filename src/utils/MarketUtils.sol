@@ -83,12 +83,14 @@ library MarketUtils {
 
     require(msg.value == 0, "msg.value should be 0 when not using eth");
 
-    if (_amount == 0) {
-      return;
-    }
-
     IERC20 erc20 = IERC20(_currencyAddress);
+    uint256 balanceBefore = erc20.balanceOf(address(this));
+
     erc20.safeTransferFrom(msg.sender, address(this), _amount);
+
+    uint256 balanceAfter = erc20.balanceOf(address(this));
+
+    require(balanceAfter - balanceBefore == _amount, "not enough tokens transfered");
   }
 
   /// @notice Refunds an address the designated amount.
