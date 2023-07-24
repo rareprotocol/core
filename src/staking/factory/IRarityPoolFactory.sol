@@ -16,6 +16,12 @@ interface IRarityPoolFactory {
     address indexed _stakingAddress
   );
 
+  /// @notice Emitted via {setRareStakingTemplate} when the staking template is updated.
+  event RareStakingTemplateUpdated(address indexed newRareStakingTemplate);
+  
+  /// @notice Emitted via {setStakingRegistry} when the staking registry is updated.
+  event StakingRegistryUpdated(address indexed newStakingRegistry);
+
   /*//////////////////////////////////////////////////////////////////////////
                           External Write Functions
   //////////////////////////////////////////////////////////////////////////*/

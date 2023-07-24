@@ -13,7 +13,12 @@ import {RewardAccumulator} from "../reward/RewardAccumulator.sol";
 /// @author charlescrain
 /// @title RewardAccumulatorFactory
 /// @notice The RewardAccumulator Factory that creates RewardAccumulator contracts.
-contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeable, Ownable2StepUpgradeable, UUPSUpgradeable {
+contract RewardAccumulatorFactory is
+  IRewardAccumulatorFactory,
+  IBeaconUpgradeable,
+  Ownable2StepUpgradeable,
+  UUPSUpgradeable
+{
   /*//////////////////////////////////////////////////////////////////////////
                           Private Contract Storage
   //////////////////////////////////////////////////////////////////////////*/
@@ -26,15 +31,12 @@ contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeab
   constructor() {
     _disableInitializers();
   }
-  
+
   /*//////////////////////////////////////////////////////////////////////////
                               Initializer
   //////////////////////////////////////////////////////////////////////////*/
 
-  function initialize(
-    address _rewardTemplate,
-    address _newOwner
-  ) external initializer {
+  function initialize(address _rewardTemplate, address _newOwner) external initializer {
     require(_rewardTemplate != address(0), "initialize::_rewardTemplate cannot be zero address");
     require(_newOwner != address(0), "initialize::_newOwner cannot be zero address");
     rewardTemplate = _rewardTemplate;
@@ -58,9 +60,10 @@ contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeab
 
   /// @inheritdoc IRewardAccumulatorFactory
   /// @dev Requires the caller to be the owner of the contract.
-  function setRewardSwapTemplate(address _rewardTemplate) external onlyOwner {
-    require(_rewardTemplate != address(0), "setRewardSwapTemplate::_rewardTemplate cannot be zero address");
+  function setRewardAccumulatorTemplate(address _rewardTemplate) external onlyOwner {
+    require(_rewardTemplate != address(0), "setRewardAccumulatorTemplate::_rewardTemplate cannot be zero address");
     rewardTemplate = _rewardTemplate;
+    emit RewardAccumulatorTemplateUpdated(_rewardTemplate);
   }
 
   /*//////////////////////////////////////////////////////////////////////////
