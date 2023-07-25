@@ -146,7 +146,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpg
     takeSnapshot();
 
     // Set the last round claimed so the when the user claims they do not have to claim for prior rounds with no stake.
-    if (totalSupply() == 0) {
+    if (balanceOf(msg.sender) == 0) {
       lastRoundClaimedByUser[msg.sender] = getCurrentRound() - 1;
     }
     // Calculate SRARE to mint
