@@ -44,9 +44,6 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpg
   // Address of the staking registry
   IRareStakingRegistry private stakingRegistry;
 
-  // Last round that had a snapshot, can be current round
-  uint256 private lastRound;
-
   // Sum of all the rewards, only updated during snapshots
   uint256 private sumOfAllRewards;
 
@@ -74,9 +71,9 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpg
     address _stakingRegistry,
     address _creator
   ) public initializer {
-    require(_userStakedTo != address(0), "User staked address cannot be zero");
-    require(_stakingRegistry != address(0), "Staking registry address cannot be zero");
-    require(_creator != address(0), "Creator address cannot be zero");
+    if (_userStakedTo == address(0)) revert ZeroAddressUnsupported();
+    if (_stakingRegistry == address(0)) revert ZeroAddressUnsupported();
+    if (_creator == address(0)) revert ZeroAddressUnsupported();
     __ERC20Snapshot_init();
     targetStakedTo = _userStakedTo;
     stakingRegistry = IRareStakingRegistry(_stakingRegistry);
@@ -105,17 +102,10 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpg
 
     // Get current round
     uint256 roundToUpdate = getCurrentRound();
-    uint256 snapshotId = _getCurrentSnapshotId();
 
     // If there are no stakers, transfer the rewards to the default payee
-    if (roundToUpdate > snapshotId && totalSupply() == 0) {
-      stakingRegistry.transferRareTo(_donor, stakingRegistry.getDefaultPayee(), _amount);
-      return;
-    }
-
-    // If there are no stakers, transfer the rewards to the default payee
-    if (roundToUpdate == snapshotId && totalSupplyAt(roundToUpdate) == 0) {
-      stakingRegistry.transferRareTo(_donor, stakingRegistry.getDefaultPayee(), _amount);
+    if (totalSupplyAt(roundToUpdate) == 0) {
+      stakingRegistry.transferRareFrom(_donor, stakingRegistry.getDefaultPayee(), _amount);
       return;
     }
 
@@ -131,7 +121,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpg
     roundRewardAmount[roundToUpdate] += additionalRoundRewards;
 
     // Transfer the RARE in
-    stakingRegistry.transferRareTo(_donor, address(this), _amount);
+    stakingRegistry.transferRareFrom(_donor, address(this), _amount);
 
     emit AddRewards(_donor, roundToUpdate, _amount, additionalRoundRewards, roundRewardAmount[roundToUpdate]);
   }
@@ -163,12 +153,13 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpg
     uint256 amountSRare = calculatePurchaseReturn(totalSupply().toUint120(), _amount);
 
     // Move staked amount into pool
-    stakingRegistry.transferRareTo(msg.sender, address(this), _amount);
+    IRareStakingRegistry registry = stakingRegistry;
+    registry.transferRareFrom(msg.sender, address(this), _amount);
 
     // Update amount staked by user on pool and on registry
     (, uint256 amtStaked) = amountStakedByUser.tryGet(msg.sender);
     amountStakedByUser.set(msg.sender, amtStaked + _amount);
-    stakingRegistry.increaseAmountStaked(msg.sender, targetStakedTo, _amount);
+    registry.increaseAmountStaked(msg.sender, targetStakedTo, _amount);
 
     // Mint new SRARE to staker
     _mint(msg.sender, amountSRare);
@@ -204,10 +195,11 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpg
     // Burn SRARE
     _burn(msg.sender, _amount);
 
+    IRareStakingRegistry registry = stakingRegistry;
 
     // Perform burn of RARE
-    ERC20BurnableUpgradeable rare = ERC20BurnableUpgradeable(stakingRegistry.getRareAddress());
-    uint256 burnAmount = (amountRareReturned * stakingRegistry.getDeflationaryPercentage()) / 100_00;
+    ERC20BurnableUpgradeable rare = ERC20BurnableUpgradeable(registry.getRareAddress());
+    uint256 burnAmount = (amountRareReturned * registry.getDeflationaryPercentage()) / 100_00;
     rare.burn(burnAmount);
 
     // Return staked RARE

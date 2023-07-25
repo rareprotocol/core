@@ -297,12 +297,13 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
 
   /// @inheritdoc IRareStakingRegistry
   /// @dev Only staking pool contracts can call this.
-  function transferRareTo(address _from, address _to, uint256 _amount) external {
-    if (IERC20Upgradeable(rare).allowance(_from, address(this)) < _amount) {
+  function transferRareFrom(address _from, address _to, uint256 _amount) external {
+    IERC20Upgradeable _rare = IERC20Upgradeable(rare);
+    if (_rare.allowance(_from, address(this)) < _amount) {
       revert InsufficientRareAllowance();
     }
     if (!stakingContracts.contains(msg.sender)) revert Unauthorized();
-    SafeERC20Upgradeable.safeTransferFrom(IERC20Upgradeable(rare), _from, _to, _amount);
+    SafeERC20Upgradeable.safeTransferFrom(_rare, _from, _to, _amount);
   }
 
   /*//////////////////////////////////////////////////////////////////////////
