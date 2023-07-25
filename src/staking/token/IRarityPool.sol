@@ -70,6 +70,9 @@ interface IRarityPool is IERC20Upgradeable {
   /// @notice Error emitted via {addRewards} if adding 0 rewards.
   error CannotAddZeroRewards();
 
+  /// @notice Emitted when Zero address provided where it is not allowed.
+  error ZeroAddressUnsupported();
+
   /*//////////////////////////////////////////////////////////////////////////
                               Initializer
   //////////////////////////////////////////////////////////////////////////*/

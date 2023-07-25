@@ -59,7 +59,7 @@ interface IRareStakingRegistry {
   /// @notice Emitted when Zero address provided where it is not allowed.
   error ZeroAddressUnsupported();
 
-  /// @notice Error emitted in {transferRareTo} when a user performs an action that requires moving $RARE but has not made enough allowance for the registry.
+  /// @notice Error emitted in {transferRareFrom} when a user performs an action that requires moving $RARE but has not made enough allowance for the registry.
   error InsufficientRareAllowance();
 
   /// @notice Emitted when a percentage is beyond the specified limit.
@@ -138,7 +138,7 @@ interface IRareStakingRegistry {
   /// @param _from Address to transfer the tokens from.
   /// @param _to Address to transfer the tokens to.
   /// @param _amount uint256 amount to transfer.
-  function transferRareTo(
+  function transferRareFrom(
     address _from,
     address _to,
     uint256 _amount

@@ -37,8 +37,8 @@ contract RewardAccumulatorFactory is
   //////////////////////////////////////////////////////////////////////////*/
 
   function initialize(address _rewardTemplate, address _newOwner) external initializer {
-    require(_rewardTemplate != address(0), "initialize::_rewardTemplate cannot be zero address");
-    require(_newOwner != address(0), "initialize::_newOwner cannot be zero address");
+    if(_rewardTemplate == address(0)) revert ZeroAddressUnsupported();
+    if(_newOwner == address(0)) revert ZeroAddressUnsupported();
     rewardTemplate = _rewardTemplate;
     __Ownable_init();
     __UUPSUpgradeable_init();
@@ -51,7 +51,7 @@ contract RewardAccumulatorFactory is
 
   /// @inheritdoc UUPSUpgradeable
   function _authorizeUpgrade(address _implementation) internal override onlyOwner {
-    require(_implementation != address(0), "_authorizeUpgrade::_implementation cannot be zero address");
+    if(_implementation == address(0)) revert ZeroAddressUnsupported();
   }
 
   /*//////////////////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@ contract RewardAccumulatorFactory is
   /// @inheritdoc IRewardAccumulatorFactory
   /// @dev Requires the caller to be the owner of the contract.
   function setRewardAccumulatorTemplate(address _rewardTemplate) external onlyOwner {
-    require(_rewardTemplate != address(0), "setRewardAccumulatorTemplate::_rewardTemplate cannot be zero address");
+    if(_rewardTemplate == address(0)) revert ZeroAddressUnsupported();
     rewardTemplate = _rewardTemplate;
     emit RewardAccumulatorTemplateUpdated(_rewardTemplate);
   }
@@ -74,7 +74,7 @@ contract RewardAccumulatorFactory is
   /// @param _stakingAddress Address of staking contract.
   /// @return address Address of the RewardAccumulator contract.
   function deployRewardSwap(address _stakingAddress) public returns (address payable) {
-    require(_stakingAddress != address(0), "deployRewardSwap::_stakingAddress cannot be zero address");
+    if(_stakingAddress == address(0)) revert ZeroAddressUnsupported();
     BeaconProxy newRewardSwap = new BeaconProxy(
       address(this),
       abi.encodeWithSelector(RewardAccumulator.initialize.selector, address(_stakingAddress))
