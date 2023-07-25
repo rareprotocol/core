@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.15;
+pragma solidity 0.8.18;
 
-import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {Ownable2StepUpgradeable} from "openzeppelin-contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
 import {UUPSUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import {IBeaconUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol";
 import {BeaconProxy} from "openzeppelin-contracts/proxy/beacon/BeaconProxy.sol";
@@ -13,29 +13,35 @@ import {RewardAccumulator} from "../reward/RewardAccumulator.sol";
 /// @author charlescrain
 /// @title RewardAccumulatorFactory
 /// @notice The RewardAccumulator Factory that creates RewardAccumulator contracts.
-contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
+contract RewardAccumulatorFactory is
+  IRewardAccumulatorFactory,
+  IBeaconUpgradeable,
+  Ownable2StepUpgradeable,
+  UUPSUpgradeable
+{
   /*//////////////////////////////////////////////////////////////////////////
                           Private Contract Storage
   //////////////////////////////////////////////////////////////////////////*/
 
-  IRareStakingRegistry private stakingRegistry;
-
   address private rewardTemplate;
+
+  /*//////////////////////////////////////////////////////////////////////////
+                              Constructor
+  //////////////////////////////////////////////////////////////////////////*/
+  constructor() {
+    _disableInitializers();
+  }
 
   /*//////////////////////////////////////////////////////////////////////////
                               Initializer
   //////////////////////////////////////////////////////////////////////////*/
 
-  function initialize(
-    address _stakingRegistry,
-    address _rewardTemplate,
-    address _newOwner
-  ) external initializer {
-    require(_stakingRegistry != address(0), "initialize::_stakingRegistry cannot be zero address");
-    require(_rewardTemplate != address(0), "initialize::_rewardTemplate cannot be zero address");
+  function initialize(address _rewardTemplate, address _newOwner) external initializer {
+    if(_rewardTemplate == address(0)) revert ZeroAddressUnsupported();
+    if(_newOwner == address(0)) revert ZeroAddressUnsupported();
     rewardTemplate = _rewardTemplate;
-    stakingRegistry = IRareStakingRegistry(_stakingRegistry);
     __Ownable_init();
+    __UUPSUpgradeable_init();
     _transferOwnership(_newOwner);
   }
 
@@ -44,7 +50,9 @@ contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeab
   //////////////////////////////////////////////////////////////////////////*/
 
   /// @inheritdoc UUPSUpgradeable
-  function _authorizeUpgrade(address) internal override onlyOwner {}
+  function _authorizeUpgrade(address _implementation) internal override onlyOwner {
+    if(_implementation == address(0)) revert ZeroAddressUnsupported();
+  }
 
   /*//////////////////////////////////////////////////////////////////////////
                           Admin Write Functions
@@ -52,16 +60,10 @@ contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeab
 
   /// @inheritdoc IRewardAccumulatorFactory
   /// @dev Requires the caller to be the owner of the contract.
-  function setStakingRegistry(address _stakingRegistry) external onlyOwner {
-    require(_stakingRegistry != address(0), "setStakingRegistry::_stakingRegistry cannot be zero address");
-    stakingRegistry = IRareStakingRegistry(_stakingRegistry);
-  }
-
-  /// @inheritdoc IRewardAccumulatorFactory
-  /// @dev Requires the caller to be the owner of the contract.
-  function setRewardSwapTemplate(address _rewardTemplate) external onlyOwner {
-    require(_rewardTemplate != address(0), "setRewardSwapTemplate::_rewardTemplate cannot be zero address");
+  function setRewardAccumulatorTemplate(address _rewardTemplate) external onlyOwner {
+    if(_rewardTemplate == address(0)) revert ZeroAddressUnsupported();
     rewardTemplate = _rewardTemplate;
+    emit RewardAccumulatorTemplateUpdated(_rewardTemplate);
   }
 
   /*//////////////////////////////////////////////////////////////////////////
@@ -72,10 +74,10 @@ contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeab
   /// @param _stakingAddress Address of staking contract.
   /// @return address Address of the RewardAccumulator contract.
   function deployRewardSwap(address _stakingAddress) public returns (address payable) {
-    require(_stakingAddress != address(0), "deployRewardSwap::_stakingAddress cannot be zero address");
+    if(_stakingAddress == address(0)) revert ZeroAddressUnsupported();
     BeaconProxy newRewardSwap = new BeaconProxy(
       address(this),
-      abi.encodeWithSelector(RewardAccumulator.initialize.selector, address(stakingRegistry), address(_stakingAddress))
+      abi.encodeWithSelector(RewardAccumulator.initialize.selector, address(_stakingAddress))
     );
 
     emit RewardSwapContractCreated(address(newRewardSwap));
@@ -85,11 +87,6 @@ contract RewardAccumulatorFactory is IRewardAccumulatorFactory, IBeaconUpgradeab
   /*//////////////////////////////////////////////////////////////////////////
                           External Read Functions
   //////////////////////////////////////////////////////////////////////////*/
-
-  /// @inheritdoc IRewardAccumulatorFactory
-  function getStakingRegistryAddress() external view returns (address) {
-    return address(stakingRegistry);
-  }
 
   /// @inheritdoc IRewardAccumulatorFactory
   function getRewardSwapTemplateAddress() external view returns (address) {

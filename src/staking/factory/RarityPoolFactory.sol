@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.15;
+pragma solidity 0.8.18;
 
-import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {Ownable2StepUpgradeable} from "openzeppelin-contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
 import {IAccessControlUpgradeable} from "openzeppelin-contracts-upgradeable/access/IAccessControlUpgradeable.sol";
 import {UUPSUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import {IBeaconUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol";
@@ -17,7 +17,7 @@ import {IRarityPool} from "../token/IRarityPool.sol";
 /// @title RarityPoolFactory
 /// @notice The Staking Factory Contract used to deploy new staking ERC20 contracts pertaining to a user.
 /// @dev Made to be used with a UUPS Proxy.
-contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
+contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, Ownable2StepUpgradeable, UUPSUpgradeable {
   /*//////////////////////////////////////////////////////////////////////////
                           Private Contract Storage
   //////////////////////////////////////////////////////////////////////////*/
@@ -32,6 +32,13 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, OwnableUpg
   address private rareStakingTemplate;
 
   /*//////////////////////////////////////////////////////////////////////////
+                              Constructor
+  //////////////////////////////////////////////////////////////////////////*/
+  constructor() {
+    _disableInitializers();
+  }
+
+  /*//////////////////////////////////////////////////////////////////////////
                               Initializer
   //////////////////////////////////////////////////////////////////////////*/
 
@@ -41,17 +48,15 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, OwnableUpg
     address _rewardSwapFactory,
     address _newOwner
   ) external initializer {
-    require(_stakingRegistry != address(0), "initialize::_stakingRegistry cannot be zero address");
-    require(_rareStakingTemplate != address(0), "initialize::_rareStakingTemplate cannot be zero address");
-    require(_rewardSwapFactory != address(0), "initialize::_rewardSwapFactory cannot be zero address");
+    if (_stakingRegistry == address(0)) revert ZeroAddressUnsupported();
+    if (_rareStakingTemplate == address(0)) revert ZeroAddressUnsupported();
+    if (_rewardSwapFactory == address(0)) revert ZeroAddressUnsupported();
+    if (_newOwner == address(0)) revert ZeroAddressUnsupported();
     rewardSwapFactory = IRewardAccumulatorFactory(_rewardSwapFactory);
-    require(
-      (rewardSwapFactory.getStakingRegistryAddress() == _stakingRegistry),
-      "initialize::StakingRegistries must match"
-    );
     rareStakingTemplate = _rareStakingTemplate;
     stakingRegistry = IRareStakingRegistry(_stakingRegistry);
     __Ownable_init();
+    __UUPSUpgradeable_init();
     _transferOwnership(_newOwner);
   }
 
@@ -60,7 +65,9 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, OwnableUpg
   //////////////////////////////////////////////////////////////////////////*/
 
   /// @inheritdoc UUPSUpgradeable
-  function _authorizeUpgrade(address) internal override onlyOwner {}
+  function _authorizeUpgrade(address _implementation) internal override onlyOwner {
+    if (_implementation == address(0)) revert ZeroAddressUnsupported();
+  }
 
   /*//////////////////////////////////////////////////////////////////////////
                           Admin Write Functions
@@ -69,19 +76,17 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, OwnableUpg
   /// @inheritdoc IRarityPoolFactory
   /// @dev Requires the caller to be the owner of the contract.
   function setStakingRegistry(address _stakingRegistry) external onlyOwner {
-    require(_stakingRegistry != address(0), "setStakingRegistry::_stakingRegistry cannot be zero address");
-    require(
-      (rewardSwapFactory.getStakingRegistryAddress() == _stakingRegistry),
-      "setStakingRegistry::StakingRegistries must match"
-    );
+    if (_stakingRegistry == address(0)) revert ZeroAddressUnsupported();
     stakingRegistry = IRareStakingRegistry(_stakingRegistry);
+    emit StakingRegistryUpdated(_stakingRegistry);
   }
 
   /// @inheritdoc IRarityPoolFactory
   /// @dev Requires the caller to be the owner of the contract.
   function setRareStakingTemplate(address _rareStakingTemplate) external onlyOwner {
-    require(_rareStakingTemplate != address(0), "setRareStakingTemplate::_rareStakingTemplate cannot be zero address");
+    if (_rareStakingTemplate == address(0)) revert ZeroAddressUnsupported();
     rareStakingTemplate = _rareStakingTemplate;
+    emit RareStakingTemplateUpdated(_rareStakingTemplate);
   }
 
   /*//////////////////////////////////////////////////////////////////////////
@@ -91,23 +96,18 @@ contract RarityPoolFactory is IRarityPoolFactory, IBeaconUpgradeable, OwnableUpg
   /// @inheritdoc IRarityPoolFactory
   /// @dev This contract must have the {STAKING_INFO_SETTER_ROLE} role on {RareStakingRegistry}.
   function deployStaking(address _user) public returns (address) {
-    require(_user != address(0), "deployStaking::_user cannot be zero address");
+    IRareStakingRegistry registry = stakingRegistry;
+    if (_user == address(0)) revert ZeroAddressUnsupported();
     BeaconProxy newStaking = new BeaconProxy(
       address(this),
-      abi.encodeWithSelector(
-        IRarityPool.initialize.selector,
-        stakingRegistry.getRareAddress(),
-        _user,
-        address(stakingRegistry),
-        msg.sender
-      )
+      abi.encodeWithSelector(IRarityPool.initialize.selector, _user, address(registry), msg.sender)
     );
     address rewardSwap = rewardSwapFactory.deployRewardSwap(address(newStaking));
-    stakingRegistry.setStakingAddresses(_user, address(newStaking), rewardSwap);
+    registry.setStakingAddresses(_user, address(newStaking), rewardSwap);
 
-    bytes32 statSetterRole = stakingRegistry.STAKING_STAT_SETTER_ROLE();
+    bytes32 statSetterRole = registry.STAKING_STAT_SETTER_ROLE();
 
-    IAccessControlUpgradeable(address(stakingRegistry)).grantRole(statSetterRole, address(newStaking));
+    IAccessControlUpgradeable(address(registry)).grantRole(statSetterRole, address(newStaking));
 
     emit IRarityPoolFactory.StakingContractCreated(msg.sender, _user, address(newStaking));
 

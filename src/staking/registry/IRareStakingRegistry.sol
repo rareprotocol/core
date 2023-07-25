@@ -22,12 +22,6 @@ interface IRareStakingRegistry {
                               Events
   //////////////////////////////////////////////////////////////////////////*/
 
-  /// @notice Emitted via {setStakeePercentage} when the stakee update's their percentage.
-  event StakeePercentageUpdated(address indexed _user, uint256 _percentage);
-
-  /// @notice Emitted via {setClaimerPercentage} when the stakee update's their percentage.
-  event ClaimerPercentageUpdated(address indexed _user, uint256 _percentage);
-
   /// @notice Emitted via {setDefaultPayee} when the defaultPayee is updated.
   event DefaultPayeeUpdated(address _payee);
 
@@ -65,7 +59,7 @@ interface IRareStakingRegistry {
   /// @notice Emitted when Zero address provided where it is not allowed.
   error ZeroAddressUnsupported();
 
-  /// @notice Error emitted in {transferRareTo} when a user performs an action that requires moving $RARE but has not made enough allowance for the registry.
+  /// @notice Error emitted in {transferRareFrom} when a user performs an action that requires moving $RARE but has not made enough allowance for the registry.
   error InsufficientRareAllowance();
 
   /// @notice Emitted when a percentage is beyond the specified limit.
@@ -73,6 +67,9 @@ interface IRareStakingRegistry {
 
   /// @notice Emitted when a Period Length is beyond the specified limit.
   error PeriodLengthBeyondLimit();
+
+  /// @notice Emitted when renouncing the admin role and no other account has the role.
+  error RenouncingAdmin();
 
   /*//////////////////////////////////////////////////////////////////////////
                           External Write Functions
@@ -137,19 +134,11 @@ interface IRareStakingRegistry {
   /// @param _token Address of  ERC20 contract.
   function setSwapPool(address _uniswapPool, address _token) external;
 
-  /// @notice Set stakee percentage.
-  /// @param _stakeePercentage The new stakee percentage.
-  function setStakeePercentage(uint256 _stakeePercentage) external;
-
-  /// @notice Set claimer percentage.
-  /// @param _claimerPercentage The new stakee percentage.
-  function setClaimerPercentage(uint256 _claimerPercentage) external;
-
   /// @notice Pools to transfer $RARE tokens, usually into pools. This is so users only need to approve the registry when staking or performing reward swaps.
   /// @param _from Address to transfer the tokens from.
   /// @param _to Address to transfer the tokens to.
   /// @param _amount uint256 amount to transfer.
-  function transferRareTo(
+  function transferRareFrom(
     address _from,
     address _to,
     uint256 _amount
@@ -182,16 +171,6 @@ interface IRareStakingRegistry {
   /// @notice Get the unstake deflationary percentage.
   /// @return uint256 deflationary percentage.
   function getDeflationaryPercentage() external view returns (uint256);
-
-  /// @notice Get the stakee percentage.
-  /// @param _user Address of the user being staked on.
-  /// @return uint256 stakee percentage.
-  function getStakeePercentage(address _user) external view returns (uint256);
-
-  /// @notice Get the claimer percentage.
-  /// @param _user Address of the user reawards are being claimed for.
-  /// @return uint256 claimer percentage.
-  function getClaimerPercentage(address _user) external view returns (uint256);
 
   /// @notice Get the round period length.
   /// @return uint256 period length.

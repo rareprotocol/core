@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.15;
+pragma solidity 0.8.18;
 
-import {ReentrancyGuard} from "openzeppelin-contracts/security/ReentrancyGuard.sol";
+import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
+import {ReentrancyGuardUpgradeable} from "openzeppelin-contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import {IERC20} from "openzeppelin-contracts/interfaces/IERC20.sol";
 import {Address} from "openzeppelin-contracts/utils/Address.sol";
 import {SafeCast} from "openzeppelin-contracts/utils/math/SafeCast.sol";
@@ -18,24 +19,27 @@ import {IRareStakingRegistry} from "../registry/IRareStakingRegistry.sol";
 /// @title RewardAccumulator
 /// @notice The reward accumulator accumulates rewards and allows for swapping of ETH or ERC20 tokens in exchange for RARE.
 /// @dev It is one base user per contract. This is the implementation contract for a beacon proxy.
-contract RewardAccumulator is IRewardAccumulator, ReentrancyGuard, Initializable {
+contract RewardAccumulator is IRewardAccumulator, ReentrancyGuardUpgradeable {
   using SafeCast for uint256;
   using SafeCast for uint128;
 
   /*//////////////////////////////////////////////////////////////////////////
                           Private Contract Storage
   //////////////////////////////////////////////////////////////////////////*/
-  // Address of the staking registry
-  IRareStakingRegistry private stakingRegistry;
-
   // Address of the staking pool
   IRarityPool private stakingPool;
 
   /*//////////////////////////////////////////////////////////////////////////
+                              Constructor
+  //////////////////////////////////////////////////////////////////////////*/
+  constructor() {
+    _disableInitializers();
+  }
+
+  /*//////////////////////////////////////////////////////////////////////////
                               Initializer
   //////////////////////////////////////////////////////////////////////////*/
-  function initialize(address _stakingRegistry, address _stakingPool) external initializer {
-    stakingRegistry = IRareStakingRegistry(_stakingRegistry);
+  function initialize(address _stakingPool) external initializer {
     stakingPool = IRarityPool(_stakingPool);
   }
 
@@ -48,11 +52,14 @@ contract RewardAccumulator is IRewardAccumulator, ReentrancyGuard, Initializable
     uint256 _minAmountOut,
     uint128 _rareIn
   ) external nonReentrant {
-    IERC20 rare = IERC20(stakingRegistry.getRareAddress());
+    if (_minAmountOut == 0) revert ParameterValueTooLow( );
+    if (_rareIn == 0) revert ParameterValueTooLow( );
+
+    IERC20 rare = IERC20(IRareStakingRegistry(stakingPool.getStakingRegistry()).getRareAddress());
 
     // Empty any excess $RARE to the staking pool
     if (rare.balanceOf(address(this)) > 0) {
-      rare.transfer(address(stakingPool), rare.balanceOf(address(this)));
+      SafeERC20.safeTransfer(IERC20(rare),address(stakingPool), rare.balanceOf(address(this)));
     }
     // If ETH, check balance
     if (_tokenOut == address(0) && address(this).balance < _minAmountOut) {
@@ -85,7 +92,7 @@ contract RewardAccumulator is IRewardAccumulator, ReentrancyGuard, Initializable
       Address.sendValue(payable(msg.sender), amountOut);
     } else {
       // Send the swap amount as ERC20
-      IERC20(_tokenOut).transfer(msg.sender, amountOut);
+      SafeERC20.safeTransfer(IERC20(_tokenOut), msg.sender, amountOut);
     }
 
     emit RewardAccumulator(msg.sender, _tokenOut, amountOut, _rareIn);
@@ -96,13 +103,13 @@ contract RewardAccumulator is IRewardAccumulator, ReentrancyGuard, Initializable
   //////////////////////////////////////////////////////////////////////////*/
   /// @inheritdoc IRewardAccumulator
   function estimateRarePrice(address _tokenOut, uint128 _rareAmountIn) public view returns (uint256) {
+    IRareStakingRegistry stakingRegistry = IRareStakingRegistry(stakingPool.getStakingRegistry());
     address weth = stakingRegistry.getWethAddress();
     // Null address implies ETH
     address tokenOut = _tokenOut == address(0) ? weth : _tokenOut;
-    address poolOut = stakingRegistry.getSwapPool(tokenOut);
 
     // If poolOut is the null address and the token out isn't the WETH addres, it's unsupported
-    if (poolOut == address(0) && tokenOut != weth) {
+    if (stakingRegistry.getSwapPool(tokenOut) == address(0) && tokenOut != weth) {
       revert UnsupportedERC20Token();
     }
 
@@ -134,7 +141,7 @@ contract RewardAccumulator is IRewardAccumulator, ReentrancyGuard, Initializable
     }
 
     // If checking for Other_Token/RARE price, look up pool pair for Other_token/WETH
-    (int56[] memory otherTickCumulatives, ) = IUniswapV3Pool(poolOut).observe(secondsAgos);
+    (int56[] memory otherTickCumulatives, ) = IUniswapV3Pool(stakingRegistry.getSwapPool(tokenOut)).observe(secondsAgos);
     int56 otherTickCumulativesDelta = otherTickCumulatives[1] - otherTickCumulatives[0];
     int24 otherTick = int24(otherTickCumulativesDelta / int32(secondsAgo));
 
