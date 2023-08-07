@@ -179,6 +179,7 @@ abstract contract SuperRareBazaarBase is SuperRareBazaarStorage {
     address payable[] memory mktFeeRecip = new address payable[](2);
     mktFeeRecip[0] = payable(networkBeneficiary);
     mktFeeRecip[1] = payable(IRareStakingRegistry(stakingRegistry).getStakingInfoForUser(_seller).rewardAddress);
+    mktFeeRecip[1] = mktFeeRecip[1] == address(0) ? payable(networkBeneficiary) : mktFeeRecip[1];
     uint256[] memory mktFee = new uint256[](2);
     mktFee[0] = IStakingSettings(address(marketplaceSettings)).calculateMarketplacePayoutFee(_amount);
     mktFee[1] = IStakingSettings(address(marketplaceSettings)).calculateStakingFee(_amount);
