@@ -70,9 +70,9 @@ exports.handler = async function (payload) {
     }
     const pool = new ethers.Contract(stakingAddress, RARITY_POOL_ABI, signer);
     const signerAddress = await signer.getAddress();
-    const amountBN = ethers.BigNumber.from(amount).div(100);
+    const amountEth = ethers.BigNumber.from(amount).div(100);
     const ethRarePrice = await getEthRarePrice();
-    const amountRareToSend = amountBN.div(ethRarePrice);
+    const amountRareToSend = amountEth.mul(ethers.BigNumber.from(10).pow(18)).div(ethRarePrice);
     try {
       await pool.addRewards(signerAddress, amountRareToSend);
     } catch {
