@@ -33,9 +33,9 @@ contract RareStakingDeploy is Script {
       vm.addr(vm.envUint("PRIVATE_KEY")),
       vm.envAddress("ENS_REVERSE_REGISTRAR"),
       vm.envAddress("ENS_RESOLVER"),
-      10 minutes,
-      1_00,
-      10_00,
+      vm.envUint("PERIOD_LENGTH"),
+      vm.envUint("DEFLATIONARY_PERCENTAGE"),
+      vm.envUint("DISCOUNTED_PERCENTAGE"),
       vm.envAddress("RARE_ADDRESS"),
       vm.envAddress("WETH_ADDRESS"),
       vm.envAddress("DEFAULT_PAYEE")
