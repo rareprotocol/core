@@ -72,7 +72,7 @@ contract TestRare is ERC20 {
 
   function burn(uint256 amount) public {
     _burn(msg.sender, amount);
-  } 
+  }
 }
 
 contract MarketUtilsTest is Test {
@@ -527,6 +527,84 @@ contract MarketUtilsTest is Test {
       emit log_named_uint("Expected: balanceAfter", expectedBalance);
       emit log_named_uint("Actual: balanceAfter", balanceAfter);
       revert("incorrect balance after on payout");
+    }
+  }
+
+  function test_payout_erc20_no_staking_pool() public {
+    address originContract = address(0xaaaa);
+    uint256 tokenId = 1;
+    address currencyAddress = address(rare);
+    uint256 amount = 1 ether;
+    address payable[] memory splitAddrs = new address payable[](1);
+    uint8[] memory splitRatios = new uint8[](1);
+    splitRatios[0] = 100;
+    splitAddrs[0] = payable(charlie);
+
+    // setup getStakingInfoForUser call -- 3%
+    vm.mockCall(
+      stakingRegistry,
+      abi.encodeWithSelector(IRareStakingRegistry.getStakingInfoForUser.selector, charlie),
+      abi.encode(IRareStakingRegistry.Info("", "", address(0), address(0)))
+    );
+
+    // setup calculateMarketplacePayoutFee call -- 3%
+    vm.mockCall(
+      stakingSettings,
+      abi.encodeWithSelector(IStakingSettings.calculateMarketplacePayoutFee.selector, amount),
+      abi.encode((amount * 2) / 100)
+    );
+
+    // setup calculateStakingFee call -- 1%
+    vm.mockCall(
+      stakingSettings,
+      abi.encodeWithSelector(IStakingSettings.calculateStakingFee.selector, amount),
+      abi.encode(amount / 100)
+    );
+
+    // setup calculateMarketplaceFee call -- 3%
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IMarketplaceSettings.calculateMarketplaceFee.selector, amount),
+      abi.encode((amount * 3) / 100)
+    );
+
+    // setup has hasERC721TokenSold -- false
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IMarketplaceSettings.hasERC721TokenSold.selector, originContract, 1),
+      abi.encode(false)
+    );
+    // setup has isApprovedSpaceOperator -- false
+    vm.mockCall(
+      spaceOperatorRegistry,
+      abi.encodeWithSelector(ISpaceOperatorRegistry.isApprovedSpaceOperator.selector, charlie),
+      abi.encode(false)
+    );
+
+    // setup has getERC721ContractPrimarySaleFeePercentage -- 15%
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IMarketplaceSettings.getERC721ContractPrimarySaleFeePercentage.selector, originContract),
+      abi.encode(15)
+    );
+    vm.prank(deployer);
+    rare.transfer(address(tc), amount + ((amount * 3) / 100));
+    uint256 nbBalanceBefore = rare.balanceOf(networkBeneficiary);
+    tc.payout(originContract, tokenId, currencyAddress, amount, charlie, splitAddrs, splitRatios);
+    uint256 balanceAfter = rewardPool.balance;
+    uint256 expectedBalance = balanceAfter;
+    if (balanceAfter != expectedBalance) {
+      emit log_named_uint("Expected: balanceAfter", expectedBalance);
+      emit log_named_uint("Actual: balanceAfter", balanceAfter);
+      revert("incorrect balance after on payout");
+    }
+
+    uint256 nbBalanceAfter = rare.balanceOf(networkBeneficiary);
+    uint256 nbExpectedBalance = nbBalanceBefore + ((amount * (15 + 3)) / 100);
+    if (nbBalanceAfter != nbExpectedBalance) {
+      emit log_named_uint("Expected: nbBalanceAfter", nbExpectedBalance);
+      emit log_named_uint("Actual: nbBalanceAfter", nbBalanceAfter);
+      revert("incorrect balance for network beneficiary after on payout");
     }
   }
 }
