@@ -21,7 +21,6 @@ import {IRareStakingRegistry} from "../registry/IRareStakingRegistry.sol";
 /// @dev It is one base user per contract. This is the implementation contract for a beacon proxy.
 contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpgradeable {
   using EnumerableMapUpgradeable for EnumerableMapUpgradeable.AddressToUintMap;
-  using EnumerableSetUpgradeable for EnumerableSetUpgradeable.UintSet;
 
   using Address for address payable;
   using SafeCast for uint256;
@@ -36,7 +35,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpg
   mapping(address => uint256) private lastRoundClaimedByUser;
 
   // Amount staked per user
-  EnumerableMapUpgradeable.AddressToUintMap private amountStakedByUser;
+  mapping(address => uint256) private amountStakedByUser;
 
   // The address of the target being staked on
   address private targetStakedTo;
@@ -80,7 +79,6 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpg
     periodStart = block.timestamp;
     lastSnapshotTimestamp = 0;
     _mint(_creator, 1 ether);
-    amountStakedByUser.set(_creator, 0);
     _snapshot(); // we do this increment the counter so rounds and snapshot IDs are equal.
     takeSnapshot();
   }
@@ -157,13 +155,12 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpg
     registry.transferRareFrom(msg.sender, address(this), _amount);
 
     // Update amount staked by user on pool and on registry
-    (, uint256 amtStaked) = amountStakedByUser.tryGet(msg.sender);
-    amountStakedByUser.set(msg.sender, amtStaked + _amount);
+    amountStakedByUser[msg.sender] += _amount;
     registry.increaseAmountStaked(msg.sender, targetStakedTo, _amount);
 
     // Mint new SRARE to staker
     _mint(msg.sender, amountSRare);
-    emit Stake(msg.sender, _amount, amtStaked + _amount, amountSRare);
+    emit Stake(msg.sender, _amount, amountStakedByUser[msg.sender], amountSRare);
   }
 
   /// @inheritdoc IRarityPool
@@ -180,16 +177,14 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpg
     }
 
     // Calculate and check amount of staked RARE to return
-    (, uint256 amtStaked) = amountStakedByUser.tryGet(msg.sender);
+    uint256 amtStaked = amountStakedByUser[msg.sender];
     uint256 amountRareReturned = calculateSaleReturn(balanceOf(msg.sender), amtStaked, _amount);
     if (amountRareReturned > amtStaked) {
       revert InsufficientStakedRare();
     }
 
     // Clean up staked amount on pool and on registry
-    amtStaked - amountRareReturned == 0
-      ? amountStakedByUser.remove(msg.sender)
-      : amountStakedByUser.set(msg.sender, amtStaked - amountRareReturned);
+    amountStakedByUser[msg.sender] = amtStaked - amountRareReturned;
     stakingRegistry.decreaseAmountStaked(msg.sender, targetStakedTo, amountRareReturned);
 
     // Burn SRARE
@@ -250,8 +245,7 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpg
 
   /// @inheritdoc IRarityPool
   function getAmountStakedByUser(address _user) external view returns (uint256) {
-    (, uint256 amtStaked) = amountStakedByUser.tryGet(_user);
-    return amtStaked;
+    return amountStakedByUser[_user];
   }
 
   /// @inheritdoc IRarityPool
@@ -269,20 +263,6 @@ contract RarityPool is IRarityPool, ERC20SnapshotUpgradeable, ReentrancyGuardUpg
   /// @inheritdoc IRarityPool
   function getTargetBeingStakedOn() external view returns (address) {
     return targetStakedTo;
-  }
-
-  /// @inheritdoc IRarityPool
-  function getAllStakers() external view returns (address[] memory) {
-    uint256 length = amountStakedByUser.length();
-
-    address[] memory stakers = new address[](length);
-
-    for (uint256 i = 0; i < length; i++) {
-      (address staker, ) = amountStakedByUser.at(i);
-      stakers[i] = staker;
-    }
-
-    return stakers;
   }
 
   /// @inheritdoc IRarityPool
