@@ -888,11 +888,11 @@ contract TestRareCollectionMarket is Test {
   }
 
   function mockPayout(uint256 _amount, address _seller) internal {
-    // setup getStakingInfoForUser call -- 3%
+    // setup getRewardAccumulatorAddressForUser call
     vm.mockCall(
       stakingRegistry,
-      abi.encodeWithSelector(IRareStakingRegistry.getStakingInfoForUser.selector, _seller),
-      abi.encode(IRareStakingRegistry.Info("", "", address(0), address(0)))
+      abi.encodeWithSelector(IRareStakingRegistry.getRewardAccumulatorAddressForUser.selector, _seller),
+      abi.encode(address(0))
     );
 
     // setup calculateMarketplacePayoutFee call -- 3%

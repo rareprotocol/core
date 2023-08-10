@@ -3,5 +3,5 @@ out/
 node_modules
 *.log
 .DS_Store
-.env
+.env*
 broadcast/

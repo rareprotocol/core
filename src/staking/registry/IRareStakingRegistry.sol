@@ -178,8 +178,18 @@ interface IRareStakingRegistry {
 
   /// @notice Retrieves the staking info for a given user.
   /// @param _user Address of user being queried.
-  /// @return Info struct containing name, symbol, and staking address.
+  /// @return Info struct containing name, symbol, staking address, and reward accumulator address.
   function getStakingInfoForUser(address _user) external view returns (Info memory);
+
+  /// @notice Retrieves the staking address for a given user.
+  /// @param _user Address of user being queried.
+  /// @return address staking address.
+  function getStakingAddressForUser(address _user) external view returns (address);
+
+  /// @notice Retrieves the reward accumulator address for a given user.
+  /// @param _user Address of user being queried.
+  /// @return address Reward accumulator address.
+  function getRewardAccumulatorAddressForUser(address _user) external view returns (address);
 
   /// @notice Retrieves the total amount of rare staked by a given user.
   /// @param _user Address of the user staking.
