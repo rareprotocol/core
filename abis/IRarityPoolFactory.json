@@ -1,6 +1,24 @@
 {
   "abi": [
     {
+      "inputs": [],
+      "name": "ZeroAddressUnsupported",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newRareStakingTemplate",
+          "type": "address"
+        }
+      ],
+      "name": "RareStakingTemplateUpdated",
+      "type": "event"
+    },
+    {
       "anonymous": false,
       "inputs": [
         {
@@ -23,6 +41,19 @@
         }
       ],
       "name": "StakingContractCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newStakingRegistry",
+          "type": "address"
+        }
+      ],
+      "name": "StakingRegistryUpdated",
       "type": "event"
     },
     {
@@ -114,14 +145,32 @@
     "setRareStakingTemplate(address)": "7ed155de",
     "setStakingRegistry(address)": "2c740844"
   },
-  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.15+commit.e14f2714\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_deployingUser\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_userStakedOn\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_stakingAddress\",\"type\":\"address\"}],\"name\":\"StakingContractCreated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"}],\"name\":\"deployStaking\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getRareStakingTemplateAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getStakingRegistryAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_rareStakingTemplate\",\"type\":\"address\"}],\"name\":\"setRareStakingTemplate\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_stakingRegistry\",\"type\":\"address\"}],\"name\":\"setStakingRegistry\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"koloz, charlescrain\",\"kind\":\"dev\",\"methods\":{\"deployStaking(address)\":{\"params\":{\"_user\":\"Address of the target to deploy staking contract for.\"},\"returns\":{\"_0\":\"address Address of the staking contract.\"}},\"getRareStakingTemplateAddress()\":{\"returns\":{\"_0\":\"address Address of the staking ERC20 template to be used.\"}},\"getStakingRegistryAddress()\":{\"returns\":{\"_0\":\"address Address of the staking registry contract.\"}},\"setRareStakingTemplate(address)\":{\"params\":{\"_rareStakingTemplate\":\"Address of the staking ERC20 template.\"}},\"setStakingRegistry(address)\":{\"params\":{\"_stakingRegistry\":\"Address of the new staking registry contract.\"}}},\"title\":\"IRarityPoolFactory\",\"version\":1},\"userdoc\":{\"events\":{\"StakingContractCreated(address,address,address)\":{\"notice\":\"Emitted via {deployStaking} when a new staking contract is deployed.\"}},\"kind\":\"user\",\"methods\":{\"deployStaking(address)\":{\"notice\":\"Deploys a staking contract for the supplied target address. Reverts if address exists.\"},\"getRareStakingTemplateAddress()\":{\"notice\":\"Retrieve the currently template of the staking ERC20 contract.\"},\"getStakingRegistryAddress()\":{\"notice\":\"Retrieve the currently used staking registry address.\"},\"setRareStakingTemplate(address)\":{\"notice\":\"Set the rare staking ERC20 template address to be used.\"},\"setStakingRegistry(address)\":{\"notice\":\"Set the staking registry address field to be used.\"}},\"notice\":\"The Staking Factory interface containing all functions, events, etc.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/staking/factory/IRarityPoolFactory.sol\":\"IRarityPoolFactory\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/buffer/=lib/buffer/\",\":@ensdomains/ens-contracts/=lib/ens-contracts/contracts/\",\":@manifoldxyz/libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/\",\":@openzeppelin/=lib/openzeppelin-contracts/\",\":@openzeppelin/contracts-upgradeable/=lib/royalty-registry-solidity/lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/royalty-registry-solidity/lib/openzeppelin-contracts/contracts/\",\":@uniswap/v3-core/=lib/v3-core/contracts/\",\":@uniswap/v3-core/contracts/=lib/v3-core/contracts/\",\":@uniswap/v3-periphery/=lib/v3-periphery/contracts/\",\":arachnid/solidity-stringutils/=lib/solidity-stringutils/\",\":assets/=lib/assets/\",\":aux/=lib/aux/\",\":buffer/=lib/buffer/contracts/\",\":create2-helpers/=lib/royalty-registry-solidity/lib/create2-helpers/\",\":create2-scripts/=lib/royalty-registry-solidity/lib/create2-helpers/script/\",\":ds-test/=lib/ds-test/src/\",\":ens-contracts/=lib/ens-contracts/contracts/\",\":ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/\",\":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/contracts/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":openzeppelin/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":rareprotocol/assets/=lib/assets/src/\",\":rareprotocol/aux/=lib/aux/src/\",\":royalty-guard/=lib/aux/lib/royalty-guard/src/\",\":royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/\",\":royalty-registry/=lib/royalty-registry-solidity/contracts/\",\":solidity-stringutils/=lib/solidity-stringutils/\",\":solmate/=lib/solmate/src/\",\":v3-core/=lib/v3-core/\",\":v3-periphery/=lib/v3-periphery/contracts/\"]},\"sources\":{\"src/staking/factory/IRarityPoolFactory.sol\":{\"keccak256\":\"0xd7dc269f1c3f755832d63ab3b8f100781762d52dcbc21e1f7c61117b6fa2dea5\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://24e8d87c6febbd4bcfc93e5e89034b07dbc6895d6a1f98c0a5f478511084c330\",\"dweb:/ipfs/QmYHmZoV2ci1tL5pmjvKzeiqCBTynjiaiP7pBAf9Vnv8ZW\"]}},\"version\":1}",
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.18+commit.87f61d96\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"ZeroAddressUnsupported\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newRareStakingTemplate\",\"type\":\"address\"}],\"name\":\"RareStakingTemplateUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_deployingUser\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_userStakedOn\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_stakingAddress\",\"type\":\"address\"}],\"name\":\"StakingContractCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newStakingRegistry\",\"type\":\"address\"}],\"name\":\"StakingRegistryUpdated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_user\",\"type\":\"address\"}],\"name\":\"deployStaking\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getRareStakingTemplateAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getStakingRegistryAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_rareStakingTemplate\",\"type\":\"address\"}],\"name\":\"setRareStakingTemplate\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_stakingRegistry\",\"type\":\"address\"}],\"name\":\"setStakingRegistry\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"koloz, charlescrain\",\"kind\":\"dev\",\"methods\":{\"deployStaking(address)\":{\"params\":{\"_user\":\"Address of the target to deploy staking contract for.\"},\"returns\":{\"_0\":\"address Address of the staking contract.\"}},\"getRareStakingTemplateAddress()\":{\"returns\":{\"_0\":\"address Address of the staking ERC20 template to be used.\"}},\"getStakingRegistryAddress()\":{\"returns\":{\"_0\":\"address Address of the staking registry contract.\"}},\"setRareStakingTemplate(address)\":{\"params\":{\"_rareStakingTemplate\":\"Address of the staking ERC20 template.\"}},\"setStakingRegistry(address)\":{\"params\":{\"_stakingRegistry\":\"Address of the new staking registry contract.\"}}},\"title\":\"IRarityPoolFactory\",\"version\":1},\"userdoc\":{\"errors\":{\"ZeroAddressUnsupported()\":[{\"notice\":\"Emitted when Zero address provided where it is not allowed.\"}]},\"events\":{\"RareStakingTemplateUpdated(address)\":{\"notice\":\"Emitted via {setRareStakingTemplate} when the staking template is updated.\"},\"StakingContractCreated(address,address,address)\":{\"notice\":\"Emitted via {deployStaking} when a new staking contract is deployed.\"},\"StakingRegistryUpdated(address)\":{\"notice\":\"Emitted via {setStakingRegistry} when the staking registry is updated.\"}},\"kind\":\"user\",\"methods\":{\"deployStaking(address)\":{\"notice\":\"Deploys a staking contract for the supplied target address. Reverts if address exists.\"},\"getRareStakingTemplateAddress()\":{\"notice\":\"Retrieve the currently template of the staking ERC20 contract.\"},\"getStakingRegistryAddress()\":{\"notice\":\"Retrieve the currently used staking registry address.\"},\"setRareStakingTemplate(address)\":{\"notice\":\"Set the rare staking ERC20 template address to be used.\"},\"setStakingRegistry(address)\":{\"notice\":\"Set the staking registry address field to be used.\"}},\"notice\":\"The Staking Factory interface containing all functions, events, etc.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/staking/factory/IRarityPoolFactory.sol\":\"IRarityPoolFactory\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/buffer/=lib/buffer/\",\":@ensdomains/ens-contracts/=lib/ens-contracts/contracts/\",\":@manifoldxyz/libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/\",\":@openzeppelin/=lib/openzeppelin-contracts/\",\":@openzeppelin/contracts-upgradeable/=lib/royalty-registry-solidity/lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/royalty-registry-solidity/lib/openzeppelin-contracts/contracts/\",\":@uniswap/v3-core/=lib/v3-core/contracts/\",\":@uniswap/v3-core/contracts/=lib/v3-core/contracts/\",\":@uniswap/v3-periphery/=lib/v3-periphery/contracts/\",\":arachnid/solidity-stringutils/=lib/solidity-stringutils/\",\":assets/=lib/assets/\",\":aux/=lib/aux/\",\":buffer/=lib/buffer/contracts/\",\":create2-helpers/=lib/royalty-registry-solidity/lib/create2-helpers/\",\":create2-scripts/=lib/royalty-registry-solidity/lib/create2-helpers/script/\",\":ds-test/=lib/ds-test/src/\",\":ens-contracts/=lib/ens-contracts/contracts/\",\":ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/\",\":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/contracts/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":openzeppelin/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":rareprotocol/assets/=lib/assets/src/\",\":rareprotocol/aux/=lib/aux/src/\",\":royalty-guard/=lib/aux/lib/royalty-guard/src/\",\":royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/\",\":royalty-registry/=lib/royalty-registry-solidity/contracts/\",\":solidity-stringutils/=lib/solidity-stringutils/\",\":solmate/=lib/solmate/src/\",\":v3-core/=lib/v3-core/\",\":v3-periphery/=lib/v3-periphery/contracts/\"]},\"sources\":{\"src/staking/factory/IRarityPoolFactory.sol\":{\"keccak256\":\"0x6694168a9511f905e23d5cbfc6caa7191a53dc6f93829ef6a7b819e50b80c159\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://a6cbf93bab05ae990a8b069efd7478b86e89df83d0dd99885d4b0571db31485f\",\"dweb:/ipfs/QmTAPm3GQWNJEarottuC3TY3pGuWTnuBXe3uSAfMgPgcVq\"]}},\"version\":1}",
   "metadata": {
     "compiler": {
-      "version": "0.8.15+commit.e14f2714"
+      "version": "0.8.18+commit.87f61d96"
     },
     "language": "Solidity",
     "output": {
       "abi": [
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "ZeroAddressUnsupported"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newRareStakingTemplate",
+              "type": "address",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "RareStakingTemplateUpdated",
+          "anonymous": false
+        },
         {
           "inputs": [
             {
@@ -145,6 +194,19 @@
           ],
           "type": "event",
           "name": "StakingContractCreated",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newStakingRegistry",
+              "type": "address",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "StakingRegistryUpdated",
           "anonymous": false
         },
         {
@@ -323,10 +385,10 @@
     },
     "sources": {
       "src/staking/factory/IRarityPoolFactory.sol": {
-        "keccak256": "0xd7dc269f1c3f755832d63ab3b8f100781762d52dcbc21e1f7c61117b6fa2dea5",
+        "keccak256": "0x6694168a9511f905e23d5cbfc6caa7191a53dc6f93829ef6a7b819e50b80c159",
         "urls": [
-          "bzz-raw://24e8d87c6febbd4bcfc93e5e89034b07dbc6895d6a1f98c0a5f478511084c330",
-          "dweb:/ipfs/QmYHmZoV2ci1tL5pmjvKzeiqCBTynjiaiP7pBAf9Vnv8ZW"
+          "bzz-raw://a6cbf93bab05ae990a8b069efd7478b86e89df83d0dd99885d4b0571db31485f",
+          "dweb:/ipfs/QmTAPm3GQWNJEarottuC3TY3pGuWTnuBXe3uSAfMgPgcVq"
         ],
         "license": "MIT"
       }
@@ -335,19 +397,19 @@
   },
   "ast": {
     "absolutePath": "src/staking/factory/IRarityPoolFactory.sol",
-    "id": 51603,
+    "id": 54749,
     "exportedSymbols": {
       "IRarityPoolFactory": [
-        51602
+        54748
       ]
     },
     "nodeType": "SourceUnit",
-    "src": "32:2198:126",
+    "src": "32:2830:136",
     "nodes": [
       {
-        "id": 51559,
+        "id": 54692,
         "nodeType": "PragmaDirective",
-        "src": "32:23:126",
+        "src": "32:23:136",
         "nodes": [],
         "literals": [
           "solidity",
@@ -357,39 +419,39 @@
         ]
       },
       {
-        "id": 51602,
+        "id": 54748,
         "nodeType": "ContractDefinition",
-        "src": "200:2029:126",
+        "src": "200:2661:136",
         "nodes": [
           {
-            "id": 51569,
+            "id": 54702,
             "nodeType": "EventDefinition",
-            "src": "512:141:126",
+            "src": "512:141:136",
             "nodes": [],
             "anonymous": false,
             "documentation": {
-              "id": 51561,
+              "id": 54694,
               "nodeType": "StructuredDocumentation",
-              "src": "429:80:126",
+              "src": "429:80:136",
               "text": "@notice Emitted via {deployStaking} when a new staking contract is deployed."
             },
             "eventSelector": "4a2dd45842063d5cdb0ba4ccb3b677af33701f706cdfa90ddf5fe291e6f99878",
             "name": "StakingContractCreated",
-            "nameLocation": "518:22:126",
+            "nameLocation": "518:22:136",
             "parameters": {
-              "id": 51568,
+              "id": 54701,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 51563,
+                  "id": 54696,
                   "indexed": true,
                   "mutability": "mutable",
                   "name": "_deployingUser",
-                  "nameLocation": "562:14:126",
+                  "nameLocation": "562:14:136",
                   "nodeType": "VariableDeclaration",
-                  "scope": 51569,
-                  "src": "546:30:126",
+                  "scope": 54702,
+                  "src": "546:30:136",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -397,10 +459,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 51562,
+                    "id": 54695,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "546:7:126",
+                    "src": "546:7:136",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -411,14 +473,14 @@
                 },
                 {
                   "constant": false,
-                  "id": 51565,
+                  "id": 54698,
                   "indexed": true,
                   "mutability": "mutable",
                   "name": "_userStakedOn",
-                  "nameLocation": "598:13:126",
+                  "nameLocation": "598:13:136",
                   "nodeType": "VariableDeclaration",
-                  "scope": 51569,
-                  "src": "582:29:126",
+                  "scope": 54702,
+                  "src": "582:29:136",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -426,10 +488,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 51564,
+                    "id": 54697,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "582:7:126",
+                    "src": "582:7:136",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -440,14 +502,14 @@
                 },
                 {
                   "constant": false,
-                  "id": 51567,
+                  "id": 54700,
                   "indexed": true,
                   "mutability": "mutable",
                   "name": "_stakingAddress",
-                  "nameLocation": "633:15:126",
+                  "nameLocation": "633:15:136",
                   "nodeType": "VariableDeclaration",
-                  "scope": 51569,
-                  "src": "617:31:126",
+                  "scope": 54702,
+                  "src": "617:31:136",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -455,10 +517,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 51566,
+                    "id": 54699,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "617:7:126",
+                    "src": "617:7:136",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -468,18 +530,143 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "540:112:126"
+              "src": "540:112:136"
             }
           },
           {
-            "id": 51577,
-            "nodeType": "FunctionDefinition",
-            "src": "1096:65:126",
+            "id": 54707,
+            "nodeType": "EventDefinition",
+            "src": "746:73:136",
+            "nodes": [],
+            "anonymous": false,
+            "documentation": {
+              "id": 54703,
+              "nodeType": "StructuredDocumentation",
+              "src": "657:86:136",
+              "text": "@notice Emitted via {setRareStakingTemplate} when the staking template is updated."
+            },
+            "eventSelector": "2b022c4b56a6b8adae778a141c22e90aead2a46d1655c4ef94ced0acfae9ed25",
+            "name": "RareStakingTemplateUpdated",
+            "nameLocation": "752:26:136",
+            "parameters": {
+              "id": 54706,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54705,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "newRareStakingTemplate",
+                  "nameLocation": "795:22:136",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54707,
+                  "src": "779:38:136",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54704,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "779:7:136",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "778:40:136"
+            }
+          },
+          {
+            "id": 54712,
+            "nodeType": "EventDefinition",
+            "src": "910:65:136",
+            "nodes": [],
+            "anonymous": false,
+            "documentation": {
+              "id": 54708,
+              "nodeType": "StructuredDocumentation",
+              "src": "825:82:136",
+              "text": "@notice Emitted via {setStakingRegistry} when the staking registry is updated."
+            },
+            "eventSelector": "a5aa720af23083cb0a3e835e4c10666ab0ac4eee7a4396df3ec359de6fc53abf",
+            "name": "StakingRegistryUpdated",
+            "nameLocation": "916:22:136",
+            "parameters": {
+              "id": 54711,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 54710,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "newStakingRegistry",
+                  "nameLocation": "955:18:136",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 54712,
+                  "src": "939:34:136",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 54709,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "939:7:136",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "938:36:136"
+            }
+          },
+          {
+            "id": 54715,
+            "nodeType": "ErrorDefinition",
+            "src": "1254:31:136",
             "nodes": [],
             "documentation": {
-              "id": 51570,
+              "id": 54713,
               "nodeType": "StructuredDocumentation",
-              "src": "867:226:126",
+              "src": "1180:71:136",
+              "text": "@notice Emitted when Zero address provided where it is not allowed."
+            },
+            "errorSelector": "78279125",
+            "name": "ZeroAddressUnsupported",
+            "nameLocation": "1260:22:136",
+            "parameters": {
+              "id": 54714,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1282:2:136"
+            }
+          },
+          {
+            "id": 54723,
+            "nodeType": "FunctionDefinition",
+            "src": "1728:65:136",
+            "nodes": [],
+            "documentation": {
+              "id": 54716,
+              "nodeType": "StructuredDocumentation",
+              "src": "1499:226:136",
               "text": "@notice Deploys a staking contract for the supplied target address. Reverts if address exists.\n @param _user Address of the target to deploy staking contract for.\n @return address Address of the staking contract."
             },
             "functionSelector": "1249ed23",
@@ -487,20 +674,20 @@
             "kind": "function",
             "modifiers": [],
             "name": "deployStaking",
-            "nameLocation": "1105:13:126",
+            "nameLocation": "1737:13:136",
             "parameters": {
-              "id": 51573,
+              "id": 54719,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 51572,
+                  "id": 54718,
                   "mutability": "mutable",
                   "name": "_user",
-                  "nameLocation": "1127:5:126",
+                  "nameLocation": "1759:5:136",
                   "nodeType": "VariableDeclaration",
-                  "scope": 51577,
-                  "src": "1119:13:126",
+                  "scope": 54723,
+                  "src": "1751:13:136",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -508,10 +695,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 51571,
+                    "id": 54717,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1119:7:126",
+                    "src": "1751:7:136",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -521,21 +708,21 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1118:15:126"
+              "src": "1750:15:136"
             },
             "returnParameters": {
-              "id": 51576,
+              "id": 54722,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 51575,
+                  "id": 54721,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 51577,
-                  "src": "1152:7:126",
+                  "scope": 54723,
+                  "src": "1784:7:136",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -543,10 +730,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 51574,
+                    "id": 54720,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1152:7:126",
+                    "src": "1784:7:136",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -556,22 +743,22 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1151:9:126"
+              "src": "1783:9:136"
             },
-            "scope": 51602,
+            "scope": 54748,
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "id": 51583,
+            "id": 54729,
             "nodeType": "FunctionDefinition",
-            "src": "1306:63:126",
+            "src": "1938:63:136",
             "nodes": [],
             "documentation": {
-              "id": 51578,
+              "id": 54724,
               "nodeType": "StructuredDocumentation",
-              "src": "1165:138:126",
+              "src": "1797:138:136",
               "text": "@notice Set the staking registry address field to be used.\n @param _stakingRegistry Address of the new staking registry contract."
             },
             "functionSelector": "2c740844",
@@ -579,20 +766,20 @@
             "kind": "function",
             "modifiers": [],
             "name": "setStakingRegistry",
-            "nameLocation": "1315:18:126",
+            "nameLocation": "1947:18:136",
             "parameters": {
-              "id": 51581,
+              "id": 54727,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 51580,
+                  "id": 54726,
                   "mutability": "mutable",
                   "name": "_stakingRegistry",
-                  "nameLocation": "1342:16:126",
+                  "nameLocation": "1974:16:136",
                   "nodeType": "VariableDeclaration",
-                  "scope": 51583,
-                  "src": "1334:24:126",
+                  "scope": 54729,
+                  "src": "1966:24:136",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -600,10 +787,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 51579,
+                    "id": 54725,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1334:7:126",
+                    "src": "1966:7:136",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -613,28 +800,28 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1333:26:126"
+              "src": "1965:26:136"
             },
             "returnParameters": {
-              "id": 51582,
+              "id": 54728,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1368:0:126"
+              "src": "2000:0:136"
             },
-            "scope": 51602,
+            "scope": 54748,
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "id": 51589,
+            "id": 54735,
             "nodeType": "FunctionDefinition",
-            "src": "1516:71:126",
+            "src": "2148:71:136",
             "nodes": [],
             "documentation": {
-              "id": 51584,
+              "id": 54730,
               "nodeType": "StructuredDocumentation",
-              "src": "1373:140:126",
+              "src": "2005:140:136",
               "text": "@notice Set the rare staking ERC20 template address to be used.\n @param _rareStakingTemplate Address of the staking ERC20 template."
             },
             "functionSelector": "7ed155de",
@@ -642,20 +829,20 @@
             "kind": "function",
             "modifiers": [],
             "name": "setRareStakingTemplate",
-            "nameLocation": "1525:22:126",
+            "nameLocation": "2157:22:136",
             "parameters": {
-              "id": 51587,
+              "id": 54733,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 51586,
+                  "id": 54732,
                   "mutability": "mutable",
                   "name": "_rareStakingTemplate",
-                  "nameLocation": "1556:20:126",
+                  "nameLocation": "2188:20:136",
                   "nodeType": "VariableDeclaration",
-                  "scope": 51589,
-                  "src": "1548:28:126",
+                  "scope": 54735,
+                  "src": "2180:28:136",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -663,10 +850,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 51585,
+                    "id": 54731,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1548:7:126",
+                    "src": "2180:7:136",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -676,28 +863,28 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1547:30:126"
+              "src": "2179:30:136"
             },
             "returnParameters": {
-              "id": 51588,
+              "id": 54734,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1586:0:126"
+              "src": "2218:0:136"
             },
-            "scope": 51602,
+            "scope": 54748,
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "id": 51595,
+            "id": 54741,
             "nodeType": "FunctionDefinition",
-            "src": "1932:69:126",
+            "src": "2564:69:136",
             "nodes": [],
             "documentation": {
-              "id": 51590,
+              "id": 54736,
               "nodeType": "StructuredDocumentation",
-              "src": "1800:129:126",
+              "src": "2432:129:136",
               "text": "@notice Retrieve the currently used staking registry address.\n @return address Address of the staking registry contract."
             },
             "functionSelector": "9f997eb0",
@@ -705,26 +892,26 @@
             "kind": "function",
             "modifiers": [],
             "name": "getStakingRegistryAddress",
-            "nameLocation": "1941:25:126",
+            "nameLocation": "2573:25:136",
             "parameters": {
-              "id": 51591,
+              "id": 54737,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1966:2:126"
+              "src": "2598:2:136"
             },
             "returnParameters": {
-              "id": 51594,
+              "id": 54740,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 51593,
+                  "id": 54739,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 51595,
-                  "src": "1992:7:126",
+                  "scope": 54741,
+                  "src": "2624:7:136",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -732,10 +919,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 51592,
+                    "id": 54738,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1992:7:126",
+                    "src": "2624:7:136",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -745,22 +932,22 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1991:9:126"
+              "src": "2623:9:136"
             },
-            "scope": 51602,
+            "scope": 54748,
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
-            "id": 51601,
+            "id": 54747,
             "nodeType": "FunctionDefinition",
-            "src": "2154:73:126",
+            "src": "2786:73:136",
             "nodes": [],
             "documentation": {
-              "id": 51596,
+              "id": 54742,
               "nodeType": "StructuredDocumentation",
-              "src": "2005:146:126",
+              "src": "2637:146:136",
               "text": "@notice Retrieve the currently template of the staking ERC20 contract.\n @return address Address of the staking ERC20 template to be used."
             },
             "functionSelector": "c8cb01d8",
@@ -768,26 +955,26 @@
             "kind": "function",
             "modifiers": [],
             "name": "getRareStakingTemplateAddress",
-            "nameLocation": "2163:29:126",
+            "nameLocation": "2795:29:136",
             "parameters": {
-              "id": 51597,
+              "id": 54743,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "2192:2:126"
+              "src": "2824:2:136"
             },
             "returnParameters": {
-              "id": 51600,
+              "id": 54746,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 51599,
+                  "id": 54745,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 51601,
-                  "src": "2218:7:126",
+                  "scope": 54747,
+                  "src": "2850:7:136",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -795,10 +982,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 51598,
+                    "id": 54744,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "2218:7:126",
+                    "src": "2850:7:136",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -808,9 +995,9 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "2217:9:126"
+              "src": "2849:9:136"
             },
-            "scope": 51602,
+            "scope": 54748,
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
@@ -822,22 +1009,24 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 51560,
+          "id": 54693,
           "nodeType": "StructuredDocumentation",
-          "src": "57:143:126",
+          "src": "57:143:136",
           "text": "@author koloz, charlescrain\n @title IRarityPoolFactory\n @notice The Staking Factory interface containing all functions, events, etc."
         },
         "fullyImplemented": false,
         "linearizedBaseContracts": [
-          51602
+          54748
         ],
         "name": "IRarityPoolFactory",
-        "nameLocation": "210:18:126",
-        "scope": 51603,
-        "usedErrors": []
+        "nameLocation": "210:18:136",
+        "scope": 54749,
+        "usedErrors": [
+          54715
+        ]
       }
     ],
     "license": "MIT"
   },
-  "id": 126
+  "id": 136
 }

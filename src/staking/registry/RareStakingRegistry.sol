@@ -365,6 +365,16 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
   }
 
   /// @inheritdoc IRareStakingRegistry
+  function getStakingAddressForUser(address _user) external view returns (address) {
+    return userToStakingInfo[_user].stakingAddress;
+  }
+
+  /// @inheritdoc IRareStakingRegistry
+  function getRewardAccumulatorAddressForUser(address _user) external view returns (address) {
+    return userToStakingInfo[_user].rewardAddress;
+  }
+
+  /// @inheritdoc IRareStakingRegistry
   function getTotalAmountStakedByUser(address _user) external view returns (uint256 amount) {
     (, amount) = amountStakedByUser.tryGet(_user);
   }

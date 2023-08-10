@@ -167,7 +167,7 @@ library MarketUtils {
 
     address payable[] memory mktFeeRecip = new address payable[](2);
     mktFeeRecip[0] = payable(_config.networkBeneficiary);
-    mktFeeRecip[1] = payable(_config.stakingRegistry.getStakingInfoForUser(_seller).rewardAddress);
+    mktFeeRecip[1] = payable(_config.stakingRegistry.getRewardAccumulatorAddressForUser(_seller));
     mktFeeRecip[1] = mktFeeRecip[1] == address(0) ? payable(_config.networkBeneficiary) : mktFeeRecip[1];
     uint256[] memory mktFee = new uint256[](2);
     mktFee[0] = _config.stakingSettings.calculateMarketplacePayoutFee(_amount);

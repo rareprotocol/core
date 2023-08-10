@@ -149,11 +149,11 @@ contract MarketUtilsTest is Test {
     splitRatios[0] = 100;
     splitAddrs[0] = payable(charlie);
 
-    // setup getStakingInfoForUser call -- 3%
+    // setup getRewardAccumulatorAddressForUser call -- 3%
     vm.mockCall(
       stakingRegistry,
-      abi.encodeWithSelector(IRareStakingRegistry.getStakingInfoForUser.selector, charlie),
-      abi.encode(IRareStakingRegistry.Info("", "", address(0), address(0)))
+      abi.encodeWithSelector(IRareStakingRegistry.getRewardAccumulatorAddressForUser.selector, charlie),
+      abi.encode(address(0))
     );
 
     // setup calculateMarketplacePayoutFee call -- 3%
@@ -226,11 +226,11 @@ contract MarketUtilsTest is Test {
     splitRatios[0] = 100;
     splitAddrs[0] = payable(charlie);
 
-    // setup getStakingInfoForUser call -- 3%
+    // setup getRewardAccumulatorAddressForUser call -- 3%
     vm.mockCall(
       stakingRegistry,
-      abi.encodeWithSelector(IRareStakingRegistry.getStakingInfoForUser.selector, charlie),
-      abi.encode(IRareStakingRegistry.Info("", "", address(0), address(0)))
+      abi.encodeWithSelector(IRareStakingRegistry.getRewardAccumulatorAddressForUser.selector, charlie),
+      abi.encode(address(0))
     );
 
     // setup calculateMarketplacePayoutFee call -- 3%
@@ -314,11 +314,11 @@ contract MarketUtilsTest is Test {
       abi.encode((amount * 3) / 100)
     );
 
-    // setup getStakingInfoForUser call -- 3%
+    // setup getRewardAccumulatorAddressForUser call -- 3%
     vm.mockCall(
       stakingRegistry,
-      abi.encodeWithSelector(IRareStakingRegistry.getStakingInfoForUser.selector, charlie),
-      abi.encode(IRareStakingRegistry.Info("", "", address(0), address(0)))
+      abi.encodeWithSelector(IRareStakingRegistry.getRewardAccumulatorAddressForUser.selector, charlie),
+      abi.encode(address(0))
     );
 
     // setup calculateMarketplacePayoutFee call -- 3%
@@ -387,11 +387,11 @@ contract MarketUtilsTest is Test {
     splitRatios[0] = 100;
     splitAddrs[0] = payable(charlie);
 
-    // setup getStakingInfoForUser call -- 3%
+    // setup getRewardAccumulatorAddressForUser call -- 3%
     vm.mockCall(
       stakingRegistry,
-      abi.encodeWithSelector(IRareStakingRegistry.getStakingInfoForUser.selector, charlie),
-      abi.encode(IRareStakingRegistry.Info("", "", address(0), rewardPool))
+      abi.encodeWithSelector(IRareStakingRegistry.getRewardAccumulatorAddressForUser.selector, charlie),
+      abi.encode(rewardPool)
     );
 
     // setup calculateMarketplacePayoutFee call -- 3%
@@ -464,11 +464,11 @@ contract MarketUtilsTest is Test {
     splitRatios[0] = 100;
     splitAddrs[0] = payable(charlie);
 
-    // setup getStakingInfoForUser call -- 3%
+    // setup getRewardAccumulatorAddressForUser call -- 3%
     vm.mockCall(
       stakingRegistry,
-      abi.encodeWithSelector(IRareStakingRegistry.getStakingInfoForUser.selector, charlie),
-      abi.encode(IRareStakingRegistry.Info("", "", address(0), address(0)))
+      abi.encodeWithSelector(IRareStakingRegistry.getRewardAccumulatorAddressForUser.selector, charlie),
+      abi.encode(address(0))
     );
 
     // setup calculateMarketplacePayoutFee call -- 3%
@@ -540,11 +540,11 @@ contract MarketUtilsTest is Test {
     splitRatios[0] = 100;
     splitAddrs[0] = payable(charlie);
 
-    // setup getStakingInfoForUser call -- 3%
+    // setup getRewardAccumulatorAddressForUser call -- 3%
     vm.mockCall(
       stakingRegistry,
-      abi.encodeWithSelector(IRareStakingRegistry.getStakingInfoForUser.selector, charlie),
-      abi.encode(IRareStakingRegistry.Info("", "", address(0), address(0)))
+      abi.encodeWithSelector(IRareStakingRegistry.getRewardAccumulatorAddressForUser.selector, charlie),
+      abi.encode(address(0))
     );
 
     // setup calculateMarketplacePayoutFee call -- 3%
