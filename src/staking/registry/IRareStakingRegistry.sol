@@ -201,18 +201,6 @@ interface IRareStakingRegistry {
   /// @return uint256 Amount of rare being staked on the user.
   function getTotalAmountStakedOnUser(address _user) external view returns (uint256);
 
-  /// @notice Retrieves a list of all the ERC20 staking contracts.
-  /// @return list of contracts users can use to stake.
-  function getAllStakingContracts() external view returns (address[] memory);
-
-  /// @notice Retrieves a list of all the users participating in staking.
-  /// @return list of addresses of all the users who are currently staking.
-  function getAllStakers() external view returns (address[] memory);
-
-  /// @notice Retrieves a list of all the users being staked on.
-  /// @return list of addresses of all the users who are being staked on.
-  function getAllStakedOn() external view returns (address[] memory);
-
   /// @notice Query the users for the following staking addresseses.
   /// @param _stakingAddrs Addresses of staking contracts being queried.
   function getUsersForStakingAddresses(address[] calldata _stakingAddrs) external view returns (address[] memory);

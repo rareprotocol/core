@@ -45,8 +45,17 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
   using strings for *;
   using SafeCast for uint256;
   using SafeCast for uint128;
-  using EnumerableMapUpgradeable for EnumerableMapUpgradeable.AddressToUintMap;
-  using EnumerableSetUpgradeable for EnumerableSetUpgradeable.AddressSet;
+
+  /*//////////////////////////////////////////////////////////////////////////
+                              Structs
+  //////////////////////////////////////////////////////////////////////////*/
+  
+  /// @notice A struct holding the Rarity pool staking address and the reward accumulator address.
+  /// @dev Mainly for internal use since `Info` is exposed externally.
+  struct RarityPoolContractPair {
+    address stakingAddress;
+    address rewardAddress;
+  }
 
   /*//////////////////////////////////////////////////////////////////////////
                               Constants
@@ -75,19 +84,19 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
   //////////////////////////////////////////////////////////////////////////*/
 
   // Mapping of address to the User's staking info.
-  mapping(address => Info) private userToStakingInfo;
+  mapping(address => RarityPoolContractPair) private userToRarityPoolPair;
+
+  // Reverse map of staking pool address to the staking target.
+  mapping(address => address) private rarityPoolToUser;
 
   // Mapping of ERC20 token address to the ETH/ERC20 Uniswap pool.
   mapping(address => address) private swapPools;
 
-  // Enumerable set of staking contracts.
-  EnumerableSetUpgradeable.AddressSet private stakingContracts;
+  // Mapping of total RARE staked by a user.
+  mapping(address => uint256) private amountStakedByUser;
 
-  // Enumerable map of total RARE staked by a user.
-  EnumerableMapUpgradeable.AddressToUintMap private amountStakedByUser;
-
-  // Enumerable map of total RARE staked by on a target.
-  EnumerableMapUpgradeable.AddressToUintMap private amountStakedOnTarget;
+  // Mapping of total RARE staked by on a target.
+  mapping(address => uint256) private amountStakedOnTarget;
 
   // ENS reverse registrar
   ReverseRegistrar private reverseRegistrar;
@@ -185,41 +194,25 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
     if (_user == address(0)) revert ZeroAddressUnsupported();
     if (_stakingAddress == address(0)) revert ZeroAddressUnsupported();
     if (_rewardSwapAddress == address(0)) revert ZeroAddressUnsupported();
-    if (userToStakingInfo[_user].stakingAddress != address(0)) revert StakingContractAlreadyExists();
-    userToStakingInfo[_user] = Info("", "", _stakingAddress, _rewardSwapAddress);
-    stakingContracts.add(_stakingAddress);
+    if (userToRarityPoolPair[_user].stakingAddress != address(0)) revert StakingContractAlreadyExists();
+    userToRarityPoolPair[_user] = RarityPoolContractPair(_stakingAddress, _rewardSwapAddress);
+    rarityPoolToUser[_stakingAddress] = _user;
   }
 
   /// @inheritdoc IRareStakingRegistry
   /// @dev Requires the caller to have the {STAKING_STAT_SETTER_ROLE} access control role.
   function increaseAmountStaked(address _staker, address _stakedOn, uint256 _amount) external {
     if (!hasRole(STAKING_STAT_SETTER_ROLE, msg.sender)) revert Unauthorized();
-    (, uint256 amtStaked) = amountStakedByUser.tryGet(_staker);
-    amountStakedByUser.set(_staker, amtStaked + _amount);
-
-    (, uint256 amtStakedOn) = amountStakedOnTarget.tryGet(_stakedOn);
-    amountStakedOnTarget.set(_stakedOn, amtStakedOn + _amount);
+    amountStakedByUser[_staker] += _amount;
+    amountStakedOnTarget[_stakedOn] += _amount;
   }
 
   /// @inheritdoc IRareStakingRegistry
   /// @dev Requires the caller to have the {STAKING_STAT_SETTER_ROLE} access control role.
   function decreaseAmountStaked(address _staker, address _stakedOn, uint256 _amount) external {
     if (!hasRole(STAKING_STAT_SETTER_ROLE, msg.sender)) revert Unauthorized();
-    (, uint256 amtStaked) = amountStakedByUser.tryGet(_staker);
-
-    if (amtStaked - _amount == 0) {
-      amountStakedByUser.remove(_staker);
-    } else {
-      amountStakedByUser.set(_staker, amtStaked - _amount);
-    }
-
-    (, uint256 amtStakedOn) = amountStakedOnTarget.tryGet(_stakedOn);
-
-    if (amtStakedOn - _amount == 0) {
-      amountStakedOnTarget.remove(_stakedOn);
-    } else {
-      amountStakedOnTarget.set(_stakedOn, amtStakedOn - _amount);
-    }
+    amountStakedByUser[_staker] -= _amount;
+    amountStakedOnTarget[_stakedOn] -= _amount;
   }
 
   /// @inheritdoc IRareStakingRegistry
@@ -302,7 +295,7 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
     if (_rare.allowance(_from, address(this)) < _amount) {
       revert InsufficientRareAllowance();
     }
-    if (!stakingContracts.contains(msg.sender)) revert Unauthorized();
+    if (rarityPoolToUser[msg.sender] == address(0)) revert Unauthorized();
     SafeERC20Upgradeable.safeTransferFrom(_rare, _from, _to, _amount);
   }
 
@@ -347,8 +340,10 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
 
   /// @inheritdoc IRareStakingRegistry
   function getStakingInfoForUser(address _user) external view returns (Info memory) {
-    Info memory info = userToStakingInfo[_user];
     strings.slice memory name = resolver.name((reverseRegistrar.node(_user))).toSlice();
+    Info memory info;
+    info.stakingAddress = userToRarityPoolPair[_user].stakingAddress;
+    info.rewardAddress = userToRarityPoolPair[_user].rewardAddress;
     if (name.len() != 0) {
       name.rsplit(".".toSlice());
       info.name = ("Synthetic RARE | ".toSlice()).concat(name);
@@ -366,57 +361,22 @@ contract RareStakingRegistry is IRareStakingRegistry, AccessControlEnumerableUpg
 
   /// @inheritdoc IRareStakingRegistry
   function getStakingAddressForUser(address _user) external view returns (address) {
-    return userToStakingInfo[_user].stakingAddress;
+    return userToRarityPoolPair[_user].stakingAddress;
   }
 
   /// @inheritdoc IRareStakingRegistry
   function getRewardAccumulatorAddressForUser(address _user) external view returns (address) {
-    return userToStakingInfo[_user].rewardAddress;
+    return userToRarityPoolPair[_user].rewardAddress;
   }
 
   /// @inheritdoc IRareStakingRegistry
   function getTotalAmountStakedByUser(address _user) external view returns (uint256 amount) {
-    (, amount) = amountStakedByUser.tryGet(_user);
+    return amountStakedByUser[_user];
   }
 
   /// @inheritdoc IRareStakingRegistry
   function getTotalAmountStakedOnUser(address _user) external view returns (uint256 amount) {
-    (, amount) = amountStakedOnTarget.tryGet(_user);
-  }
-
-  /// @inheritdoc IRareStakingRegistry
-  function getAllStakingContracts() external view returns (address[] memory) {
-    return stakingContracts.values();
-  }
-
-  /// @inheritdoc IRareStakingRegistry
-  /// @dev This function is intended to be called off chain.
-  function getAllStakers() external view returns (address[] memory) {
-    uint256 length = amountStakedByUser.length();
-
-    address[] memory stakers = new address[](length);
-
-    for (uint256 i = 0; i < length; i++) {
-      (address staker, ) = amountStakedByUser.at(i);
-      stakers[i] = staker;
-    }
-
-    return stakers;
-  }
-
-  /// @inheritdoc IRareStakingRegistry
-  /// @dev This function is intended to be called off chain.
-  function getAllStakedOn() external view returns (address[] memory) {
-    uint256 length = amountStakedOnTarget.length();
-
-    address[] memory stakedOn = new address[](length);
-
-    for (uint256 i = 0; i < length; i++) {
-      (address staker, ) = amountStakedOnTarget.at(i);
-      stakedOn[i] = staker;
-    }
-
-    return stakedOn;
+    return amountStakedOnTarget[_user];
   }
 
   /// @inheritdoc IRareStakingRegistry

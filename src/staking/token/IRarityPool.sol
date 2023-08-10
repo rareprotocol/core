@@ -132,10 +132,6 @@ interface IRarityPool is IERC20Upgradeable {
   /// @return Address of target being staked on;
   function getTargetBeingStakedOn() external view returns (address);
 
-  /// @notice Retrieves a list of all the users that have staked.
-  /// @return list of addresses of all the users who are being staked on.
-  function getAllStakers() external view returns (address[] memory);
-
   /// @notice Total rewards available for the supplied round.
   /// @return uint256 Amount of $RARE tokens allocated as rewards for round.
   function getRoundRewards(uint256 _round) external view returns (uint256);
