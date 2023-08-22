@@ -49,27 +49,33 @@ contract SuperRareAuctionHouse is
     _checkSplits(_splitAddresses, _splitRatios);
     _checkValidAuctionType(_auctionType);
 
-    require(_lengthOfAuction <= maxAuctionLength, "configureAuction::Auction too long.");
+    {
+      require(_lengthOfAuction <= maxAuctionLength, "configureAuction::Auction too long.");
 
-    Auction memory auction = tokenAuctions[_originContract][_tokenId];
+      Auction memory auction = tokenAuctions[_originContract][_tokenId];
 
-    require(
-      auction.auctionType == NO_AUCTION || auction.auctionCreator != msg.sender,
-      "configureAuction::Cannot have a current auction."
-    );
+      Bid memory staleBid = auctionBids[_originContract][_tokenId];
 
-    require(_lengthOfAuction > 0, "configureAuction::Length must be > 0");
+      require(staleBid.bidder == address(0), "configureAuction::bid shouldnt exist");
 
-    if (_auctionType == COLDIE_AUCTION) {
-      require(_startingAmount > 0, "configureAuction::Coldie starting price must be > 0");
-    } else if (_auctionType == SCHEDULED_AUCTION) {
-      require(_startTime > block.timestamp, "configureAuction::Scheduled auction cannot start in past.");
+      require(
+        auction.auctionType == NO_AUCTION || auction.auctionCreator != msg.sender,
+        "configureAuction::Cannot have a current auction."
+      );
+
+      require(_lengthOfAuction > 0, "configureAuction::Length must be > 0");
+
+      if (_auctionType == COLDIE_AUCTION) {
+        require(_startingAmount > 0, "configureAuction::Coldie starting price must be > 0");
+      } else if (_auctionType == SCHEDULED_AUCTION) {
+        require(_startTime > block.timestamp, "configureAuction::Scheduled auction cannot start in past.");
+      }
+
+      require(
+        _startingAmount <= marketplaceSettings.getMarketplaceMaxValue(),
+        "configureAuction::Cannot set starting price higher than max value."
+      );
     }
-
-    require(
-      _startingAmount <= marketplaceSettings.getMarketplaceMaxValue(),
-      "configureAuction::Cannot set starting price higher than max value."
-    );
 
     tokenAuctions[_originContract][_tokenId] = Auction(
       payable(msg.sender),
@@ -204,6 +210,8 @@ contract SuperRareAuctionHouse is
       erc721.transferFrom(address(this), msg.sender, _tokenId);
     }
 
+    require(erc721.ownerOf(_tokenId) == msg.sender, "sending failed");
+
     emit CancelAuction(_originContract, _tokenId, auction.auctionCreator);
   }
 
@@ -330,7 +338,7 @@ contract SuperRareAuctionHouse is
       _payout(
         _originContract,
         _tokenId,
-        auction.currencyAddress,
+        currBid.currencyAddress,
         currBid.amount,
         auction.auctionCreator,
         auction.splitRecipients,
@@ -339,6 +347,8 @@ contract SuperRareAuctionHouse is
 
       marketplaceSettings.markERC721Token(_originContract, _tokenId, true);
     }
+
+    require(erc721.ownerOf(_tokenId) == currBid.bidder, "sending failed");
 
     emit AuctionSettled(
       _originContract,
@@ -356,21 +366,14 @@ contract SuperRareAuctionHouse is
   /** @return Auction Struct: creatorAddress, creationTime, startingTime, lengthOfAuction,
                 currencyAddress, minimumBid, auctionType, splitRecipients array, and splitRatios array.
     */
-  function getAuctionDetails(address _originContract, uint256 _tokenId)
+  function getAuctionDetails(
+    address _originContract,
+    uint256 _tokenId
+  )
     external
     view
     override
-    returns (
-      address,
-      uint256,
-      uint256,
-      uint256,
-      address,
-      uint256,
-      bytes32,
-      address payable[] memory,
-      uint8[] memory
-    )
+    returns (address, uint256, uint256, uint256, address, uint256, bytes32, address payable[] memory, uint8[] memory)
   {
     Auction memory auction = tokenAuctions[_originContract][_tokenId];
 

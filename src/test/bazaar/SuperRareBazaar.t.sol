@@ -134,6 +134,7 @@ contract SuperRareBazaarTest is Test {
 
     //@exploit: Overwrites previously set auction with a new Currency. Keeps the same bid
     vm.prank(exploiter1);
+    vm.expectRevert();
     superRareBazaar.configureAuction(
       SCHEDULED_AUCTION,
       address(sfn),
@@ -231,6 +232,7 @@ contract SuperRareBazaarTest is Test {
 
     skip(12); //~about 1 block
     //@exploit: Assumes currencies match
+    vm.expectRevert();
     superRareBazaar.settleAuction(address(sfn), 1);
 
     console2.log("After Attack: SuperRareBazaar ETH Balance:", address(superRareBazaar).balance);
