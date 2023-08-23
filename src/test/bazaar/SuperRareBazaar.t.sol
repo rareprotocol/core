@@ -30,7 +30,6 @@ contract SuperRareBazaarTest is Test {
   SuperRareBazaar private superRareBazaar;
 
 
-  address deployer = address(0xabadabab);
   address marketplaceSettings = address(0xabadaba1);
   address royaltyRegistry = address(0xabadaba2);
   address royaltyEngine = address(0xabadaba3);
@@ -90,15 +89,119 @@ contract SuperRareBazaarTest is Test {
     vm.etch(approvedTokenRegistry, address(superRareToken).code);
   }
 
-  function createOffer() internal {
-    console2.log("Before Attack: SuperRareBazaar ETH Balance:", address(superRareBazaar).balance);
+  function test_convert_offer_currency_exploit() external {
 
-    //@exploit: Create an Offer using a custom NFT and the superRareToken as Currency
-    vm.prank(bidder);
-    superRareBazaar.offer(address(sfn), 1, address(superRareToken), TARGET_AMOUNT, true);
+    /*///////////////////////////////////////////////////
+                        Mock Calls
+    ///////////////////////////////////////////////////*/
+    vm.mockCall(
+      stakingRegistry,
+      abi.encodeWithSelector(IRareStakingRegistry.getRewardAccumulatorAddressForUser.selector, exploiter1),
+      abi.encode(address(0))
+    );
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IStakingSettings.calculateMarketplacePayoutFee.selector, TARGET_AMOUNT),
+      abi.encode((TARGET_AMOUNT * 3) / 100)
+    );
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IStakingSettings.calculateStakingFee.selector, TARGET_AMOUNT),
+      abi.encode(0)
+    );
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IMarketplaceSettings.getMarketplaceFeePercentage.selector),
+      abi.encode(3)
+    );
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IMarketplaceSettings.getMarketplaceMaxValue.selector),
+      abi.encode(type(uint256).max)
+    );
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IMarketplaceSettings.calculateMarketplaceFee.selector, TARGET_AMOUNT),
+      abi.encode((TARGET_AMOUNT * 3) / 100)
+    );
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IMarketplaceSettings.hasERC721TokenSold.selector, address(sfn), 1),
+      abi.encode(false)
+    );
+    vm.mockCall(
+      spaceOperatorRegistry,
+      abi.encodeWithSelector(ISpaceOperatorRegistry.isApprovedSpaceOperator.selector, exploiter1),
+      abi.encode(false)
+    );
+    vm.mockCall(
+      approvedTokenRegistry,
+      abi.encodeWithSelector(IApprovedTokenRegistry.isApprovedToken.selector, address(superRareToken)),
+      abi.encode(true)
+    );
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IMarketplaceSettings.getERC721ContractPrimarySaleFeePercentage.selector, address(sfn)),
+      abi.encode(15)
+    );
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IMarketplaceSettings.markERC721Token.selector, address(sfn)),
+      abi.encode()
+    );
+
+    /*///////////////////////////////////////////////////
+                        Test
+    ///////////////////////////////////////////////////*/
+    configureAuction();
+
+    skip(12); //~about 1 block
+    vm.expectRevert();
+    superRareBazaar.settleAuction(address(sfn), 1);
   }
 
-  function convertOfferToAuction() internal {
+
+  /*//////////////////////////////////////////////////////////////////////////
+                          Helper Functions
+  //////////////////////////////////////////////////////////////////////////*/
+
+  // Receive function for test contract to be sent value
+  receive() external payable {
+    console2.log("Amount Recieved by Attacker:", msg.value);
+  }
+  
+  // Configure the auction
+  function configureAuction() internal {
+    // Setup the Offer and convert it to an auction 
+    createOfferAndConvertToAuction();
+
+    address payable[] memory _splitAddresses = new address payable[](1);
+    _splitAddresses[0] = payable(address(this));
+
+    uint8[] memory _splitRatios = new uint8[](1);
+    _splitRatios[0] = 100;
+
+    //@exploit: Assumes all NFTs follows the ERC-721 spec
+    vm.prank(exploiter);
+    IERC721(sfn).transferFrom(exploiter, exploiter1, 1);
+
+    //@exploit: Overwrites previously set auction with a new Currency (ETH). Keeps the same bid
+    vm.prank(exploiter1);
+    vm.expectRevert();
+    superRareBazaar.configureAuction(
+      SCHEDULED_AUCTION,
+      address(sfn),
+      1,
+      TARGET_AMOUNT,
+      address(0),
+      _lengthOfAuction,
+      block.timestamp + 1,
+      _splitAddresses,
+      _splitRatios
+    );
+  }
+
+  function createOfferAndConvertToAuction() internal {
     createOffer();
 
     address payable[] memory _splitAddresses = new address payable[](1);
@@ -119,126 +222,13 @@ contract SuperRareBazaarTest is Test {
     );
   }
 
-  function configureAuction() internal {
-    convertOfferToAuction();
+  function createOffer() internal {
+    console2.log("Before Attack: SuperRareBazaar ETH Balance:", address(superRareBazaar).balance);
 
-    address payable[] memory _splitAddresses = new address payable[](1);
-    _splitAddresses[0] = payable(address(this));
-
-    uint8[] memory _splitRatios = new uint8[](1);
-    _splitRatios[0] = 100;
-
-    //@exploit: Assumes all NFTs follows the ERC-721 spec
-    vm.prank(exploiter);
-    IERC721(sfn).transferFrom(exploiter, exploiter1, 1);
-
-    //@exploit: Overwrites previously set auction with a new Currency. Keeps the same bid
-    vm.prank(exploiter1);
-    vm.expectRevert();
-    superRareBazaar.configureAuction(
-      SCHEDULED_AUCTION,
-      address(sfn),
-      1,
-      TARGET_AMOUNT,
-      address(0),
-      _lengthOfAuction,
-      block.timestamp + 1,
-      _splitAddresses,
-      _splitRatios
-    );
+    //@exploit: Create an Offer using a custom NFT and the superRareToken as Currency
+    vm.prank(bidder);
+    superRareBazaar.offer(address(sfn), 1, address(superRareToken), TARGET_AMOUNT, true);
   }
 
-  function test_skipThenEnd() external {
 
-    // Mock Calls 
-    // setup getRewardAccumulatorAddressForUser call -- 3%
-    vm.mockCall(
-      stakingRegistry,
-      abi.encodeWithSelector(IRareStakingRegistry.getRewardAccumulatorAddressForUser.selector, exploiter1),
-      abi.encode(address(0))
-    );
-
-    // setup calculateMarketplacePayoutFee call -- 3%
-    vm.mockCall(
-      marketplaceSettings,
-      abi.encodeWithSelector(IStakingSettings.calculateMarketplacePayoutFee.selector, TARGET_AMOUNT),
-      abi.encode((TARGET_AMOUNT * 3) / 100)
-    );
-
-    // setup calculateStakingFee call -- 0%
-    vm.mockCall(
-      marketplaceSettings,
-      abi.encodeWithSelector(IStakingSettings.calculateStakingFee.selector, TARGET_AMOUNT),
-      abi.encode(0)
-    );
-
-    // setup getMarketplaceFeePercentage call -- 3%
-    vm.mockCall(
-      marketplaceSettings,
-      abi.encodeWithSelector(IMarketplaceSettings.getMarketplaceFeePercentage.selector),
-      abi.encode(3)
-    );
-
-    // setup getMarketplaceMaxValue call -- 3%
-    vm.mockCall(
-      marketplaceSettings,
-      abi.encodeWithSelector(IMarketplaceSettings.getMarketplaceMaxValue.selector),
-      abi.encode(type(uint256).max)
-    );
-
-    // setup calculateMarketplaceFee call -- 3%
-    vm.mockCall(
-      marketplaceSettings,
-      abi.encodeWithSelector(IMarketplaceSettings.calculateMarketplaceFee.selector, TARGET_AMOUNT),
-      abi.encode((TARGET_AMOUNT * 3) / 100)
-    );
-
-    // setup has hasERC721TokenSold -- false
-    vm.mockCall(
-      marketplaceSettings,
-      abi.encodeWithSelector(IMarketplaceSettings.hasERC721TokenSold.selector, address(sfn), 1),
-      abi.encode(false)
-    );
-    // setup has isApprovedSpaceOperator -- false
-    vm.mockCall(
-      spaceOperatorRegistry,
-      abi.encodeWithSelector(ISpaceOperatorRegistry.isApprovedSpaceOperator.selector, exploiter1),
-      abi.encode(false)
-    );
-
-    // setup has isApprovedToken -- false
-    vm.mockCall(
-      approvedTokenRegistry,
-      abi.encodeWithSelector(IApprovedTokenRegistry.isApprovedToken.selector, address(superRareToken)),
-      abi.encode(true)
-    );
-
-    // setup has getERC721ContractPrimarySaleFeePercentage -- 15%
-    vm.mockCall(
-      marketplaceSettings,
-      abi.encodeWithSelector(IMarketplaceSettings.getERC721ContractPrimarySaleFeePercentage.selector, address(sfn)),
-      abi.encode(15)
-    );
-
-    // setup has markERC721Token -- 15%
-    vm.mockCall(
-      marketplaceSettings,
-      abi.encodeWithSelector(IMarketplaceSettings.markERC721Token.selector, address(sfn)),
-      abi.encode()
-    );
-
-
-    configureAuction();
-
-    skip(12); //~about 1 block
-    //@exploit: Assumes currencies match
-    vm.expectRevert();
-    superRareBazaar.settleAuction(address(sfn), 1);
-
-    console2.log("After Attack: SuperRareBazaar ETH Balance:", address(superRareBazaar).balance);
-  }
-
-  receive() external payable {
-    console2.log("Amount Recieved by Attacker:", msg.value);
-  }
 }
