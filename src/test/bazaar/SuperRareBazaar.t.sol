@@ -95,11 +95,6 @@ contract SuperRareBazaarTest is Test {
                         Mock Calls
     ///////////////////////////////////////////////////*/
     vm.mockCall(
-      stakingRegistry,
-      abi.encodeWithSelector(IRareStakingRegistry.getRewardAccumulatorAddressForUser.selector, exploiter1),
-      abi.encode(address(0))
-    );
-    vm.mockCall(
       marketplaceSettings,
       abi.encodeWithSelector(IStakingSettings.calculateMarketplacePayoutFee.selector, TARGET_AMOUNT),
       abi.encode((TARGET_AMOUNT * 3) / 100)
