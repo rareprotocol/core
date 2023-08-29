@@ -89,6 +89,14 @@ contract SuperRareBazaarTest is Test {
     vm.etch(approvedTokenRegistry, address(superRareToken).code);
   }
 
+  function test_auctions_with_eth_sucess() public {
+
+  }
+
+  function test_auctions_with_erc20_success() public {
+
+  }
+
   function test_convert_offer_currency_exploit() external {
 
     /*///////////////////////////////////////////////////

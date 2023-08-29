@@ -59,8 +59,8 @@ contract SuperRareAuctionHouse is
       require(staleBid.bidder == address(0), "configureAuction::bid shouldnt exist");
 
       require(
-        auction.auctionType == NO_AUCTION || auction.auctionCreator != msg.sender,
-        "configureAuction::Cannot have a current auction."
+        auction.auctionType == NO_AUCTION || (auction.auctionCreator != msg.sender),
+        "configureAuction::Cannot have a current auction"
       );
 
       require(_lengthOfAuction > 0, "configureAuction::Length must be > 0");
@@ -134,6 +134,11 @@ contract SuperRareAuctionHouse is
     require(
       auction.auctionType == NO_AUCTION || auction.auctionCreator != msg.sender,
       "convertOfferToAuction::Cannot have a current auction."
+    );
+
+    require(
+      auction.startingTime == 0 || block.timestamp < auction.startingTime,
+      "convertOfferToAuction::Auction must not have started."
     );
 
     require(_lengthOfAuction <= maxAuctionLength, "convertOfferToAuction::Auction too long.");
