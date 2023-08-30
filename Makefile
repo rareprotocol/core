@@ -13,4 +13,4 @@ build: ## Build the smart contracts with foundry.
 
 .PHONY: test
 test: ## Run foundry unit tests.
-	@bash -l -c 'forge test'
+	@bash -l -c 'forge test --no-match-path src/test/forks/**/*.sol'
