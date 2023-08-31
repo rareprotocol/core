@@ -337,6 +337,7 @@ contract SuperRareAuctionHouse is
 
     if (currBid.bidder == address(0)) {
       erc721.transferFrom(address(this), auction.auctionCreator, _tokenId);
+      require(erc721.ownerOf(_tokenId) == auction.auctionCreator , "settleAuction::Failed to return token to auction creator");
     } else {
       erc721.transferFrom(address(this), currBid.bidder, _tokenId);
 
@@ -351,9 +352,9 @@ contract SuperRareAuctionHouse is
       );
 
       marketplaceSettings.markERC721Token(_originContract, _tokenId, true);
+      require(erc721.ownerOf(_tokenId) == currBid.bidder , "settleAuction::Failed to transfer to auction winner");
     }
 
-    require(erc721.ownerOf(_tokenId) == currBid.bidder, "sending failed");
 
     emit AuctionSettled(
       _originContract,
