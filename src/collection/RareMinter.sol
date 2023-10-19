@@ -20,25 +20,11 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
   using MarketConfig for MarketConfig.Config;
 
   //////////////////////////////////////////////////////////////////////////
-  //                      Structs
-  //////////////////////////////////////////////////////////////////////////
-  struct DirectSaleConfig {
-    address seller;
-    address currencyAddress;
-    uint256 price;
-    address payable[] splitRecipients;
-    uint8[] splitRatios;
-  }
-
-  //////////////////////////////////////////////////////////////////////////
   //                      Private Storage
   //////////////////////////////////////////////////////////////////////////
 
   // Config for the market actions
   MarketConfig.Config private marketConfig;
-
-  /// @dev Flag to show if the contract is paused or not
-  bool private paused;
 
   // Mapping of contract address to direct sale config
   mapping(address => DirectSaleConfig) private directSaleConfigs;
@@ -74,14 +60,8 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
   //////////////////////////////////////////////////////////////////////////
   function getDirectSaleConfig(
     address _contractAddress
-  ) external view returns (address, address, uint256, address payable[] memory, uint8[] memory) {
-    return (
-      directSaleConfigs[_contractAddress].seller,
-      directSaleConfigs[_contractAddress].currencyAddress,
-      directSaleConfigs[_contractAddress].price,
-      directSaleConfigs[_contractAddress].splitRecipients,
-      directSaleConfigs[_contractAddress].splitRatios
-    );
+  ) external view returns (DirectSaleConfig memory) {
+    return directSaleConfigs[_contractAddress];
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -91,6 +71,7 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
     address _contractAddress,
     address _currencyAddress,
     uint256 _price,
+    uint256 _startTime,
     address payable[] calldata _splitRecipients,
     uint8[] calldata _splitRatios
   ) external {
@@ -102,6 +83,7 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
       msg.sender,
       _currencyAddress,
       _price,
+      _startTime,
       _splitRecipients,
       _splitRatios
     );
@@ -109,18 +91,32 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
   }
 
   function mintDirectSale(address _contractAddress, address _currencyAddress, uint256 _price) external payable {
-    uint256 requiredAmount = _price + marketConfig.marketplaceSettings.calculateMarketplaceFee(_price);
     DirectSaleConfig memory directSaleConfig = directSaleConfigs[_contractAddress];
+    // Perform checks
+    require(directSaleConfig.startTime <= block.timestamp, "mintDirectSale::Sale has not started");
     require(directSaleConfig.seller != address(0), "mintDirectSale::Contract not prepared for direct sale");
     require(_price == directSaleConfig.price, "mintDirectSale::Price does not match required price");
     require(
       directSaleConfig.currencyAddress == _currencyAddress,
       "mintDirectSale::Currency does not match required currency"
     );
+
+    // If free mint, ignore payout
+    if (directSaleConfig.price == 0) {
+      uint256 tokenIdFreeMint = IERC721Mint(_contractAddress).mintTo(msg.sender);
+      try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, tokenIdFreeMint, true) {} catch {}
+      emit MintDirectSale(_contractAddress, directSaleConfig.seller, msg.sender, tokenIdFreeMint, _currencyAddress, _price);
+      return;
+    }
+
+    // Check amount 
+    uint256 requiredAmount = _price + marketConfig.marketplaceSettings.calculateMarketplaceFee(_price);
     MarketUtils.checkAmountAndTransfer(_currencyAddress, requiredAmount);
 
+    // Mint the token
     uint256 tokenId = IERC721Mint(_contractAddress).mintTo(msg.sender);
 
+    // Perform payout
     marketConfig.payout(
       _contractAddress,
       tokenId,
@@ -130,7 +126,10 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
       directSaleConfig.splitRecipients,
       directSaleConfig.splitRatios
     );
+
+    // Attempt to mark token as sold. If not ignore
     try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, tokenId, true) {} catch {}
+
     emit MintDirectSale(_contractAddress, directSaleConfig.seller, msg.sender, tokenId, _currencyAddress, _price);
   }
 
@@ -167,7 +166,4 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
     marketConfig.updateApprovedTokenRegistry(_approvedTokenRegistry);
   }
 
-  function setContractPaused(bool _isPaused) external onlyOwner {
-    paused = _isPaused;
-  }
 }

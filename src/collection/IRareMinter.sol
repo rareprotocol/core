@@ -6,6 +6,18 @@ pragma solidity ^0.8.0;
 /// @notice Interface for the RareMinter
 interface IRareMinter {
   //////////////////////////////////////////////////////////////////////////
+  //                      Structs
+  //////////////////////////////////////////////////////////////////////////
+  struct DirectSaleConfig {
+    address seller;
+    address currencyAddress;
+    uint256 price;
+    uint256 startTime;
+    address payable[] splitRecipients;
+    uint8[] splitRatios;
+  }
+
+  //////////////////////////////////////////////////////////////////////////
   //                      Events
   //////////////////////////////////////////////////////////////////////////
   event PrepareMintDirectSale(
@@ -32,10 +44,8 @@ interface IRareMinter {
 
   /// @notice Gets the direct sale config for a contract
   /// @param _contractAddress address The address of the ERC721 contract
-  /// @return address The address of the currency to accept
-  function getDirectSaleConfig(
-    address _contractAddress
-  ) external view returns (address, address, uint256, address payable[] memory, uint8[] memory);
+  /// @return DirectSaleConfig The direct sale config
+  function getDirectSaleConfig(address _contractAddress) external view returns (DirectSaleConfig memory);
 
   //////////////////////////////////////////////////////////////////////////
   //                        External Write Functions
@@ -51,6 +61,7 @@ interface IRareMinter {
     address _contractAddress,
     address _currencyAddress,
     uint256 _price,
+    uint256 _startTime,
     address payable[] calldata _splitRecipients,
     uint8[] calldata _splitRatios
   ) external;
