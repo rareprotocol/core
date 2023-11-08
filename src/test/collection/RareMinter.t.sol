@@ -63,7 +63,6 @@ contract TestRareMinter is Test {
 
   address zeroAddress = address(0);
   uint256 tokenId = 1;
-  uint256 amount = 1 ether;
   uint8 marketplaceFeePercentage = 3;
 
   address currencyAddress;
@@ -110,6 +109,9 @@ contract TestRareMinter is Test {
   function test_prepareMintDirectSale() public {
     vm.prank(deployer);
     testErc721.transferOwnership(alice);
+    uint8 numMints = 3;
+    uint256 price = 1 ether;
+    uint256 amount = price * numMints;
 
     // Prep args
     address payable[] memory splitRecipients = new address payable[](1);
@@ -122,7 +124,7 @@ contract TestRareMinter is Test {
     rareMinter.prepareMintDirectSale(
       address(testErc721),
       currencyAddress,
-      amount,
+      price,
       startTime,
       splitRecipients,
       splitRatios
@@ -143,8 +145,8 @@ contract TestRareMinter is Test {
       revert("incorrect currency address");
     }
 
-    if (config.price != amount) {
-      emit log_named_uint("Expected: price", amount);
+    if (config.price != price) {
+      emit log_named_uint("Expected: price", price);
       emit log_named_uint("Actual: price", config.price);
       revert("incorrect price");
     }
@@ -166,9 +168,11 @@ contract TestRareMinter is Test {
     }
   }
 
-
   function test_mintDirectSale_erc20() public {
     address seller = alice;
+    uint8 numMints = 3;
+    uint256 price = 1 ether;
+    uint256 amount = price * numMints;
     mockPayout(amount, seller);
 
     vm.prank(deployer);
@@ -186,7 +190,7 @@ contract TestRareMinter is Test {
     rareMinter.prepareMintDirectSale(
       address(testErc721),
       currencyAddress,
-      amount,
+      price,
       startTime,
       splitRecipients,
       splitRatios
@@ -198,7 +202,7 @@ contract TestRareMinter is Test {
     // Warp to start time
     vm.warp(block.timestamp + 60);
     vm.startPrank(charlie);
-    rareMinter.mintDirectSale(address(testErc721), currencyAddress, amount);
+    rareMinter.mintDirectSale(address(testErc721), currencyAddress, price, numMints);
     vm.stopPrank();
 
     // Check that the token was minted
@@ -234,6 +238,9 @@ contract TestRareMinter is Test {
 
   function test_mintDirectSale_eth() public {
     address seller = alice;
+    uint8 numMints = 3;
+    uint256 price = 1 ether;
+    uint256 amount = price * numMints;
     mockPayout(amount, seller);
     vm.prank(deployer);
     testErc721.transferOwnership(alice);
@@ -246,7 +253,7 @@ contract TestRareMinter is Test {
     uint256 startTime = block.timestamp + 60;
 
     vm.startPrank(alice);
-    rareMinter.prepareMintDirectSale(address(testErc721), address(0), amount, startTime, splitRecipients, splitRatios);
+    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, splitRecipients, splitRatios);
     vm.stopPrank();
 
     uint256 charlieBalanceBefore = charlie.balance;
@@ -254,7 +261,7 @@ contract TestRareMinter is Test {
     // Warp to start time
     vm.warp(block.timestamp + 60);
     vm.startPrank(charlie);
-    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), amount);
+    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), price, numMints);
     vm.stopPrank();
 
     // Check that the token was minted
@@ -288,8 +295,87 @@ contract TestRareMinter is Test {
     }
   }
 
-function test_mintDirectSale_free() public {
+  function test_mintDirectSale_hasSold() public {
+    // setup has hasERC721TokenSold -- false
     address seller = alice;
+    address payable[] memory royaltyReceiverAddrs = new address payable[](1);
+    uint256[] memory royaltyAmounts = new uint256[](1);
+    uint8 numMints = 3;
+    uint256 price = 1 ether;
+    uint256 amount = price * numMints;
+    royaltyReceiverAddrs[0] = payable(seller);
+    royaltyAmounts[0] = (amount * 10) / 100;
+    mockPayout(amount, seller);
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IMarketplaceSettings.hasERC721TokenSold.selector, address(testErc721), 1),
+      abi.encode(true)
+    );
+    // setup has getRoyalty -- 10%
+    vm.mockCall(
+      royaltyEngine,
+      abi.encodeWithSelector(IRoyaltyEngineV1.getRoyalty.selector, testErc721, 1, amount),
+      abi.encode(royaltyReceiverAddrs, royaltyAmounts)
+    );
+
+    vm.prank(deployer);
+    testErc721.transferOwnership(alice);
+
+    // Prepare the mint
+    address payable[] memory splitRecipients = new address payable[](1);
+    uint8[] memory splitRatios = new uint8[](1);
+    splitRecipients[0] = payable(alice);
+    splitRatios[0] = 100;
+    uint256 startTime = block.timestamp + 60;
+
+    vm.startPrank(alice);
+    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, splitRecipients, splitRatios);
+    vm.stopPrank();
+
+    uint256 charlieBalanceBefore = charlie.balance;
+    uint256 aliceBalanceBefore = alice.balance;
+    // Warp to start time
+    vm.warp(block.timestamp + 60);
+    vm.startPrank(charlie);
+    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), price, numMints);
+    vm.stopPrank();
+
+    // Check that the token was minted
+    address tokenOwner = testErc721.ownerOf(1);
+    if (charlie != tokenOwner) {
+      emit log_named_address("Expected: tokenOwner", charlie);
+      emit log_named_address("Actual: tokenOwner", tokenOwner);
+      revert("incorrect tokenOwner");
+    }
+
+    // Check Payment
+    uint256 charlieBalanceAfter = charlie.balance;
+    uint256 actualDifferenceCharlie = charlieBalanceBefore - charlieBalanceAfter;
+    uint256 expectedDifferenceCharlie = amount + (amount * 3) / 100;
+    if (actualDifferenceCharlie != expectedDifferenceCharlie) {
+      emit log_named_uint("Expected: difference ", expectedDifferenceCharlie);
+      emit log_named_uint("Actual: difference", actualDifferenceCharlie);
+      emit log_named_uint("charlieBalanceBefore", charlieBalanceBefore);
+      emit log_named_uint("charlieBalanceAfter", charlieBalanceAfter);
+      revert("incorrect  payment for mint");
+    }
+    uint256 aliceBalanceAfter = alice.balance;
+    uint256 actualDifference = aliceBalanceAfter - aliceBalanceBefore;
+    uint256 expectedDifference = amount;
+    if (actualDifference != expectedDifference) {
+      emit log_named_uint("Expected: difference ", expectedDifference);
+      emit log_named_uint("Actual: difference", actualDifference);
+      emit log_named_uint("aliceBalanceBefore", aliceBalanceBefore);
+      emit log_named_uint("aliceBalanceAfter", aliceBalanceAfter);
+      revert("incorrect  payment for mint");
+    }
+  }
+
+  function test_mintDirectSale_free() public {
+    address seller = alice;
+    uint8 numMints = 3;
+    uint256 price = 1 ether;
+    uint256 amount = price * numMints;
     mockPayout(amount, seller);
     vm.prank(deployer);
     testErc721.transferOwnership(alice);
@@ -310,7 +396,7 @@ function test_mintDirectSale_free() public {
     // Warp to start time
     vm.warp(block.timestamp + 60);
     vm.startPrank(charlie);
-    rareMinter.mintDirectSale(address(testErc721), address(0), 0);
+    rareMinter.mintDirectSale(address(testErc721), address(0), 0, numMints);
     vm.stopPrank();
 
     // Check that the token was minted
@@ -343,8 +429,12 @@ function test_mintDirectSale_free() public {
       revert("incorrect  payment for free mint");
     }
   }
+
   function test_mintDirectSale_fail_startTime() public {
     address seller = alice;
+    uint8 numMints = 3;
+    uint256 price = 1 ether;
+    uint256 amount = price * numMints;
     mockPayout(amount, seller);
     vm.prank(deployer);
     testErc721.transferOwnership(alice);
@@ -357,32 +447,37 @@ function test_mintDirectSale_free() public {
     uint256 startTime = block.timestamp + 60;
 
     vm.startPrank(alice);
-    rareMinter.prepareMintDirectSale(address(testErc721), address(0), amount, startTime, splitRecipients, splitRatios);
+    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, splitRecipients, splitRatios);
     vm.stopPrank();
 
     // Warp to start time
     vm.startPrank(charlie);
     vm.expectRevert();
-    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), amount);
+    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), price, 3);
     vm.stopPrank();
-
   }
 
   function test_mintDirectSale_fail_not_configured() public {
     address seller = alice;
+    uint8 numMints = 3;
+    uint256 price = 1 ether;
+    uint256 amount = price * numMints;
     mockPayout(amount, seller);
     vm.prank(deployer);
     testErc721.transferOwnership(alice);
 
     vm.startPrank(charlie);
     vm.expectRevert();
-    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), amount);
+    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), price, 3);
     vm.stopPrank();
-
   }
 
   function test_mintDirectSale_fail_wrong_price() public {
     address seller = alice;
+    uint8 numMints = 3;
+    uint256 price = 1 ether;
+    uint256 wrongPrice = 0.5 ether;
+    uint256 amount = wrongPrice * numMints;
     mockPayout(amount, seller);
     vm.prank(deployer);
     testErc721.transferOwnership(alice);
@@ -395,7 +490,7 @@ function test_mintDirectSale_free() public {
     uint256 startTime = block.timestamp + 60;
 
     vm.startPrank(alice);
-    rareMinter.prepareMintDirectSale(address(testErc721), address(0), amount, startTime, splitRecipients, splitRatios);
+    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, splitRecipients, splitRatios);
     vm.stopPrank();
 
     // Warp to start time
@@ -403,13 +498,15 @@ function test_mintDirectSale_free() public {
 
     vm.startPrank(charlie);
     vm.expectRevert();
-    rareMinter.mintDirectSale{value: 0.5 ether + (0.5 ether * 3) / 100}(address(testErc721), address(0), 0.5 ether);
+    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), wrongPrice, 3);
     vm.stopPrank();
-
   }
 
   function test_mintDirectSale_fail_wrong_currency() public {
     address seller = alice;
+    uint8 numMints = 3;
+    uint256 price = 1 ether;
+    uint256 amount = price * numMints;
     mockPayout(amount, seller);
     vm.prank(deployer);
     testErc721.transferOwnership(alice);
@@ -422,7 +519,7 @@ function test_mintDirectSale_free() public {
     uint256 startTime = block.timestamp + 60;
 
     vm.startPrank(alice);
-    rareMinter.prepareMintDirectSale(address(testErc721), address(0), amount, startTime, splitRecipients, splitRatios);
+    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, splitRecipients, splitRatios);
     vm.stopPrank();
 
     // Warp to start time
@@ -430,9 +527,8 @@ function test_mintDirectSale_free() public {
 
     vm.startPrank(charlie);
     vm.expectRevert();
-    rareMinter.mintDirectSale(address(testErc721), currencyAddress, amount);
+    rareMinter.mintDirectSale(address(testErc721), currencyAddress, price, 3);
     vm.stopPrank();
-
   }
 
   function mockPayout(uint256 _amount, address _seller) internal {

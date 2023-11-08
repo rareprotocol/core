@@ -58,9 +58,7 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
   //////////////////////////////////////////////////////////////////////////
   //                      External Read Functions
   //////////////////////////////////////////////////////////////////////////
-  function getDirectSaleConfig(
-    address _contractAddress
-  ) external view returns (DirectSaleConfig memory) {
+  function getDirectSaleConfig(address _contractAddress) external view returns (DirectSaleConfig memory) {
     return directSaleConfigs[_contractAddress];
   }
 
@@ -90,9 +88,15 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
     emit PrepareMintDirectSale(_contractAddress, _currencyAddress, msg.sender, _price, _splitRecipients, _splitRatios);
   }
 
-  function mintDirectSale(address _contractAddress, address _currencyAddress, uint256 _price) external payable {
+  function mintDirectSale(
+    address _contractAddress,
+    address _currencyAddress,
+    uint256 _price,
+    uint8 _numMints
+  ) external payable {
     DirectSaleConfig memory directSaleConfig = directSaleConfigs[_contractAddress];
     // Perform checks
+    require(_numMints > 0, "mintDirectSale::Mints must be greater than 0");
     require(directSaleConfig.startTime <= block.timestamp, "mintDirectSale::Sale has not started");
     require(directSaleConfig.seller != address(0), "mintDirectSale::Contract not prepared for direct sale");
     require(_price == directSaleConfig.price, "mintDirectSale::Price does not match required price");
@@ -100,37 +104,44 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
       directSaleConfig.currencyAddress == _currencyAddress,
       "mintDirectSale::Currency does not match required currency"
     );
-
-    // If free mint, ignore payout
-    if (directSaleConfig.price == 0) {
-      uint256 tokenIdFreeMint = IERC721Mint(_contractAddress).mintTo(msg.sender);
-      try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, tokenIdFreeMint, true) {} catch {}
-      emit MintDirectSale(_contractAddress, directSaleConfig.seller, msg.sender, tokenIdFreeMint, _currencyAddress, _price);
-      return;
+    uint256 totalPrice = _numMints * _price;
+    // Check amount
+    if (directSaleConfig.price != 0) {
+      uint256 requiredAmount = totalPrice + marketConfig.marketplaceSettings.calculateMarketplaceFee(totalPrice);
+      MarketUtils.checkAmountAndTransfer(_currencyAddress, requiredAmount);
     }
 
-    // Check amount 
-    uint256 requiredAmount = _price + marketConfig.marketplaceSettings.calculateMarketplaceFee(_price);
-    MarketUtils.checkAmountAndTransfer(_currencyAddress, requiredAmount);
-
-    // Mint the token
-    uint256 tokenId = IERC721Mint(_contractAddress).mintTo(msg.sender);
+    // Perform Mint
+    uint256 tokenIdStart = IERC721Mint(_contractAddress).mintTo(msg.sender); // get first Token Id in range of mint
+    try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, tokenIdStart, true) {} catch {}
+    for (uint256 i = 1; i < _numMints; i++) {
+      // Start with offset of 1 since already minted first
+      IERC721Mint(_contractAddress).mintTo(msg.sender);
+      try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, tokenIdStart + i, true) {} catch {}
+    }
 
     // Perform payout
-    marketConfig.payout(
+    if (directSaleConfig.price != 0) {
+      marketConfig.payout(
+        _contractAddress,
+        tokenIdStart,
+        _currencyAddress,
+        totalPrice,
+        directSaleConfig.seller,
+        directSaleConfig.splitRecipients,
+        directSaleConfig.splitRatios
+      );
+    }
+
+    emit MintDirectSale(
       _contractAddress,
-      tokenId,
-      _currencyAddress,
-      _price,
       directSaleConfig.seller,
-      directSaleConfig.splitRecipients,
-      directSaleConfig.splitRatios
+      msg.sender,
+      tokenIdStart,
+      tokenIdStart + _numMints - 1,
+      _currencyAddress,
+      _price
     );
-
-    // Attempt to mark token as sold. If not ignore
-    try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, tokenId, true) {} catch {}
-
-    emit MintDirectSale(_contractAddress, directSaleConfig.seller, msg.sender, tokenId, _currencyAddress, _price);
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -165,5 +176,4 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
   function setApprovedTokenRegistry(address _approvedTokenRegistry) external onlyOwner {
     marketConfig.updateApprovedTokenRegistry(_approvedTokenRegistry);
   }
-
 }

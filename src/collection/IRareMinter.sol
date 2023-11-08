@@ -33,7 +33,8 @@ interface IRareMinter {
     address indexed _contractAddress,
     address indexed _seller,
     address indexed _buyer,
-    uint256 _tokenId,
+    uint256 _tokenIdStart,
+    uint256 _tokenIdEnd,
     address _currency,
     uint256 _price
   );
@@ -70,5 +71,6 @@ interface IRareMinter {
   /// @param _contractAddress address The address of the ERC721 contract
   /// @param _currencyAddress address The address of the currency
   /// @param _price uint256 The price to mint
-  function mintDirectSale(address _contractAddress, address _currencyAddress, uint256 _price) external payable;
+  /// @param numMints uint8 The number of tokens to be minted
+  function mintDirectSale(address _contractAddress, address _currencyAddress, uint256 _price, uint8 numMints) external payable;
 }
