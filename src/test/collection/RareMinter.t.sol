@@ -62,6 +62,7 @@ contract TestRareMinter is Test {
   address networkBeneficiary = address(0xabadabaa);
 
   address zeroAddress = address(0);
+  bytes32[] emptyProof = new bytes32[](0);
   uint256 tokenId = 1;
   uint8 marketplaceFeePercentage = 3;
 
@@ -126,6 +127,7 @@ contract TestRareMinter is Test {
       currencyAddress,
       price,
       startTime,
+      0,
       splitRecipients,
       splitRatios
     );
@@ -192,6 +194,7 @@ contract TestRareMinter is Test {
       currencyAddress,
       price,
       startTime,
+      0,
       splitRecipients,
       splitRatios
     );
@@ -202,7 +205,7 @@ contract TestRareMinter is Test {
     // Warp to start time
     vm.warp(block.timestamp + 60);
     vm.startPrank(charlie);
-    rareMinter.mintDirectSale(address(testErc721), currencyAddress, price, numMints);
+    rareMinter.mintDirectSale(address(testErc721), currencyAddress, price, numMints, emptyProof);
     vm.stopPrank();
 
     // Check that the token was minted
@@ -253,7 +256,7 @@ contract TestRareMinter is Test {
     uint256 startTime = block.timestamp + 60;
 
     vm.startPrank(alice);
-    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, splitRecipients, splitRatios);
+    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, 0, splitRecipients, splitRatios);
     vm.stopPrank();
 
     uint256 charlieBalanceBefore = charlie.balance;
@@ -261,7 +264,7 @@ contract TestRareMinter is Test {
     // Warp to start time
     vm.warp(block.timestamp + 60);
     vm.startPrank(charlie);
-    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), price, numMints);
+    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), price, numMints, emptyProof);
     vm.stopPrank();
 
     // Check that the token was minted
@@ -329,7 +332,7 @@ contract TestRareMinter is Test {
     uint256 startTime = block.timestamp + 60;
 
     vm.startPrank(alice);
-    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, splitRecipients, splitRatios);
+    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, 0, splitRecipients, splitRatios);
     vm.stopPrank();
 
     uint256 charlieBalanceBefore = charlie.balance;
@@ -337,7 +340,7 @@ contract TestRareMinter is Test {
     // Warp to start time
     vm.warp(block.timestamp + 60);
     vm.startPrank(charlie);
-    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), price, numMints);
+    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), price, numMints, emptyProof);
     vm.stopPrank();
 
     // Check that the token was minted
@@ -388,7 +391,7 @@ contract TestRareMinter is Test {
     uint256 startTime = block.timestamp + 60;
 
     vm.startPrank(alice);
-    rareMinter.prepareMintDirectSale(address(testErc721), address(0), 0, startTime, splitRecipients, splitRatios);
+    rareMinter.prepareMintDirectSale(address(testErc721), address(0), 0, startTime, 0, splitRecipients, splitRatios);
     vm.stopPrank();
 
     uint256 charlieBalanceBefore = charlie.balance;
@@ -396,7 +399,7 @@ contract TestRareMinter is Test {
     // Warp to start time
     vm.warp(block.timestamp + 60);
     vm.startPrank(charlie);
-    rareMinter.mintDirectSale(address(testErc721), address(0), 0, numMints);
+    rareMinter.mintDirectSale(address(testErc721), address(0), 0, numMints, emptyProof);
     vm.stopPrank();
 
     // Check that the token was minted
@@ -447,13 +450,13 @@ contract TestRareMinter is Test {
     uint256 startTime = block.timestamp + 60;
 
     vm.startPrank(alice);
-    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, splitRecipients, splitRatios);
+    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, 0, splitRecipients, splitRatios);
     vm.stopPrank();
 
     // Warp to start time
     vm.startPrank(charlie);
     vm.expectRevert();
-    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), price, 3);
+    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), price, 3, emptyProof);
     vm.stopPrank();
   }
 
@@ -468,7 +471,7 @@ contract TestRareMinter is Test {
 
     vm.startPrank(charlie);
     vm.expectRevert();
-    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), price, 3);
+    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), price, 3, emptyProof);
     vm.stopPrank();
   }
 
@@ -490,7 +493,7 @@ contract TestRareMinter is Test {
     uint256 startTime = block.timestamp + 60;
 
     vm.startPrank(alice);
-    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, splitRecipients, splitRatios);
+    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, 0, splitRecipients, splitRatios);
     vm.stopPrank();
 
     // Warp to start time
@@ -498,7 +501,7 @@ contract TestRareMinter is Test {
 
     vm.startPrank(charlie);
     vm.expectRevert();
-    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), wrongPrice, 3);
+    rareMinter.mintDirectSale{value: amount + (amount * 3) / 100}(address(testErc721), address(0), wrongPrice, 3, emptyProof);
     vm.stopPrank();
   }
 
@@ -519,7 +522,7 @@ contract TestRareMinter is Test {
     uint256 startTime = block.timestamp + 60;
 
     vm.startPrank(alice);
-    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, splitRecipients, splitRatios);
+    rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, 0, splitRecipients, splitRatios);
     vm.stopPrank();
 
     // Warp to start time
@@ -527,7 +530,7 @@ contract TestRareMinter is Test {
 
     vm.startPrank(charlie);
     vm.expectRevert();
-    rareMinter.mintDirectSale(address(testErc721), currencyAddress, price, 3);
+    rareMinter.mintDirectSale(address(testErc721), currencyAddress, price, 3, emptyProof);
     vm.stopPrank();
   }
 

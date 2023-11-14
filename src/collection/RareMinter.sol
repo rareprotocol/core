@@ -29,6 +29,9 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
   // Mapping of contract address to direct sale config
   mapping(address => DirectSaleConfig) private directSaleConfigs;
 
+  // Mapping of contract address to direct sale config
+  mapping(address => AllowListConfig) private contractAllowlistRoots;
+
   //////////////////////////////////////////////////////////////////////////
   //                      Initializer
   //////////////////////////////////////////////////////////////////////////
@@ -70,6 +73,7 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
     address _currencyAddress,
     uint256 _price,
     uint256 _startTime,
+    uint256 _maxMints,
     address payable[] calldata _splitRecipients,
     uint8[] calldata _splitRatios
   ) external {
@@ -82,21 +86,34 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
       _currencyAddress,
       _price,
       _startTime,
+      _maxMints,
       _splitRecipients,
       _splitRatios
     );
-    emit PrepareMintDirectSale(_contractAddress, _currencyAddress, msg.sender, _price, _splitRecipients, _splitRatios);
+    emit PrepareMintDirectSale(_contractAddress, _currencyAddress, msg.sender, _price, _startTime, _maxMints, _splitRecipients, _splitRatios);
+  }
+
+  function setContractAllowListConfig(bytes32 _root, uint256 _endTimestamp, address _contractAddress) external {
+    require(
+      msg.sender == OwnableUpgradeable(_contractAddress).owner(),
+      "setContractAllowListConfig::Only contract owner can set"
+    );
+    contractAllowlistRoots[_contractAddress] = AllowListConfig(_root, _endTimestamp);
+    emit SetContractAllowListConfig(_root, _endTimestamp, _contractAddress);
   }
 
   function mintDirectSale(
     address _contractAddress,
     address _currencyAddress,
     uint256 _price,
-    uint8 _numMints
-  ) external payable {
+    uint8 _numMints,
+    bytes32[] calldata _proof
+  ) external payable nonReentrant {
     DirectSaleConfig memory directSaleConfig = directSaleConfigs[_contractAddress];
     // Perform checks
+    _enforceContractAllowList(_contractAddress, msg.sender, _proof);
     require(_numMints > 0, "mintDirectSale::Mints must be greater than 0");
+    require(directSaleConfig.maxMints == 0 || _numMints <= directSaleConfig.maxMints, "mintDirectSale::Mints must be less than maxMint if enabled");
     require(directSaleConfig.startTime <= block.timestamp, "mintDirectSale::Sale has not started");
     require(directSaleConfig.seller != address(0), "mintDirectSale::Contract not prepared for direct sale");
     require(_price == directSaleConfig.price, "mintDirectSale::Price does not match required price");
@@ -175,5 +192,52 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
 
   function setApprovedTokenRegistry(address _approvedTokenRegistry) external onlyOwner {
     marketConfig.updateApprovedTokenRegistry(_approvedTokenRegistry);
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+  //                      Internal Write Functions
+  //////////////////////////////////////////////////////////////////////////
+  /// @notice Checks to see if the address is on the contract allow list
+  /// @param _contractAddress address The address of the ERC721 contract
+  /// @param _address address The address of to be checked against the allow list
+  function _enforceContractAllowList(
+    address _contractAddress,
+    address _address,
+    bytes32[] memory _proof
+  ) internal view {
+    bytes32 root = contractAllowlistRoots[_contractAddress].root;
+
+    // disabled, everyone is allowed
+    if (root == bytes32(0)) {
+      return;
+    }
+    // allow list is expired, everyone is allowed
+    if (block.timestamp >= contractAllowlistRoots[_contractAddress].endTimestamp) {
+      return;
+    }
+    require(
+      _verifyProof(keccak256(abi.encodePacked(_address)), root, _proof),
+      "_enforceAllowListed::Address not on allow list"
+    );
+  }
+
+  /// @notice Verify a proof of inclusion
+  /// @param _leaf bytes32 The leaf to verify
+  /// @param _proof bytes32[] The proof to verify
+  function _verifyProof(bytes32 _leaf, bytes32 _root, bytes32[] memory _proof) internal view returns (bool) {
+    bytes32 currentHash = _leaf;
+
+    for (uint256 i = 0; i < _proof.length; i++) {
+      currentHash = _parentHash(currentHash, _proof[i]);
+    }
+
+    return currentHash == _root;
+  }
+
+  /// @notice Calculate the parent hash of two nodes
+  /// @param a bytes32 The first node
+  /// @param b bytes32 The second node
+  function _parentHash(bytes32 a, bytes32 b) internal pure returns (bytes32) {
+    return a <= b ? keccak256(abi.encodePacked(a, b)) : keccak256(abi.encodePacked(b, a));
   }
 }
