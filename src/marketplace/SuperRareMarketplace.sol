@@ -83,6 +83,8 @@ contract SuperRareMarketplace is
     address _currencyAddress,
     uint256 _amount
   ) external payable override nonReentrant {
+    _checkIfCurrencyIsApproved(_currencyAddress);
+
     _ownerMustHaveMarketplaceApprovedForNFT(_originContract, _tokenId);
 
     uint256 requiredAmount = _amount + marketplaceSettings.calculateMarketplaceFee(_amount);
@@ -90,6 +92,8 @@ contract SuperRareMarketplace is
     mapping(address => SalePrice) storage salePrices = tokenSalePrices[_originContract][_tokenId];
 
     SalePrice memory sp = salePrices[msg.sender].amount != 0 ? salePrices[msg.sender] : salePrices[address(0)];
+
+    require(sp.currencyAddress == _currencyAddress, "buy::Currency address not equal");
 
     require(sp.amount > 0, "buy::Token has no buy now price");
 
