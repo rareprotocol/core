@@ -60,6 +60,9 @@ interface IRareMinter {
   /// @notice Event emitted when a contract is set to a tx limit
   event ContractTxLimitSet(address indexed contractAddress, uint256 limit);
 
+  /// @notice Event emitted when a contract staking minimum amount staked is set
+  event ContractStakingMinimumSet(address indexed contractAddress, uint256 minimum);
+
   //////////////////////////////////////////////////////////////////////////
   //                        External Read Functions
   //////////////////////////////////////////////////////////////////////////
@@ -93,6 +96,9 @@ interface IRareMinter {
   /// @param _address address The address of the account to get the txs for
   function getContractTxsPerAddress(address _contractAddress, address _address) external view returns (uint256);
 
+  /// @notice Gets the staking minimum for the seller of a mint for a contract
+  /// @param _contractAddress address The address of the ERC721 contract
+  function getContractSellerStakingMinimum(address _contractAddress) external view returns (uint256);
   //////////////////////////////////////////////////////////////////////////
   //                        External Write Functions
   //////////////////////////////////////////////////////////////////////////
@@ -143,4 +149,9 @@ interface IRareMinter {
   /// @param _contractAddress address The address of the ERC721 contract
   /// @param _limit uint256 The limit to set
   function setContractTxLimit(address _contractAddress, uint256 _limit) external;
+
+  /// @notice Sets the staking minimum for the seller of a mint for a contract
+  /// @param _contractAddress address The address of the ERC721 contract
+  /// @param _minimum uint256 The minimum to set
+  function setContractSellerStakingMinimum(address _contractAddress, uint256 _minimum) external;
 }

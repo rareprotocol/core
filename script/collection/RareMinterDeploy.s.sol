@@ -38,5 +38,6 @@ contract RareMinterDeploy is Script {
       stakingSettings,
       stakingRegistry
     );
+
   }
 }

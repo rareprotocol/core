@@ -9,6 +9,7 @@ import {UUPSUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/utils/UU
 
 import {MarketConfig} from "../utils/structs/MarketConfig.sol";
 import {MarketUtils} from "../utils/MarketUtils.sol";
+import {IRarityPool} from "../staking/token/IRarityPool.sol";
 import {IERC721Mint} from "./IERC721Mint.sol";
 import {IRareMinter} from "./IRareMinter.sol";
 
@@ -43,6 +44,9 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
 
   // Mapping of contract address to address to total mints
   mapping(address => mapping(address => uint256)) private contractTxsPerAddress;
+
+  // Mapping of contract address to min amount staked on the seller to mint
+  mapping(address => uint256) private contractSellerStakingMinimum;
 
   //////////////////////////////////////////////////////////////////////////
   //                      Initializer
@@ -95,6 +99,10 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
 
   function getContractTxsPerAddress(address _contractAddress, address _address) external view returns (uint256) {
     return contractTxsPerAddress[_contractAddress][_address];
+  }
+
+  function getContractSellerStakingMinimum(address _contractAddress) external view returns (uint256) {
+    return contractSellerStakingMinimum[_contractAddress];
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -161,6 +169,16 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
     emit ContractTxLimitSet(_contractAddress, _limit);
   }
 
+  function setContractSellerStakingMinimum(address _contractAddress, uint256 _minimum) external {
+    require(
+      msg.sender == OwnableUpgradeable(_contractAddress).owner(),
+      "setContractSellerStakingMinimum::Only contract owner can set"
+    );
+    address pool = marketConfig.stakingRegistry.getStakingAddressForUser(msg.sender);
+    require(pool != address(0), "setContractSellerStakingMinimum::Seller does not have a pool");
+    contractSellerStakingMinimum[_contractAddress] = _minimum;
+  }
+
   function mintDirectSale(
     address _contractAddress,
     address _currencyAddress,
@@ -170,7 +188,16 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
   ) external payable nonReentrant {
     DirectSaleConfig memory directSaleConfig = directSaleConfigs[_contractAddress];
     // Perform checks
+
+    // Configured Check
+    require(directSaleConfig.seller != address(0), "mintDirectSale::Contract not prepared for direct sale");
+
+    // Merkle Proof Allow List Check
     _enforceContractAllowList(_contractAddress, msg.sender, _proof);
+
+    // Staking Allow List Check
+    _enforceContractSellerStakingMinimum(_contractAddress, directSaleConfig.seller);
+
     // Num Mint Check
     require(_numMints > 0, "mintDirectSale::Mints must be greater than 0");
 
@@ -195,9 +222,6 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
     );
     // Start Time Check
     require(directSaleConfig.startTime <= block.timestamp, "mintDirectSale::Sale has not started");
-
-    // Configured Check
-    require(directSaleConfig.seller != address(0), "mintDirectSale::Contract not prepared for direct sale");
 
     // Price Check
     require(_price == directSaleConfig.price, "mintDirectSale::Price does not match required price");
@@ -297,6 +321,21 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
   //////////////////////////////////////////////////////////////////////////
   //                      Internal Write Functions
   //////////////////////////////////////////////////////////////////////////
+  /// @notice Checks to see if the address is on the contract allow list
+  /// @param _contractAddress address The address of the ERC721 contract
+  /// @param _address address The address of the seller
+  function _enforceContractSellerStakingMinimum(address _contractAddress, address _address) internal view {
+    if (contractSellerStakingMinimum[_contractAddress] == 0) {
+      return;
+    }
+    uint256 amountStaked = IRarityPool(marketConfig.stakingRegistry.getStakingAddressForUser(_address))
+      .getAmountStakedByUser(msg.sender);
+    require(
+      amountStaked >= contractSellerStakingMinimum[_contractAddress],
+      "_enforceContractSellerStakingMinimum::Address not on staked enough"
+    );
+  }
+
   /// @notice Checks to see if the address is on the contract allow list
   /// @param _contractAddress address The address of the ERC721 contract
   /// @param _address address The address of to be checked against the allow list
