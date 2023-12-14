@@ -56,8 +56,6 @@ contract SuperRareMarketplace is
     IERC721 erc721 = IERC721(_originContract);
     require(erc721.ownerOf(_tokenId) != msg.sender, "offer::Offer cannot come from owner");
 
-    _refund(_currencyAddress, currOffer.amount, currOffer.marketplaceFee, currOffer.buyer);
-
     tokenCurrentOffers[_originContract][_tokenId][_currencyAddress] = Offer(
       payable(msg.sender),
       _amount,
@@ -65,6 +63,8 @@ contract SuperRareMarketplace is
       marketplaceSettings.getMarketplaceFeePercentage(),
       _convertible
     );
+
+    _refund(_currencyAddress, currOffer.amount, currOffer.marketplaceFee, currOffer.buyer);
 
     emit OfferPlaced(_originContract, msg.sender, _currencyAddress, _amount, _tokenId, _convertible);
   }
@@ -83,6 +83,8 @@ contract SuperRareMarketplace is
     address _currencyAddress,
     uint256 _amount
   ) external payable override nonReentrant {
+    _checkIfCurrencyIsApproved(_currencyAddress);
+
     _ownerMustHaveMarketplaceApprovedForNFT(_originContract, _tokenId);
 
     uint256 requiredAmount = _amount + marketplaceSettings.calculateMarketplaceFee(_amount);
@@ -91,6 +93,8 @@ contract SuperRareMarketplace is
 
     SalePrice memory sp = salePrices[msg.sender].amount != 0 ? salePrices[msg.sender] : salePrices[address(0)];
 
+    require(sp.currencyAddress == _currencyAddress, "buy::Currency address not equal");
+    
     require(sp.amount > 0, "buy::Token has no buy now price");
 
     IERC721 erc721 = IERC721(_originContract);
