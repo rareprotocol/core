@@ -46,7 +46,7 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
   mapping(address => mapping(address => uint256)) private contractTxsPerAddress;
 
   // Mapping of contract address to min amount staked on the seller to mint
-  mapping(address => uint256) private contractSellerStakingMinimum;
+  mapping(address => StakingMinimum) private contractSellerStakingMinimum;
 
   //////////////////////////////////////////////////////////////////////////
   //                      Initializer
@@ -101,7 +101,7 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
     return contractTxsPerAddress[_contractAddress][_address];
   }
 
-  function getContractSellerStakingMinimum(address _contractAddress) external view returns (uint256) {
+  function getContractSellerStakingMinimum(address _contractAddress) external view returns (StakingMinimum memory) {
     return contractSellerStakingMinimum[_contractAddress];
   }
 
@@ -169,14 +169,14 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
     emit ContractTxLimitSet(_contractAddress, _limit);
   }
 
-  function setContractSellerStakingMinimum(address _contractAddress, uint256 _minimum) external {
+  function setContractSellerStakingMinimum(address _contractAddress, uint256 _minimum, uint256 _endTimestamp) external {
     require(
       msg.sender == OwnableUpgradeable(_contractAddress).owner(),
       "setContractSellerStakingMinimum::Only contract owner can set"
     );
     address pool = marketConfig.stakingRegistry.getStakingAddressForUser(msg.sender);
     require(pool != address(0), "setContractSellerStakingMinimum::Seller does not have a pool");
-    contractSellerStakingMinimum[_contractAddress] = _minimum;
+    contractSellerStakingMinimum[_contractAddress] = StakingMinimum(_minimum, _endTimestamp);
   }
 
   function mintDirectSale(
@@ -325,13 +325,17 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
   /// @param _contractAddress address The address of the ERC721 contract
   /// @param _address address The address of the seller
   function _enforceContractSellerStakingMinimum(address _contractAddress, address _address) internal view {
-    if (contractSellerStakingMinimum[_contractAddress] == 0) {
+    if (contractSellerStakingMinimum[_contractAddress].amount == 0) {
+      return;
+    }
+    // list is expired, everyone is allowed
+    if (block.timestamp >= contractSellerStakingMinimum[_contractAddress].endTimestamp) {
       return;
     }
     uint256 amountStaked = IRarityPool(marketConfig.stakingRegistry.getStakingAddressForUser(_address))
       .getAmountStakedByUser(msg.sender);
     require(
-      amountStaked >= contractSellerStakingMinimum[_contractAddress],
+      amountStaked >= contractSellerStakingMinimum[_contractAddress].amount,
       "_enforceContractSellerStakingMinimum::Address not on staked enough"
     );
   }

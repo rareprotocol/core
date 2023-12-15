@@ -25,6 +25,12 @@ interface IRareMinter {
     uint256 endTimestamp;
   }
 
+  /// @notice Allow list config
+  struct StakingMinimum {
+    uint256 amount;
+    uint256 endTimestamp;
+  }
+
   //////////////////////////////////////////////////////////////////////////
   //                      Events
   //////////////////////////////////////////////////////////////////////////
@@ -61,7 +67,7 @@ interface IRareMinter {
   event ContractTxLimitSet(address indexed contractAddress, uint256 limit);
 
   /// @notice Event emitted when a contract staking minimum amount staked is set
-  event ContractStakingMinimumSet(address indexed contractAddress, uint256 minimum);
+  event ContractStakingMinimumSet(address indexed contractAddress, uint256 minimum, uint256 endTimestamp);
 
   //////////////////////////////////////////////////////////////////////////
   //                        External Read Functions
@@ -85,20 +91,24 @@ interface IRareMinter {
   /// @notice Gets the number of mints per address for a contract
   /// @param _contractAddress address The address of the ERC721 contract
   /// @param _address address The address of the account to get the mints for
+  /// @return uint256 The number of mints
   function getContractMintsPerAddress(address _contractAddress, address _address) external view returns (uint256);
 
   /// @notice Gets the tx limit for a contract
   /// @param _contractAddress address The address of the ERC721 contract
+  /// @return uint256 The tx limit
   function getContractTxLimit(address _contractAddress) external view returns (uint256);
 
   /// @notice Gets the number of txs per address for a contract
   /// @param _contractAddress address The address of the ERC721 contract
   /// @param _address address The address of the account to get the txs for
+  /// @return uint256 The number of txs
   function getContractTxsPerAddress(address _contractAddress, address _address) external view returns (uint256);
 
   /// @notice Gets the staking minimum for the seller of a mint for a contract
   /// @param _contractAddress address The address of the ERC721 contract
-  function getContractSellerStakingMinimum(address _contractAddress) external view returns (uint256);
+  /// @return StakingMinimum The staking minimum
+  function getContractSellerStakingMinimum(address _contractAddress) external view returns (StakingMinimum memory);
   //////////////////////////////////////////////////////////////////////////
   //                        External Write Functions
   //////////////////////////////////////////////////////////////////////////
@@ -153,5 +163,6 @@ interface IRareMinter {
   /// @notice Sets the staking minimum for the seller of a mint for a contract
   /// @param _contractAddress address The address of the ERC721 contract
   /// @param _minimum uint256 The minimum to set
-  function setContractSellerStakingMinimum(address _contractAddress, uint256 _minimum) external;
+  /// @param _endTimestamp uint256 The timestamp when the minimum ends
+  function setContractSellerStakingMinimum(address _contractAddress, uint256 _minimum, uint256 _endTimestamp) external;
 }
