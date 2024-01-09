@@ -34,3 +34,6 @@
 [submodule "lib/v3-core"]
 	path = lib/v3-core
 	url = https://github.com/rareprotocol/v3-core
+[submodule "lib/royalty-guard"]
+	path = lib/royalty-guard
+	url = https://github.com/rareprotocol/royalty-guard
