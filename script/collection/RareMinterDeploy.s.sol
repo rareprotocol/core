@@ -13,15 +13,17 @@ import "../../src/collection/RareMinter.sol";
 
 contract RareMinterDeploy is Script {
   function run() external {
-    vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
+    uint256 privateKey = vm.envUint("PRIVATE_KEY");
+    vm.startBroadcast(privateKey);
+    address addr = vm.addr(privateKey);
 
     // Get Market Config Values from .env
-    address networkBeneficiary = vm.envAddress("NETWORK_BENEFICIARY");
-    address marketplaceSettings = vm.envAddress("MARKETPLACE_SETTINGS");
+    address networkBeneficiary = addr;
+    address marketplaceSettings = vm.envAddress("SETTINGS_ADDRESS");
     address spaceOperatorRegistry = vm.envAddress("SPACE_OPERATOR_REGISTRY");
     address royaltyEngine = vm.envAddress("ROYALTY_ENGINE");
     address payments = vm.envAddress("PAYMENTS");
-    address approvedTokenRegistry = vm.envAddress("APPROVED_TOKEN_REGISTRY");
+    address approvedTokenRegistry = vm.envAddress("TOKEN_REGISTRY");
     address stakingSettings = vm.envAddress("STAKING_SETTINGS");
     address stakingRegistry = vm.envAddress("STAKING_REGISTRY");
 
