@@ -6,6 +6,7 @@ openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contr
 openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/
 royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/
 royalty-registry/=lib/royalty-registry-solidity/contracts/
+royalty-guard/=lib/royalty-guard/src/royalty-guard
 solmate/=lib/solmate/src/
 rareprotocol/assets/=lib/assets/src/
 rareprotocol/aux/=lib/aux/src/
