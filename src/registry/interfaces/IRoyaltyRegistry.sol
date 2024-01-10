@@ -6,7 +6,7 @@ import {ICreatorRegistry} from "./ICreatorRegistry.sol";
 /**
  * @title IERC721CreatorRoyalty Token level royalty interface.
  */
-interface IRoyaltyRegistry is ICreatorRegistry {
+interface IRareRoyaltyRegistry is ICreatorRegistry {
     /**
      * @dev Get the royalty fee percentage for a specific ERC721 contract.
      * @param _contractAddress address ERC721Contract address.

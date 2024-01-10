@@ -4,7 +4,7 @@ pragma solidity ^0.8.15;
 import {ERC721} from "openzeppelin-contracts/token/ERC721/ERC721.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {TokenCreator} from "../../extensions/TokenCreator.sol";
-import {Whitelist} from "./Whitelist.sol";
+import {Whitelist} from "../../extensions/Whitelist.sol";
 import {ISuperRare} from "./ISuperRare.sol";
 
 contract SuperRareV2 is ERC721, TokenCreator, Ownable, Whitelist {
@@ -41,7 +41,7 @@ contract SuperRareV2 is ERC721, TokenCreator, Ownable, Whitelist {
         for (uint256 i = 0; i < _whitelistees.length; i++) {
             address creator = _whitelistees[i];
             if (!isWhitelisted(creator)) {
-                _whitelist(creator);
+                _addToWhitelist(creator);
             }
         }
     }
