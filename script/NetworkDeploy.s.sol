@@ -37,7 +37,7 @@ contract NetworkDeploy is Script {
         creatorImplementations[0] = address(srv2);
         CreatorRegistry creator = new CreatorRegistry(creatorImplementations);
         RoyaltyRegistry royaltyRegistry = new RoyaltyRegistry(address(creator));
-        RoyaltyEngineV1 royaltyEngine = new RoyaltyEngineV1();
+        RoyaltyEngineV1 royaltyEngine = new RoyaltyEngineV1(addr);
 
         // Setup Marketplace Settings
         MarketplaceSettingsV1 v1 = new MarketplaceSettingsV1();
@@ -54,7 +54,7 @@ contract NetworkDeploy is Script {
         ApprovedTokenRegistry approvedTokenRegistry = new ApprovedTokenRegistry();
 
         // // Deploy the Contract Factory for Spaces
-        new RareSpaceNFTContractFactory(currentSettings, spaceOperatorRegistry); 
+        new RareSpaceNFTContractFactory(address(currentSettings), address(spaceOperatorRegistry)); 
 
         // // Deploy the Bazaar
         SuperRareMarketplace bazaarMarketplace = new SuperRareMarketplace();
@@ -66,7 +66,7 @@ contract NetworkDeploy is Script {
 
         // // Init the Bazaar
         address stakingRegistry = vm.envAddress("STAKING_REGISTRY");
-        bazaar.initialize(currentSettings, royaltyRegistry, royaltyEngine, bazaarMarketplace, bazaarAuctionhouse, spaceOperatorRegistry, approvedTokenRegistry, payments, stakingRegistry, addr);
+        bazaar.initialize(address(currentSettings), address(royaltyRegistry), address(royaltyEngine), address(bazaarMarketplace), address(bazaarAuctionhouse), address(spaceOperatorRegistry), address(approvedTokenRegistry), address(payments), stakingRegistry, addr);
 
         vm.stopBroadcast();
     }

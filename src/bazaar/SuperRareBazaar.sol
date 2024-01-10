@@ -5,7 +5,7 @@ import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/access/Owna
 import {ReentrancyGuardUpgradeable} from "openzeppelin-contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import {IERC721} from "openzeppelin-contracts/token/ERC721/IERC721.sol";
 import {IMarketplaceSettings} from "rareprotocol/aux/marketplace/IMarketplaceSettings.sol";
-import {IRoyaltyRegistry} from "rareprotocol/aux/registry/interfaces/IRoyaltyRegistry.sol";
+import {IRareRoyaltyRegistry} from "rareprotocol/aux/registry/interfaces/IRareRoyaltyRegistry.sol";
 import {IPayments} from "rareprotocol/aux/payments/IPayments.sol";
 import {ISpaceOperatorRegistry} from "rareprotocol/aux/registry/interfaces/ISpaceOperatorRegistry.sol";
 import {IApprovedTokenRegistry} from "rareprotocol/aux/registry/interfaces/IApprovedTokenRegistry.sol";
@@ -44,7 +44,7 @@ contract SuperRareBazaar is ISuperRareBazaar, OwnableUpgradeable, ReentrancyGuar
     require(_networkBeneficiary != address(0));
 
     marketplaceSettings = IMarketplaceSettings(_marketplaceSettings);
-    royaltyRegistry = IRoyaltyRegistry(_royaltyRegistry);
+    royaltyRegistry = IRareRoyaltyRegistry(_royaltyRegistry);
     royaltyEngine = IRoyaltyEngineV1(_royaltyEngine);
     superRareMarketplace = _superRareMarketplace;
     superRareAuctionHouse = _superRareAuctionHouse;
@@ -73,7 +73,7 @@ contract SuperRareBazaar is ISuperRareBazaar, OwnableUpgradeable, ReentrancyGuar
 
   function setRoyaltyRegistry(address _royaltyRegistry) external onlyOwner {
     require(_royaltyRegistry != address(0));
-    royaltyRegistry = IRoyaltyRegistry(_royaltyRegistry);
+    royaltyRegistry = IRareRoyaltyRegistry(_royaltyRegistry);
   }
 
   function setRoyaltyEngine(address _royaltyEngine) external onlyOwner {

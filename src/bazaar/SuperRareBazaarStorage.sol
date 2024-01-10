@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {IMarketplaceSettings} from "rareprotocol/aux/marketplace/IMarketplaceSettings.sol";
-import {IRoyaltyRegistry} from "rareprotocol/aux/registry/interfaces/IRoyaltyRegistry.sol";
+import {IRareRoyaltyRegistry} from "rareprotocol/aux/registry/interfaces/IRareRoyaltyRegistry.sol";
 import {IPayments} from "rareprotocol/aux/payments/IPayments.sol";
 import {ISpaceOperatorRegistry} from "rareprotocol/aux/registry/interfaces/ISpaceOperatorRegistry.sol";
 import {IApprovedTokenRegistry} from "rareprotocol/aux/registry/interfaces/IApprovedTokenRegistry.sol";
@@ -170,7 +170,7 @@ contract SuperRareBazaarStorage {
   IMarketplaceSettings public marketplaceSettings;
 
   // Current creator royalty implementation to be used
-  IRoyaltyRegistry public royaltyRegistry;
+  IRareRoyaltyRegistry public royaltyRegistry;
 
   // Address of the global royalty engine being used.
   IRoyaltyEngineV1 public royaltyEngine;

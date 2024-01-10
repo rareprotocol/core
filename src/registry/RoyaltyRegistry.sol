@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.18;
 
-import {IRoyaltyRegistry, ICreatorRegistry} from "./interfaces/IRoyaltyRegistry.sol";
+import {IRareRoyaltyRegistry, ICreatorRegistry} from "./interfaces/IRareRoyaltyRegistry.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {AccessControl} from "openzeppelin-contracts/access/AccessControl.sol";
 
-contract RoyaltyRegistry is Ownable, AccessControl, IRoyaltyRegistry {
+contract RoyaltyRegistry is Ownable, AccessControl, IRareRoyaltyRegistry {
     bytes32 public constant ROYALTY_FEE_SETTER_ROLE =
         keccak256("ROYALTY_FEE_SETTER_ROLE");
 

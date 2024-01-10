@@ -10,7 +10,7 @@ import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 import {ERC721} from "openzeppelin-contracts/token/ERC721/ERC721.sol";
 import {IMarketplaceSettings} from "rareprotocol/aux/marketplace/IMarketplaceSettings.sol";
 import {IStakingSettings} from "rareprotocol/aux/marketplace/IStakingSettings.sol";
-import {IRoyaltyRegistry} from "rareprotocol/aux/registry/interfaces/IRoyaltyRegistry.sol";
+import {IRareRoyaltyRegistry} from "rareprotocol/aux/registry/interfaces/IRareRoyaltyRegistry.sol";
 import {IPayments} from "rareprotocol/aux/payments/IPayments.sol";
 import {Payments} from "rareprotocol/aux/payments/Payments.sol";
 import {ISpaceOperatorRegistry} from "rareprotocol/aux/registry/interfaces/ISpaceOperatorRegistry.sol";
