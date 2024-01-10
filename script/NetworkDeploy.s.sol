@@ -3,14 +3,14 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
 
-// import "../lib/aux/src/marketplace/MarketplaceSettingsV1.sol";
-// import "../lib/aux/src/marketplace/MarketplaceSettingsV2.sol";
-// import "../lib/aux/src/marketplace/MarketplaceSettingsV3.sol";
-// import "../lib/aux/src/registry/SpaceOperatorRegistry.sol";
-// import "../lib/aux/src/registry/ApprovedTokenRegistry.sol";
-// import "../lib/aux/src/payments/Payments.sol";
-// import "../lib/aux/src/registry/CreatorRegistry.sol";
-// import "../lib/aux/src/registry/RoyaltyRegistry.sol";
+// import "../src/marketplace/MarketplaceSettingsV1.sol";
+// import "../src/marketplace/MarketplaceSettingsV2.sol";
+// import "../src/marketplace/MarketplaceSettingsV3.sol";
+// import "../src/registry/SpaceOperatorRegistry.sol";
+// import "../src/registry/ApprovedTokenRegistry.sol";
+// import "../src/payments/Payments.sol";
+import "../src/registry/CreatorRegistry.sol";
+import "../src/registry/RoyaltyRegistry.sol";
 import "../src/token/ERC721/superrare/SuperRareV2.sol";
 import "../src/token/ERC20/SuperRareGovToken.sol";
 import "../src/token/ERC721/sovereign/lazy/LazySovereignNFTFactory.sol";
