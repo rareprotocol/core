@@ -44,27 +44,27 @@ contract NetworkDeploy is Script {
         MarketplaceSettingsV2 v2 = new MarketplaceSettingsV2(addr, address(v1));
         MarketplaceSettingsV3 currentSettings = new MarketplaceSettingsV3(addr, address(v2));
 
-        // // Setup Space Operator Registry
+        // Setup Space Operator Registry
         SpaceOperatorRegistry spaceOperatorRegistry = new SpaceOperatorRegistry();
 
-        // // Setup Payments
+        // Setup Payments
         Payments payments = new Payments();
 
-        // // Setup Approved Token Registry
+        // Setup Approved Token Registry
         ApprovedTokenRegistry approvedTokenRegistry = new ApprovedTokenRegistry();
 
-        // // Deploy the Contract Factory for Spaces
+        // Deploy the Contract Factory for Spaces
         new RareSpaceNFTContractFactory(address(currentSettings), address(spaceOperatorRegistry)); 
 
-        // // Deploy the Bazaar
+        // Deploy the Bazaar
         SuperRareMarketplace bazaarMarketplace = new SuperRareMarketplace();
         SuperRareAuctionHouse bazaarAuctionhouse = new SuperRareAuctionHouse();
         SuperRareBazaar bazaar = new SuperRareBazaar();
 
-        // // Grant Marketplace Access
+        // Grant Marketplace Access
         currentSettings.grantMarketplaceAccess(address(bazaar));
 
-        // // Init the Bazaar
+        // Init the Bazaar
         address stakingRegistry = vm.envAddress("STAKING_REGISTRY");
         bazaar.initialize(address(currentSettings), address(royaltyRegistry), address(royaltyEngine), address(bazaarMarketplace), address(bazaarAuctionhouse), address(spaceOperatorRegistry), address(approvedTokenRegistry), address(payments), stakingRegistry, addr);
 
