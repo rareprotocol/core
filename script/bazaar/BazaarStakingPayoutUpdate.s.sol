@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
-import "rareprotocol/aux/marketplace/MarketplaceSettingsV3.sol";
+import "../../src/marketplace/MarketplaceSettingsV3.sol";
 
 import "../../src/auctionhouse/SuperRareAuctionHouse.sol";
 import "../../src/marketplace/SuperRareMarketplace.sol";

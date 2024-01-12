@@ -125,6 +125,7 @@ contract SuperRareAuctionHouse is
     address payable[] calldata _splitAddresses,
     uint8[] calldata _splitRatios
   ) external override {
+    require(false, 'convertOfferToAuction::Deprecated');
     _senderMustBeTokenOwner(_originContract, _tokenId);
     _ownerMustHaveMarketplaceApprovedForNFT(_originContract, _tokenId);
     _checkSplits(_splitAddresses, _splitRatios);
