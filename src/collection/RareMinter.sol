@@ -121,6 +121,10 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
       OwnableUpgradeable(_contractAddress).owner() == msg.sender,
       "prepareMintDirectSale::Only mint contract owner can prepare the mint"
     );
+    
+    // Approved Currency Check
+    marketConfig.checkIfCurrencyIsApproved(_currencyAddress);
+
     directSaleConfigs[_contractAddress] = DirectSaleConfig(
       msg.sender,
       _currencyAddress,
