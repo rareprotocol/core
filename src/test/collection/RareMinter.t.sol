@@ -523,6 +523,37 @@ contract TestRareMinter is Test {
 
     vm.startPrank(alice);
     rareMinter.prepareMintDirectSale(address(testErc721), address(0), price, startTime, 0, splitRecipients, splitRatios);
+    vm.expectRevert();
+    vm.stopPrank();
+
+    // Warp to start time
+    vm.warp(startTime);
+
+    vm.startPrank(charlie);
+    vm.expectRevert();
+    rareMinter.mintDirectSale(address(testErc721), currencyAddress, price, 3, emptyProof);
+    vm.stopPrank();
+  }
+
+  function test_mintDirectSale_fail_unapproved_currency() public {
+    address seller = alice;
+    uint8 numMints = 3;
+    uint256 price = 1 ether;
+    uint256 amount = price * numMints;
+    mockPayout(amount, seller);
+    vm.prank(deployer);
+    testErc721.transferOwnership(alice);
+
+    // Prepare the mint
+    address payable[] memory splitRecipients = new address payable[](1);
+    uint8[] memory splitRatios = new uint8[](1);
+    splitRecipients[0] = payable(alice);
+    splitRatios[0] = 100;
+    uint256 startTime = block.timestamp + 60;
+
+    vm.startPrank(alice);
+    vm.expectRevert();
+    rareMinter.prepareMintDirectSale(address(testErc721), address(1), price, startTime, 0, splitRecipients, splitRatios);
     vm.stopPrank();
 
     // Warp to start time
