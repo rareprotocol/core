@@ -1,0 +1,619 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "tokenCreator",
+      "outputs": [
+        {
+          "internalType": "address payable",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "tokenCreator(uint256)": "40c1a064"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.18+commit.87f61d96\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"tokenCreator\",\"outputs\":[{\"internalType\":\"address payable\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/token/extensions/TokenCreator.sol\":\"TokenCreator\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/buffer/=lib/buffer/\",\":@ensdomains/ens-contracts/=lib/ens-contracts/contracts/\",\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":@uniswap/v3-core/=lib/v3-core/contracts/\",\":@uniswap/v3-core/contracts/=lib/v3-core/contracts/\",\":@uniswap/v3-periphery/=lib/v3-periphery/contracts/\",\":arachnid/solidity-stringutils/=lib/solidity-stringutils/\",\":ds-test/=lib/ds-test/src/\",\":ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":rareprotocol/assets/=lib/assets/src/\",\":rareprotocol/aux/=src/\",\":royalty-guard/=lib/royalty-guard/src/royalty-guard/\",\":royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/\",\":royalty-registry/=lib/royalty-registry-solidity/contracts/\",\":solmate/=lib/solmate/src/\"],\"viaIR\":true},\"sources\":{\"src/token/extensions/ITokenCreator.sol\":{\"keccak256\":\"0xebb99f216573c38f201c0cd99bbe98cce87a04acc129b37b487e66ec148de5f6\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b101c0be9c38496d0bee068af7ca3519d3879c35315d6336e2dbc9a36ab1ae42\",\"dweb:/ipfs/QmZQuVdfHHw1FuX4tc867KedVdnJDJ8Kth9BPKUiuajBoF\"]},\"src/token/extensions/TokenCreator.sol\":{\"keccak256\":\"0x70871ef77767f212b382ed03d15d68e8be7b4abc02c44e517d1abe8662328be0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7f1a69fcd46fe265ab512053681822ad337147cfeed9c5a93095c928e4402c87\",\"dweb:/ipfs/QmSPzdPtiwCXNKS56ikhcnTfP5cLUPx4Y4vowiVZZkygAQ\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.18+commit.87f61d96"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "tokenCreator",
+          "outputs": [
+            {
+              "internalType": "address payable",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@ensdomains/buffer/=lib/buffer/",
+        "@ensdomains/ens-contracts/=lib/ens-contracts/contracts/",
+        "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        "@uniswap/v3-core/=lib/v3-core/contracts/",
+        "@uniswap/v3-core/contracts/=lib/v3-core/contracts/",
+        "@uniswap/v3-periphery/=lib/v3-periphery/contracts/",
+        "arachnid/solidity-stringutils/=lib/solidity-stringutils/",
+        "ds-test/=lib/ds-test/src/",
+        "ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/",
+        "forge-std/=lib/forge-std/src/",
+        "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        "rareprotocol/assets/=lib/assets/src/",
+        "rareprotocol/aux/=src/",
+        "royalty-guard/=lib/royalty-guard/src/royalty-guard/",
+        "royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/",
+        "royalty-registry/=lib/royalty-registry-solidity/contracts/",
+        "solmate/=lib/solmate/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/token/extensions/TokenCreator.sol": "TokenCreator"
+      },
+      "libraries": {},
+      "viaIR": true
+    },
+    "sources": {
+      "src/token/extensions/ITokenCreator.sol": {
+        "keccak256": "0xebb99f216573c38f201c0cd99bbe98cce87a04acc129b37b487e66ec148de5f6",
+        "urls": [
+          "bzz-raw://b101c0be9c38496d0bee068af7ca3519d3879c35315d6336e2dbc9a36ab1ae42",
+          "dweb:/ipfs/QmZQuVdfHHw1FuX4tc867KedVdnJDJ8Kth9BPKUiuajBoF"
+        ],
+        "license": "MIT"
+      },
+      "src/token/extensions/TokenCreator.sol": {
+        "keccak256": "0x70871ef77767f212b382ed03d15d68e8be7b4abc02c44e517d1abe8662328be0",
+        "urls": [
+          "bzz-raw://7f1a69fcd46fe265ab512053681822ad337147cfeed9c5a93095c928e4402c87",
+          "dweb:/ipfs/QmSPzdPtiwCXNKS56ikhcnTfP5cLUPx4Y4vowiVZZkygAQ"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/token/extensions/TokenCreator.sol",
+    "id": 89354,
+    "exportedSymbols": {
+      "ITokenCreator": [
+        89313
+      ],
+      "TokenCreator": [
+        89353
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:545:217",
+    "nodes": [
+      {
+        "id": 89315,
+        "nodeType": "PragmaDirective",
+        "src": "32:23:217",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 89317,
+        "nodeType": "ImportDirective",
+        "src": "57:50:217",
+        "nodes": [],
+        "absolutePath": "src/token/extensions/ITokenCreator.sol",
+        "file": "./ITokenCreator.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 89354,
+        "sourceUnit": 89314,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 89316,
+              "name": "ITokenCreator",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 89313,
+              "src": "65:13:217",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 89353,
+        "nodeType": "ContractDefinition",
+        "src": "109:467:217",
+        "nodes": [
+          {
+            "id": 89323,
+            "nodeType": "VariableDeclaration",
+            "src": "163:50:217",
+            "nodes": [],
+            "constant": false,
+            "mutability": "mutable",
+            "name": "_tokenCreators",
+            "nameLocation": "199:14:217",
+            "scope": 89353,
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
+              "typeString": "mapping(uint256 => address)"
+            },
+            "typeName": {
+              "id": 89322,
+              "keyName": "",
+              "keyNameLocation": "-1:-1:-1",
+              "keyType": {
+                "id": 89320,
+                "name": "uint256",
+                "nodeType": "ElementaryTypeName",
+                "src": "171:7:217",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                }
+              },
+              "nodeType": "Mapping",
+              "src": "163:27:217",
+              "typeDescriptions": {
+                "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
+                "typeString": "mapping(uint256 => address)"
+              },
+              "valueName": "",
+              "valueNameLocation": "-1:-1:-1",
+              "valueType": {
+                "id": 89321,
+                "name": "address",
+                "nodeType": "ElementaryTypeName",
+                "src": "182:7:217",
+                "stateMutability": "nonpayable",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                }
+              }
+            },
+            "visibility": "private"
+          },
+          {
+            "id": 89338,
+            "nodeType": "FunctionDefinition",
+            "src": "282:163:217",
+            "nodes": [],
+            "body": {
+              "id": 89337,
+              "nodeType": "Block",
+              "src": "388:57:217",
+              "nodes": [],
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "baseExpression": {
+                          "id": 89332,
+                          "name": "_tokenCreators",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 89323,
+                          "src": "413:14:217",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
+                            "typeString": "mapping(uint256 => address)"
+                          }
+                        },
+                        "id": 89334,
+                        "indexExpression": {
+                          "id": 89333,
+                          "name": "_tokenId",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 89325,
+                          "src": "428:8:217",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "nodeType": "IndexAccess",
+                        "src": "413:24:217",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 89331,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "lValueRequested": false,
+                      "nodeType": "ElementaryTypeNameExpression",
+                      "src": "405:8:217",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_type$_t_address_payable_$",
+                        "typeString": "type(address payable)"
+                      },
+                      "typeName": {
+                        "id": 89330,
+                        "name": "address",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "405:8:217",
+                        "stateMutability": "payable",
+                        "typeDescriptions": {}
+                      }
+                    },
+                    "id": 89335,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "typeConversion",
+                    "lValueRequested": false,
+                    "nameLocations": [],
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "405:33:217",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address_payable",
+                      "typeString": "address payable"
+                    }
+                  },
+                  "functionReturnParameters": 89329,
+                  "id": 89336,
+                  "nodeType": "Return",
+                  "src": "398:40:217"
+                }
+              ]
+            },
+            "baseFunctions": [
+              89312
+            ],
+            "functionSelector": "40c1a064",
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tokenCreator",
+            "nameLocation": "291:12:217",
+            "parameters": {
+              "id": 89326,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 89325,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "312:8:217",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 89338,
+                  "src": "304:16:217",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 89324,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "304:7:217",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "303:18:217"
+            },
+            "returnParameters": {
+              "id": 89329,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 89328,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 89338,
+                  "src": "367:15:217",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address_payable",
+                    "typeString": "address payable"
+                  },
+                  "typeName": {
+                    "id": 89327,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "367:15:217",
+                    "stateMutability": "payable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address_payable",
+                      "typeString": "address payable"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "366:17:217"
+            },
+            "scope": 89353,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "id": 89352,
+            "nodeType": "FunctionDefinition",
+            "src": "451:123:217",
+            "nodes": [],
+            "body": {
+              "id": 89351,
+              "nodeType": "Block",
+              "src": "522:52:217",
+              "nodes": [],
+              "statements": [
+                {
+                  "expression": {
+                    "id": 89349,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "baseExpression": {
+                        "id": 89345,
+                        "name": "_tokenCreators",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 89323,
+                        "src": "532:14:217",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_uint256_$_t_address_$",
+                          "typeString": "mapping(uint256 => address)"
+                        }
+                      },
+                      "id": 89347,
+                      "indexExpression": {
+                        "id": 89346,
+                        "name": "_tokenId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 89340,
+                        "src": "547:8:217",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "532:24:217",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "id": 89348,
+                      "name": "_creator",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 89342,
+                      "src": "559:8:217",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "532:35:217",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 89350,
+                  "nodeType": "ExpressionStatement",
+                  "src": "532:35:217"
+                }
+              ]
+            },
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_setTokenCreator",
+            "nameLocation": "460:16:217",
+            "parameters": {
+              "id": 89343,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 89340,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "485:8:217",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 89352,
+                  "src": "477:16:217",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 89339,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "477:7:217",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 89342,
+                  "mutability": "mutable",
+                  "name": "_creator",
+                  "nameLocation": "503:8:217",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 89352,
+                  "src": "495:16:217",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 89341,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "495:7:217",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "476:36:217"
+            },
+            "returnParameters": {
+              "id": 89344,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "522:0:217"
+            },
+            "scope": 89353,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          }
+        ],
+        "abstract": true,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 89318,
+              "name": "ITokenCreator",
+              "nameLocations": [
+                "143:13:217"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 89313,
+              "src": "143:13:217"
+            },
+            "id": 89319,
+            "nodeType": "InheritanceSpecifier",
+            "src": "143:13:217"
+          }
+        ],
+        "canonicalName": "TokenCreator",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          89353,
+          89313
+        ],
+        "name": "TokenCreator",
+        "nameLocation": "127:12:217",
+        "scope": 89354,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 217
+}

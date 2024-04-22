@@ -1,1 +1,959 @@
-{"abi":[{"type":"function","name":"estimateRarePrice","inputs":[{"name":"_tokenOut","type":"address","internalType":"address"},{"name":"_rareAmountIn","type":"uint128","internalType":"uint128"}],"outputs":[{"name":"","type":"uint256","internalType":"uint256"}],"stateMutability":"view"},{"type":"function","name":"initialize","inputs":[{"name":"_stakingPool","type":"address","internalType":"address"}],"outputs":[],"stateMutability":"nonpayable"},{"type":"function","name":"rewardSwap","inputs":[{"name":"_tokenOut","type":"address","internalType":"address"},{"name":"_minAmountOut","type":"uint256","internalType":"uint256"},{"name":"_rareIn","type":"uint128","internalType":"uint128"}],"outputs":[],"stateMutability":"nonpayable"},{"type":"event","name":"RewardAccumulator","inputs":[{"name":"_msgSender","type":"address","indexed":true,"internalType":"address"},{"name":"_tokenOut","type":"address","indexed":true,"internalType":"address"},{"name":"_amountOut","type":"uint256","indexed":false,"internalType":"uint256"},{"name":"_rareIn","type":"uint256","indexed":false,"internalType":"uint256"}],"anonymous":false},{"type":"error","name":"CannotSwapRareForRare","inputs":[]},{"type":"error","name":"InsufficientFunds","inputs":[]},{"type":"error","name":"ParameterValueTooLow","inputs":[]},{"type":"error","name":"RarePriceTooLow","inputs":[]},{"type":"error","name":"Unauthorized","inputs":[]},{"type":"error","name":"UnsupportedERC20Token","inputs":[]}],"bytecode":{"object":"0x","sourceMap":"","linkReferences":{}},"deployedBytecode":{"object":"0x","sourceMap":"","linkReferences":{}},"methodIdentifiers":{"estimateRarePrice(address,uint128)":"442471f0","initialize(address)":"c4d66de8","rewardSwap(address,uint256,uint128)":"94a5a29d"},"rawMetadata":"{\"compiler\":{\"version\":\"0.8.18+commit.87f61d96\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"CannotSwapRareForRare\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientFunds\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ParameterValueTooLow\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"RarePriceTooLow\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Unauthorized\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"UnsupportedERC20Token\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_msgSender\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_tokenOut\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amountOut\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_rareIn\",\"type\":\"uint256\"}],\"name\":\"RewardAccumulator\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_tokenOut\",\"type\":\"address\"},{\"internalType\":\"uint128\",\"name\":\"_rareAmountIn\",\"type\":\"uint128\"}],\"name\":\"estimateRarePrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_stakingPool\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_tokenOut\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_minAmountOut\",\"type\":\"uint256\"},{\"internalType\":\"uint128\",\"name\":\"_rareIn\",\"type\":\"uint128\"}],\"name\":\"rewardSwap\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"charlescrain\",\"kind\":\"dev\",\"methods\":{\"estimateRarePrice(address,uint128)\":{\"params\":{\"_rareAmountIn\":\"uint128 amount of RARE to trade for the _tokenOut.\",\"_tokenOut\":\"Address of the ERC20 token to be swapped for.\"},\"returns\":{\"_0\":\"uint256 amount of _tokenOut for the _rareAmountIn.\"}},\"rewardSwap(address,uint256,uint128)\":{\"params\":{\"_minAmountOut\":\"Min amount one is willing to receive for the _rareIn.\",\"_rareIn\":\"The amount of RARE one is looking to trade.\",\"_tokenOut\":\"Address of the ERC20 to pay out with. If null address, then uses ETH.\"}}},\"title\":\"IRewardAccumulator\",\"version\":1},\"userdoc\":{\"errors\":{\"CannotSwapRareForRare()\":[{\"notice\":\"Error emitted via {rewardSwap} if _tokenOut is the $RARE address.\"}],\"InsufficientFunds()\":[{\"notice\":\"Error emitted via {rewardSwap} if reward swap doesn't have enough funds to perform the swap.\"}],\"ParameterValueTooLow()\":[{\"notice\":\"Error emitted when a parameter is too low.\"}],\"RarePriceTooLow()\":[{\"notice\":\"Error emitted via {rewardSwap} if the rare price is too low to handle the _minAmountOut requirement.\"}],\"Unauthorized()\":[{\"notice\":\"Error emitted when user doesnt meet the criteria for call.\"}],\"UnsupportedERC20Token()\":[{\"notice\":\"Emitted when an unsupported ERC20 token for reward swapping.\"}]},\"kind\":\"user\",\"methods\":{\"estimateRarePrice(address,uint128)\":{\"notice\":\"Estimate the discounted $RARE price for a given token.\"},\"rewardSwap(address,uint256,uint128)\":{\"notice\":\"Swap RARE for a discounted price on tokens stored\"}},\"notice\":\"The reward accumulator interface containing all functions, events, etc. for accumulating and swapping rewards.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/staking/reward/IRewardAccumulator.sol\":\"IRewardAccumulator\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/buffer/=lib/buffer/\",\":@ensdomains/ens-contracts/=lib/ens-contracts/contracts/\",\":@manifoldxyz/libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/\",\":@openzeppelin/=lib/openzeppelin-contracts/\",\":@openzeppelin/contracts-upgradeable/=lib/royalty-registry-solidity/lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/royalty-registry-solidity/lib/openzeppelin-contracts/contracts/\",\":@uniswap/v3-core/=lib/v3-core/contracts/\",\":@uniswap/v3-core/contracts/=lib/v3-core/contracts/\",\":@uniswap/v3-periphery/=lib/v3-periphery/contracts/\",\":arachnid/solidity-stringutils/=lib/solidity-stringutils/\",\":aux/=lib/aux/\",\":buffer/=lib/buffer/contracts/\",\":create2-helpers/=lib/royalty-registry-solidity/lib/create2-helpers/\",\":create2-scripts/=lib/royalty-registry-solidity/lib/create2-helpers/script/\",\":ds-test/=lib/ds-test/src/\",\":ens-contracts/=lib/ens-contracts/contracts/\",\":ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/\",\":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/contracts/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":openzeppelin/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":rareprotocol/assets/=lib/assets/src/\",\":rareprotocol/aux/=lib/aux/src/\",\":royalty-guard/=lib/aux/lib/royalty-guard/src/\",\":royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/\",\":royalty-registry/=lib/royalty-registry-solidity/contracts/\",\":solidity-stringutils/=lib/solidity-stringutils/\",\":solmate/=lib/solmate/src/\",\":v3-core/=lib/v3-core/\",\":v3-periphery/=lib/v3-periphery/contracts/\"]},\"sources\":{\"src/staking/reward/IRewardAccumulator.sol\":{\"keccak256\":\"0xd045a4bade6d3034e6b59d4219c04a9b15cb4be6d1c7ae71c7a9a9c9a3300f42\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://76f423cea72076f7646123d43a6b8b580e7a0b4909fa1d9327fd93e691f0aa6d\",\"dweb:/ipfs/QmcoLTHrNrAQfuL3JtEiuceYvhYb9T9w3EqT9XKmRneTrD\"]}},\"version\":1}","metadata":{"compiler":{"version":"0.8.18+commit.87f61d96"},"language":"Solidity","output":{"abi":[{"inputs":[],"type":"error","name":"CannotSwapRareForRare"},{"inputs":[],"type":"error","name":"InsufficientFunds"},{"inputs":[],"type":"error","name":"ParameterValueTooLow"},{"inputs":[],"type":"error","name":"RarePriceTooLow"},{"inputs":[],"type":"error","name":"Unauthorized"},{"inputs":[],"type":"error","name":"UnsupportedERC20Token"},{"inputs":[{"internalType":"address","name":"_msgSender","type":"address","indexed":true},{"internalType":"address","name":"_tokenOut","type":"address","indexed":true},{"internalType":"uint256","name":"_amountOut","type":"uint256","indexed":false},{"internalType":"uint256","name":"_rareIn","type":"uint256","indexed":false}],"type":"event","name":"RewardAccumulator","anonymous":false},{"inputs":[{"internalType":"address","name":"_tokenOut","type":"address"},{"internalType":"uint128","name":"_rareAmountIn","type":"uint128"}],"stateMutability":"view","type":"function","name":"estimateRarePrice","outputs":[{"internalType":"uint256","name":"","type":"uint256"}]},{"inputs":[{"internalType":"address","name":"_stakingPool","type":"address"}],"stateMutability":"nonpayable","type":"function","name":"initialize"},{"inputs":[{"internalType":"address","name":"_tokenOut","type":"address"},{"internalType":"uint256","name":"_minAmountOut","type":"uint256"},{"internalType":"uint128","name":"_rareIn","type":"uint128"}],"stateMutability":"nonpayable","type":"function","name":"rewardSwap"}],"devdoc":{"kind":"dev","methods":{"estimateRarePrice(address,uint128)":{"params":{"_rareAmountIn":"uint128 amount of RARE to trade for the _tokenOut.","_tokenOut":"Address of the ERC20 token to be swapped for."},"returns":{"_0":"uint256 amount of _tokenOut for the _rareAmountIn."}},"rewardSwap(address,uint256,uint128)":{"params":{"_minAmountOut":"Min amount one is willing to receive for the _rareIn.","_rareIn":"The amount of RARE one is looking to trade.","_tokenOut":"Address of the ERC20 to pay out with. If null address, then uses ETH."}}},"version":1},"userdoc":{"kind":"user","methods":{"estimateRarePrice(address,uint128)":{"notice":"Estimate the discounted $RARE price for a given token."},"rewardSwap(address,uint256,uint128)":{"notice":"Swap RARE for a discounted price on tokens stored"}},"version":1}},"settings":{"remappings":["@ensdomains/buffer/=lib/buffer/","@ensdomains/ens-contracts/=lib/ens-contracts/contracts/","@manifoldxyz/libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/","@openzeppelin/=lib/openzeppelin-contracts/","@openzeppelin/contracts-upgradeable/=lib/royalty-registry-solidity/lib/openzeppelin-contracts-upgradeable/contracts/","@openzeppelin/contracts/=lib/royalty-registry-solidity/lib/openzeppelin-contracts/contracts/","@uniswap/v3-core/=lib/v3-core/contracts/","@uniswap/v3-core/contracts/=lib/v3-core/contracts/","@uniswap/v3-periphery/=lib/v3-periphery/contracts/","arachnid/solidity-stringutils/=lib/solidity-stringutils/","aux/=lib/aux/","buffer/=lib/buffer/contracts/","create2-helpers/=lib/royalty-registry-solidity/lib/create2-helpers/","create2-scripts/=lib/royalty-registry-solidity/lib/create2-helpers/script/","ds-test/=lib/ds-test/src/","ens-contracts/=lib/ens-contracts/contracts/","ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/","erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/","forge-std/=lib/forge-std/src/","libraries-solidity/=lib/royalty-registry-solidity/lib/libraries-solidity/contracts/","openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/","openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/","openzeppelin/=lib/openzeppelin-contracts-upgradeable/contracts/","rareprotocol/assets/=lib/assets/src/","rareprotocol/aux/=lib/aux/src/","royalty-guard/=lib/aux/lib/royalty-guard/src/","royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/","royalty-registry/=lib/royalty-registry-solidity/contracts/","solidity-stringutils/=lib/solidity-stringutils/","solmate/=lib/solmate/src/","v3-core/=lib/v3-core/","v3-periphery/=lib/v3-periphery/contracts/"],"optimizer":{"enabled":true,"runs":200},"metadata":{"bytecodeHash":"ipfs"},"compilationTarget":{"src/staking/reward/IRewardAccumulator.sol":"IRewardAccumulator"},"libraries":{}},"sources":{"src/staking/reward/IRewardAccumulator.sol":{"keccak256":"0xd045a4bade6d3034e6b59d4219c04a9b15cb4be6d1c7ae71c7a9a9c9a3300f42","urls":["bzz-raw://76f423cea72076f7646123d43a6b8b580e7a0b4909fa1d9327fd93e691f0aa6d","dweb:/ipfs/QmcoLTHrNrAQfuL3JtEiuceYvhYb9T9w3EqT9XKmRneTrD"],"license":"MIT"}},"version":1},"ast":{"absolutePath":"src/staking/reward/IRewardAccumulator.sol","id":57804,"exportedSymbols":{"IRewardAccumulator":[57803]},"nodeType":"SourceUnit","src":"32:2914:143","nodes":[{"id":57748,"nodeType":"PragmaDirective","src":"32:23:143","nodes":[],"literals":["solidity","^","0.8",".0"]},{"id":57803,"nodeType":"ContractDefinition","src":"235:2710:143","nodes":[{"id":57759,"nodeType":"EventDefinition","src":"464:116:143","nodes":[],"anonymous":false,"eventSelector":"fde313859edf8a78b1e1c10c6dbe0584a219be6af8d4914fdb85486523103397","name":"RewardAccumulator","nameLocation":"470:17:143","parameters":{"id":57758,"nodeType":"ParameterList","parameters":[{"constant":false,"id":57751,"indexed":true,"mutability":"mutable","name":"_msgSender","nameLocation":"504:10:143","nodeType":"VariableDeclaration","scope":57759,"src":"488:26:143","stateVariable":false,"storageLocation":"default","typeDescriptions":{"typeIdentifier":"t_address","typeString":"address"},"typeName":{"id":57750,"name":"address","nodeType":"ElementaryTypeName","src":"488:7:143","stateMutability":"nonpayable","typeDescriptions":{"typeIdentifier":"t_address","typeString":"address"}},"visibility":"internal"},{"constant":false,"id":57753,"indexed":true,"mutability":"mutable","name":"_tokenOut","nameLocation":"532:9:143","nodeType":"VariableDeclaration","scope":57759,"src":"516:25:143","stateVariable":false,"storageLocation":"default","typeDescriptions":{"typeIdentifier":"t_address","typeString":"address"},"typeName":{"id":57752,"name":"address","nodeType":"ElementaryTypeName","src":"516:7:143","stateMutability":"nonpayable","typeDescriptions":{"typeIdentifier":"t_address","typeString":"address"}},"visibility":"internal"},{"constant":false,"id":57755,"indexed":false,"mutability":"mutable","name":"_amountOut","nameLocation":"551:10:143","nodeType":"VariableDeclaration","scope":57759,"src":"543:18:143","stateVariable":false,"storageLocation":"default","typeDescriptions":{"typeIdentifier":"t_uint256","typeString":"uint256"},"typeName":{"id":57754,"name":"uint256","nodeType":"ElementaryTypeName","src":"543:7:143","typeDescriptions":{"typeIdentifier":"t_uint256","typeString":"uint256"}},"visibility":"internal"},{"constant":false,"id":57757,"indexed":false,"mutability":"mutable","name":"_rareIn","nameLocation":"571:7:143","nodeType":"VariableDeclaration","scope":57759,"src":"563:15:143","stateVariable":false,"storageLocation":"default","typeDescriptions":{"typeIdentifier":"t_uint256","typeString":"uint256"},"typeName":{"id":57756,"name":"uint256","nodeType":"ElementaryTypeName","src":"563:7:143","typeDescriptions":{"typeIdentifier":"t_uint256","typeString":"uint256"}},"visibility":"internal"}],"src":"487:92:143"}},{"id":57762,"nodeType":"ErrorDefinition","src":"842:29:143","nodes":[],"documentation":{"id":57760,"nodeType":"StructuredDocumentation","src":"785:54:143","text":"@notice Error emitted when a parameter is too low."},"errorSelector":"1d01a371","name":"ParameterValueTooLow","nameLocation":"848:20:143","parameters":{"id":57761,"nodeType":"ParameterList","parameters":[],"src":"868:2:143"}},{"id":57765,"nodeType":"ErrorDefinition","src":"948:21:143","nodes":[],"documentation":{"id":57763,"nodeType":"StructuredDocumentation","src":"875:70:143","text":"@notice Error emitted when user doesnt meet the criteria for call."},"errorSelector":"82b42900","name":"Unauthorized","nameLocation":"954:12:143","parameters":{"id":57764,"nodeType":"ParameterList","parameters":[],"src":"966:2:143"}},{"id":57768,"nodeType":"ErrorDefinition","src":"1080:26:143","nodes":[],"documentation":{"id":57766,"nodeType":"StructuredDocumentation","src":"973:104:143","text":"@notice Error emitted via {rewardSwap} if reward swap doesn't have enough funds to perform the swap."},"errorSelector":"356680b7","name":"InsufficientFunds","nameLocation":"1086:17:143","parameters":{"id":57767,"nodeType":"ParameterList","parameters":[],"src":"1103:2:143"}},{"id":57771,"nodeType":"ErrorDefinition","src":"1225:24:143","nodes":[],"documentation":{"id":57769,"nodeType":"StructuredDocumentation","src":"1110:112:143","text":"@notice Error emitted via {rewardSwap} if the rare price is too low to handle the _minAmountOut requirement."},"errorSelector":"90981e6d","name":"RarePriceTooLow","nameLocation":"1231:15:143","parameters":{"id":57770,"nodeType":"ParameterList","parameters":[],"src":"1246:2:143"}},{"id":57774,"nodeType":"ErrorDefinition","src":"1333:30:143","nodes":[],"documentation":{"id":57772,"nodeType":"StructuredDocumentation","src":"1253:77:143","text":"@notice Error emitted via {rewardSwap} if _tokenOut is the $RARE address."},"errorSelector":"337b3924","name":"CannotSwapRareForRare","nameLocation":"1339:21:143","parameters":{"id":57773,"nodeType":"ParameterList","parameters":[],"src":"1360:2:143"}},{"id":57777,"nodeType":"ErrorDefinition","src":"1442:30:143","nodes":[],"documentation":{"id":57775,"nodeType":"StructuredDocumentation","src":"1367:72:143","text":"@notice Emitted when an unsupported ERC20 token for reward swapping."},"errorSelector":"2eb084d8","name":"UnsupportedERC20Token","nameLocation":"1448:21:143","parameters":{"id":57776,"nodeType":"ParameterList","parameters":[],"src":"1469:2:143"}},{"id":57782,"nodeType":"FunctionDefinition","src":"1676:51:143","nodes":[],"functionSelector":"c4d66de8","implemented":false,"kind":"function","modifiers":[],"name":"initialize","nameLocation":"1685:10:143","parameters":{"id":57780,"nodeType":"ParameterList","parameters":[{"constant":false,"id":57779,"mutability":"mutable","name":"_stakingPool","nameLocation":"1704:12:143","nodeType":"VariableDeclaration","scope":57782,"src":"1696:20:143","stateVariable":false,"storageLocation":"default","typeDescriptions":{"typeIdentifier":"t_address","typeString":"address"},"typeName":{"id":57778,"name":"address","nodeType":"ElementaryTypeName","src":"1696:7:143","stateMutability":"nonpayable","typeDescriptions":{"typeIdentifier":"t_address","typeString":"address"}},"visibility":"internal"}],"src":"1695:22:143"},"returnParameters":{"id":57781,"nodeType":"ParameterList","parameters":[],"src":"1726:0:143"},"scope":57803,"stateMutability":"nonpayable","virtual":false,"visibility":"external"},{"id":57792,"nodeType":"FunctionDefinition","src":"2244:104:143","nodes":[],"documentation":{"id":57783,"nodeType":"StructuredDocumentation","src":"1941:300:143","text":"@notice Swap RARE for a discounted price on tokens stored\n @param _tokenOut Address of the ERC20 to pay out with. If null address, then uses ETH.\n @param _minAmountOut Min amount one is willing to receive for the _rareIn.\n @param _rareIn The amount of RARE one is looking to trade."},"functionSelector":"94a5a29d","implemented":false,"kind":"function","modifiers":[],"name":"rewardSwap","nameLocation":"2253:10:143","parameters":{"id":57790,"nodeType":"ParameterList","parameters":[{"constant":false,"id":57785,"mutability":"mutable","name":"_tokenOut","nameLocation":"2277:9:143","nodeType":"VariableDeclaration","scope":57792,"src":"2269:17:143","stateVariable":false,"storageLocation":"default","typeDescriptions":{"typeIdentifier":"t_address","typeString":"address"},"typeName":{"id":57784,"name":"address","nodeType":"ElementaryTypeName","src":"2269:7:143","stateMutability":"nonpayable","typeDescriptions":{"typeIdentifier":"t_address","typeString":"address"}},"visibility":"internal"},{"constant":false,"id":57787,"mutability":"mutable","name":"_minAmountOut","nameLocation":"2300:13:143","nodeType":"VariableDeclaration","scope":57792,"src":"2292:21:143","stateVariable":false,"storageLocation":"default","typeDescriptions":{"typeIdentifier":"t_uint256","typeString":"uint256"},"typeName":{"id":57786,"name":"uint256","nodeType":"ElementaryTypeName","src":"2292:7:143","typeDescriptions":{"typeIdentifier":"t_uint256","typeString":"uint256"}},"visibility":"internal"},{"constant":false,"id":57789,"mutability":"mutable","name":"_rareIn","nameLocation":"2327:7:143","nodeType":"VariableDeclaration","scope":57792,"src":"2319:15:143","stateVariable":false,"storageLocation":"default","typeDescriptions":{"typeIdentifier":"t_uint128","typeString":"uint128"},"typeName":{"id":57788,"name":"uint128","nodeType":"ElementaryTypeName","src":"2319:7:143","typeDescriptions":{"typeIdentifier":"t_uint128","typeString":"uint128"}},"visibility":"internal"}],"src":"2263:75:143"},"returnParameters":{"id":57791,"nodeType":"ParameterList","parameters":[],"src":"2347:0:143"},"scope":57803,"stateMutability":"nonpayable","virtual":false,"visibility":"external"},{"id":57802,"nodeType":"FunctionDefinition","src":"2842:101:143","nodes":[],"documentation":{"id":57793,"nodeType":"StructuredDocumentation","src":"2561:278:143","text":"@notice Estimate the discounted $RARE price for a given token.\n @param _tokenOut Address of the ERC20 token to be swapped for.\n @param _rareAmountIn uint128 amount of RARE to trade for the _tokenOut.\n @return uint256 amount of _tokenOut for the _rareAmountIn."},"functionSelector":"442471f0","implemented":false,"kind":"function","modifiers":[],"name":"estimateRarePrice","nameLocation":"2851:17:143","parameters":{"id":57798,"nodeType":"ParameterList","parameters":[{"constant":false,"id":57795,"mutability":"mutable","name":"_tokenOut","nameLocation":"2877:9:143","nodeType":"VariableDeclaration","scope":57802,"src":"2869:17:143","stateVariable":false,"storageLocation":"default","typeDescriptions":{"typeIdentifier":"t_address","typeString":"address"},"typeName":{"id":57794,"name":"address","nodeType":"ElementaryTypeName","src":"2869:7:143","stateMutability":"nonpayable","typeDescriptions":{"typeIdentifier":"t_address","typeString":"address"}},"visibility":"internal"},{"constant":false,"id":57797,"mutability":"mutable","name":"_rareAmountIn","nameLocation":"2896:13:143","nodeType":"VariableDeclaration","scope":57802,"src":"2888:21:143","stateVariable":false,"storageLocation":"default","typeDescriptions":{"typeIdentifier":"t_uint128","typeString":"uint128"},"typeName":{"id":57796,"name":"uint128","nodeType":"ElementaryTypeName","src":"2888:7:143","typeDescriptions":{"typeIdentifier":"t_uint128","typeString":"uint128"}},"visibility":"internal"}],"src":"2868:42:143"},"returnParameters":{"id":57801,"nodeType":"ParameterList","parameters":[{"constant":false,"id":57800,"mutability":"mutable","name":"","nameLocation":"-1:-1:-1","nodeType":"VariableDeclaration","scope":57802,"src":"2934:7:143","stateVariable":false,"storageLocation":"default","typeDescriptions":{"typeIdentifier":"t_uint256","typeString":"uint256"},"typeName":{"id":57799,"name":"uint256","nodeType":"ElementaryTypeName","src":"2934:7:143","typeDescriptions":{"typeIdentifier":"t_uint256","typeString":"uint256"}},"visibility":"internal"}],"src":"2933:9:143"},"scope":57803,"stateMutability":"view","virtual":false,"visibility":"external"}],"abstract":false,"baseContracts":[],"canonicalName":"IRewardAccumulator","contractDependencies":[],"contractKind":"interface","documentation":{"id":57749,"nodeType":"StructuredDocumentation","src":"57:178:143","text":"@author charlescrain\n @title IRewardAccumulator\n @notice The reward accumulator interface containing all functions, events, etc. for accumulating and swapping rewards."},"fullyImplemented":false,"linearizedBaseContracts":[57803],"name":"IRewardAccumulator","nameLocation":"245:18:143","scope":57804,"usedErrors":[57762,57765,57768,57771,57774,57777]}],"license":"MIT"},"id":143}
+{
+  "abi": [
+    {
+      "inputs": [],
+      "name": "CannotSwapRareForRare",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InsufficientFunds",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "ParameterValueTooLow",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RarePriceTooLow",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Unauthorized",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "UnsupportedERC20Token",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_msgSender",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_tokenOut",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_amountOut",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_rareIn",
+          "type": "uint256"
+        }
+      ],
+      "name": "RewardAccumulator",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_tokenOut",
+          "type": "address"
+        },
+        {
+          "internalType": "uint128",
+          "name": "_rareAmountIn",
+          "type": "uint128"
+        }
+      ],
+      "name": "estimateRarePrice",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_stakingPool",
+          "type": "address"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_tokenOut",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_minAmountOut",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint128",
+          "name": "_rareIn",
+          "type": "uint128"
+        }
+      ],
+      "name": "rewardSwap",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "estimateRarePrice(address,uint128)": "442471f0",
+    "initialize(address)": "c4d66de8",
+    "rewardSwap(address,uint256,uint128)": "94a5a29d"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.18+commit.87f61d96\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"CannotSwapRareForRare\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientFunds\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ParameterValueTooLow\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"RarePriceTooLow\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Unauthorized\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"UnsupportedERC20Token\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_msgSender\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_tokenOut\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_amountOut\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_rareIn\",\"type\":\"uint256\"}],\"name\":\"RewardAccumulator\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_tokenOut\",\"type\":\"address\"},{\"internalType\":\"uint128\",\"name\":\"_rareAmountIn\",\"type\":\"uint128\"}],\"name\":\"estimateRarePrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_stakingPool\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_tokenOut\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_minAmountOut\",\"type\":\"uint256\"},{\"internalType\":\"uint128\",\"name\":\"_rareIn\",\"type\":\"uint128\"}],\"name\":\"rewardSwap\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"charlescrain\",\"kind\":\"dev\",\"methods\":{\"estimateRarePrice(address,uint128)\":{\"params\":{\"_rareAmountIn\":\"uint128 amount of RARE to trade for the _tokenOut.\",\"_tokenOut\":\"Address of the ERC20 token to be swapped for.\"},\"returns\":{\"_0\":\"uint256 amount of _tokenOut for the _rareAmountIn.\"}},\"rewardSwap(address,uint256,uint128)\":{\"params\":{\"_minAmountOut\":\"Min amount one is willing to receive for the _rareIn.\",\"_rareIn\":\"The amount of RARE one is looking to trade.\",\"_tokenOut\":\"Address of the ERC20 to pay out with. If null address, then uses ETH.\"}}},\"title\":\"IRewardAccumulator\",\"version\":1},\"userdoc\":{\"errors\":{\"CannotSwapRareForRare()\":[{\"notice\":\"Error emitted via {rewardSwap} if _tokenOut is the $RARE address.\"}],\"InsufficientFunds()\":[{\"notice\":\"Error emitted via {rewardSwap} if reward swap doesn't have enough funds to perform the swap.\"}],\"ParameterValueTooLow()\":[{\"notice\":\"Error emitted when a parameter is too low.\"}],\"RarePriceTooLow()\":[{\"notice\":\"Error emitted via {rewardSwap} if the rare price is too low to handle the _minAmountOut requirement.\"}],\"Unauthorized()\":[{\"notice\":\"Error emitted when user doesnt meet the criteria for call.\"}],\"UnsupportedERC20Token()\":[{\"notice\":\"Emitted when an unsupported ERC20 token for reward swapping.\"}]},\"kind\":\"user\",\"methods\":{\"estimateRarePrice(address,uint128)\":{\"notice\":\"Estimate the discounted $RARE price for a given token.\"},\"rewardSwap(address,uint256,uint128)\":{\"notice\":\"Swap RARE for a discounted price on tokens stored\"}},\"notice\":\"The reward accumulator interface containing all functions, events, etc. for accumulating and swapping rewards.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/staking/reward/IRewardAccumulator.sol\":\"IRewardAccumulator\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/buffer/=lib/buffer/\",\":@ensdomains/ens-contracts/=lib/ens-contracts/contracts/\",\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":@uniswap/v3-core/=lib/v3-core/contracts/\",\":@uniswap/v3-core/contracts/=lib/v3-core/contracts/\",\":@uniswap/v3-periphery/=lib/v3-periphery/contracts/\",\":arachnid/solidity-stringutils/=lib/solidity-stringutils/\",\":ds-test/=lib/ds-test/src/\",\":ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":rareprotocol/assets/=lib/assets/src/\",\":rareprotocol/aux/=src/\",\":royalty-guard/=lib/royalty-guard/src/royalty-guard/\",\":royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/\",\":royalty-registry/=lib/royalty-registry-solidity/contracts/\",\":solmate/=lib/solmate/src/\"],\"viaIR\":true},\"sources\":{\"src/staking/reward/IRewardAccumulator.sol\":{\"keccak256\":\"0xd045a4bade6d3034e6b59d4219c04a9b15cb4be6d1c7ae71c7a9a9c9a3300f42\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://76f423cea72076f7646123d43a6b8b580e7a0b4909fa1d9327fd93e691f0aa6d\",\"dweb:/ipfs/QmcoLTHrNrAQfuL3JtEiuceYvhYb9T9w3EqT9XKmRneTrD\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.18+commit.87f61d96"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "CannotSwapRareForRare"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "InsufficientFunds"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "ParameterValueTooLow"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "RarePriceTooLow"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "Unauthorized"
+        },
+        {
+          "inputs": [],
+          "type": "error",
+          "name": "UnsupportedERC20Token"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_msgSender",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "_tokenOut",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountOut",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "_rareIn",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "RewardAccumulator",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_tokenOut",
+              "type": "address"
+            },
+            {
+              "internalType": "uint128",
+              "name": "_rareAmountIn",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "estimateRarePrice",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_stakingPool",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "initialize"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_tokenOut",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint128",
+              "name": "_rareIn",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "rewardSwap"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "estimateRarePrice(address,uint128)": {
+            "params": {
+              "_rareAmountIn": "uint128 amount of RARE to trade for the _tokenOut.",
+              "_tokenOut": "Address of the ERC20 token to be swapped for."
+            },
+            "returns": {
+              "_0": "uint256 amount of _tokenOut for the _rareAmountIn."
+            }
+          },
+          "rewardSwap(address,uint256,uint128)": {
+            "params": {
+              "_minAmountOut": "Min amount one is willing to receive for the _rareIn.",
+              "_rareIn": "The amount of RARE one is looking to trade.",
+              "_tokenOut": "Address of the ERC20 to pay out with. If null address, then uses ETH."
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "estimateRarePrice(address,uint128)": {
+            "notice": "Estimate the discounted $RARE price for a given token."
+          },
+          "rewardSwap(address,uint256,uint128)": {
+            "notice": "Swap RARE for a discounted price on tokens stored"
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@ensdomains/buffer/=lib/buffer/",
+        "@ensdomains/ens-contracts/=lib/ens-contracts/contracts/",
+        "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        "@uniswap/v3-core/=lib/v3-core/contracts/",
+        "@uniswap/v3-core/contracts/=lib/v3-core/contracts/",
+        "@uniswap/v3-periphery/=lib/v3-periphery/contracts/",
+        "arachnid/solidity-stringutils/=lib/solidity-stringutils/",
+        "ds-test/=lib/ds-test/src/",
+        "ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/",
+        "forge-std/=lib/forge-std/src/",
+        "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        "rareprotocol/assets/=lib/assets/src/",
+        "rareprotocol/aux/=src/",
+        "royalty-guard/=lib/royalty-guard/src/royalty-guard/",
+        "royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/",
+        "royalty-registry/=lib/royalty-registry-solidity/contracts/",
+        "solmate/=lib/solmate/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/staking/reward/IRewardAccumulator.sol": "IRewardAccumulator"
+      },
+      "libraries": {},
+      "viaIR": true
+    },
+    "sources": {
+      "src/staking/reward/IRewardAccumulator.sol": {
+        "keccak256": "0xd045a4bade6d3034e6b59d4219c04a9b15cb4be6d1c7ae71c7a9a9c9a3300f42",
+        "urls": [
+          "bzz-raw://76f423cea72076f7646123d43a6b8b580e7a0b4909fa1d9327fd93e691f0aa6d",
+          "dweb:/ipfs/QmcoLTHrNrAQfuL3JtEiuceYvhYb9T9w3EqT9XKmRneTrD"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/staking/reward/IRewardAccumulator.sol",
+    "id": 66621,
+    "exportedSymbols": {
+      "IRewardAccumulator": [
+        66620
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:2914:185",
+    "nodes": [
+      {
+        "id": 66565,
+        "nodeType": "PragmaDirective",
+        "src": "32:23:185",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 66620,
+        "nodeType": "ContractDefinition",
+        "src": "235:2710:185",
+        "nodes": [
+          {
+            "id": 66576,
+            "nodeType": "EventDefinition",
+            "src": "464:116:185",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "fde313859edf8a78b1e1c10c6dbe0584a219be6af8d4914fdb85486523103397",
+            "name": "RewardAccumulator",
+            "nameLocation": "470:17:185",
+            "parameters": {
+              "id": 66575,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 66568,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "_msgSender",
+                  "nameLocation": "504:10:185",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 66576,
+                  "src": "488:26:185",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 66567,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "488:7:185",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 66570,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "_tokenOut",
+                  "nameLocation": "532:9:185",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 66576,
+                  "src": "516:25:185",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 66569,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "516:7:185",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 66572,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_amountOut",
+                  "nameLocation": "551:10:185",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 66576,
+                  "src": "543:18:185",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 66571,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "543:7:185",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 66574,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "_rareIn",
+                  "nameLocation": "571:7:185",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 66576,
+                  "src": "563:15:185",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 66573,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "563:7:185",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "487:92:185"
+            }
+          },
+          {
+            "id": 66579,
+            "nodeType": "ErrorDefinition",
+            "src": "842:29:185",
+            "nodes": [],
+            "documentation": {
+              "id": 66577,
+              "nodeType": "StructuredDocumentation",
+              "src": "785:54:185",
+              "text": "@notice Error emitted when a parameter is too low."
+            },
+            "errorSelector": "1d01a371",
+            "name": "ParameterValueTooLow",
+            "nameLocation": "848:20:185",
+            "parameters": {
+              "id": 66578,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "868:2:185"
+            }
+          },
+          {
+            "id": 66582,
+            "nodeType": "ErrorDefinition",
+            "src": "948:21:185",
+            "nodes": [],
+            "documentation": {
+              "id": 66580,
+              "nodeType": "StructuredDocumentation",
+              "src": "875:70:185",
+              "text": "@notice Error emitted when user doesnt meet the criteria for call."
+            },
+            "errorSelector": "82b42900",
+            "name": "Unauthorized",
+            "nameLocation": "954:12:185",
+            "parameters": {
+              "id": 66581,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "966:2:185"
+            }
+          },
+          {
+            "id": 66585,
+            "nodeType": "ErrorDefinition",
+            "src": "1080:26:185",
+            "nodes": [],
+            "documentation": {
+              "id": 66583,
+              "nodeType": "StructuredDocumentation",
+              "src": "973:104:185",
+              "text": "@notice Error emitted via {rewardSwap} if reward swap doesn't have enough funds to perform the swap."
+            },
+            "errorSelector": "356680b7",
+            "name": "InsufficientFunds",
+            "nameLocation": "1086:17:185",
+            "parameters": {
+              "id": 66584,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1103:2:185"
+            }
+          },
+          {
+            "id": 66588,
+            "nodeType": "ErrorDefinition",
+            "src": "1225:24:185",
+            "nodes": [],
+            "documentation": {
+              "id": 66586,
+              "nodeType": "StructuredDocumentation",
+              "src": "1110:112:185",
+              "text": "@notice Error emitted via {rewardSwap} if the rare price is too low to handle the _minAmountOut requirement."
+            },
+            "errorSelector": "90981e6d",
+            "name": "RarePriceTooLow",
+            "nameLocation": "1231:15:185",
+            "parameters": {
+              "id": 66587,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1246:2:185"
+            }
+          },
+          {
+            "id": 66591,
+            "nodeType": "ErrorDefinition",
+            "src": "1333:30:185",
+            "nodes": [],
+            "documentation": {
+              "id": 66589,
+              "nodeType": "StructuredDocumentation",
+              "src": "1253:77:185",
+              "text": "@notice Error emitted via {rewardSwap} if _tokenOut is the $RARE address."
+            },
+            "errorSelector": "337b3924",
+            "name": "CannotSwapRareForRare",
+            "nameLocation": "1339:21:185",
+            "parameters": {
+              "id": 66590,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1360:2:185"
+            }
+          },
+          {
+            "id": 66594,
+            "nodeType": "ErrorDefinition",
+            "src": "1442:30:185",
+            "nodes": [],
+            "documentation": {
+              "id": 66592,
+              "nodeType": "StructuredDocumentation",
+              "src": "1367:72:185",
+              "text": "@notice Emitted when an unsupported ERC20 token for reward swapping."
+            },
+            "errorSelector": "2eb084d8",
+            "name": "UnsupportedERC20Token",
+            "nameLocation": "1448:21:185",
+            "parameters": {
+              "id": 66593,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1469:2:185"
+            }
+          },
+          {
+            "id": 66599,
+            "nodeType": "FunctionDefinition",
+            "src": "1676:51:185",
+            "nodes": [],
+            "functionSelector": "c4d66de8",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "initialize",
+            "nameLocation": "1685:10:185",
+            "parameters": {
+              "id": 66597,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 66596,
+                  "mutability": "mutable",
+                  "name": "_stakingPool",
+                  "nameLocation": "1704:12:185",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 66599,
+                  "src": "1696:20:185",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 66595,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1696:7:185",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1695:22:185"
+            },
+            "returnParameters": {
+              "id": 66598,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1726:0:185"
+            },
+            "scope": 66620,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 66609,
+            "nodeType": "FunctionDefinition",
+            "src": "2244:104:185",
+            "nodes": [],
+            "documentation": {
+              "id": 66600,
+              "nodeType": "StructuredDocumentation",
+              "src": "1941:300:185",
+              "text": "@notice Swap RARE for a discounted price on tokens stored\n @param _tokenOut Address of the ERC20 to pay out with. If null address, then uses ETH.\n @param _minAmountOut Min amount one is willing to receive for the _rareIn.\n @param _rareIn The amount of RARE one is looking to trade."
+            },
+            "functionSelector": "94a5a29d",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "rewardSwap",
+            "nameLocation": "2253:10:185",
+            "parameters": {
+              "id": 66607,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 66602,
+                  "mutability": "mutable",
+                  "name": "_tokenOut",
+                  "nameLocation": "2277:9:185",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 66609,
+                  "src": "2269:17:185",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 66601,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2269:7:185",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 66604,
+                  "mutability": "mutable",
+                  "name": "_minAmountOut",
+                  "nameLocation": "2300:13:185",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 66609,
+                  "src": "2292:21:185",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 66603,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2292:7:185",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 66606,
+                  "mutability": "mutable",
+                  "name": "_rareIn",
+                  "nameLocation": "2327:7:185",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 66609,
+                  "src": "2319:15:185",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint128",
+                    "typeString": "uint128"
+                  },
+                  "typeName": {
+                    "id": 66605,
+                    "name": "uint128",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2319:7:185",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint128",
+                      "typeString": "uint128"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2263:75:185"
+            },
+            "returnParameters": {
+              "id": 66608,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2347:0:185"
+            },
+            "scope": 66620,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 66619,
+            "nodeType": "FunctionDefinition",
+            "src": "2842:101:185",
+            "nodes": [],
+            "documentation": {
+              "id": 66610,
+              "nodeType": "StructuredDocumentation",
+              "src": "2561:278:185",
+              "text": "@notice Estimate the discounted $RARE price for a given token.\n @param _tokenOut Address of the ERC20 token to be swapped for.\n @param _rareAmountIn uint128 amount of RARE to trade for the _tokenOut.\n @return uint256 amount of _tokenOut for the _rareAmountIn."
+            },
+            "functionSelector": "442471f0",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "estimateRarePrice",
+            "nameLocation": "2851:17:185",
+            "parameters": {
+              "id": 66615,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 66612,
+                  "mutability": "mutable",
+                  "name": "_tokenOut",
+                  "nameLocation": "2877:9:185",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 66619,
+                  "src": "2869:17:185",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 66611,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2869:7:185",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 66614,
+                  "mutability": "mutable",
+                  "name": "_rareAmountIn",
+                  "nameLocation": "2896:13:185",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 66619,
+                  "src": "2888:21:185",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint128",
+                    "typeString": "uint128"
+                  },
+                  "typeName": {
+                    "id": 66613,
+                    "name": "uint128",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2888:7:185",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint128",
+                      "typeString": "uint128"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2868:42:185"
+            },
+            "returnParameters": {
+              "id": 66618,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 66617,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 66619,
+                  "src": "2934:7:185",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 66616,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2934:7:185",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2933:9:185"
+            },
+            "scope": 66620,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IRewardAccumulator",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 66566,
+          "nodeType": "StructuredDocumentation",
+          "src": "57:178:185",
+          "text": "@author charlescrain\n @title IRewardAccumulator\n @notice The reward accumulator interface containing all functions, events, etc. for accumulating and swapping rewards."
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          66620
+        ],
+        "name": "IRewardAccumulator",
+        "nameLocation": "245:18:185",
+        "scope": 66621,
+        "usedErrors": [
+          66579,
+          66582,
+          66585,
+          66588,
+          66591,
+          66594
+        ]
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 185
+}

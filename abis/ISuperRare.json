@@ -1,0 +1,824 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "creatorOfToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_creator",
+          "type": "address"
+        }
+      ],
+      "name": "isWhitelisted",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "name",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "symbol",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "_symbol",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "tokenURI",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalSupply",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "creatorOfToken(uint256)": "d5da8d44",
+    "isWhitelisted(address)": "3af32abf",
+    "name()": "06fdde03",
+    "symbol()": "95d89b41",
+    "tokenURI(uint256)": "c87b56dd",
+    "totalSupply()": "18160ddd"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.18+commit.87f61d96\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"creatorOfToken\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_creator\",\"type\":\"address\"}],\"name\":\"isWhitelisted\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"_symbol\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"tokenURI\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"creatorOfToken(uint256)\":{\"details\":\"Gets the creator of the token\",\"params\":{\"_tokenId\":\"uint256 ID of the token\"},\"returns\":{\"_0\":\"address of the creator\"}},\"isWhitelisted(address)\":{\"details\":\"Returns whether the creator is whitelisted\",\"params\":{\"_creator\":\"address to check\"},\"returns\":{\"_0\":\"bool\"}},\"tokenURI(uint256)\":{\"details\":\"Throws if `_tokenId` is not a valid NFT. URIs are defined in RFC 3986. The URI may point to a JSON file that conforms to the \\\"ERC721 Metadata JSON Schema\\\".\"},\"totalSupply()\":{\"details\":\"Gets the total amount of tokens stored by the contract\",\"returns\":{\"_0\":\"uint256 representing the total amount of tokens\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"name()\":{\"notice\":\"A descriptive name for a collection of NFTs in this contract\"},\"symbol()\":{\"notice\":\"An abbreviated name for NFTs in this contract\"},\"tokenURI(uint256)\":{\"notice\":\"A distinct Uniform Resource Identifier (URI) for a given asset.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/token/ERC721/superrare/ISuperRare.sol\":\"ISuperRare\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/buffer/=lib/buffer/\",\":@ensdomains/ens-contracts/=lib/ens-contracts/contracts/\",\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":@uniswap/v3-core/=lib/v3-core/contracts/\",\":@uniswap/v3-core/contracts/=lib/v3-core/contracts/\",\":@uniswap/v3-periphery/=lib/v3-periphery/contracts/\",\":arachnid/solidity-stringutils/=lib/solidity-stringutils/\",\":ds-test/=lib/ds-test/src/\",\":ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":rareprotocol/assets/=lib/assets/src/\",\":rareprotocol/aux/=src/\",\":royalty-guard/=lib/royalty-guard/src/royalty-guard/\",\":royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/\",\":royalty-registry/=lib/royalty-registry-solidity/contracts/\",\":solmate/=lib/solmate/src/\"],\"viaIR\":true},\"sources\":{\"src/token/ERC721/superrare/ISuperRare.sol\":{\"keccak256\":\"0x5fd0bd50fc36eb38aaa1a32d2ba4692ad3993369440a99ef8d1536c39b3dcada\",\"license\":\"BSD-3-Clause\",\"urls\":[\"bzz-raw://cd46c1268707cdcc7c2b6f8f551f21c76e4d4fecffa7dfb5793c8620763658cc\",\"dweb:/ipfs/QmNYD4r7hJxwjqBQ24VK6CQecMdbkaHNb2GUyqPctaidRk\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.18+commit.87f61d96"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "creatorOfToken",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_creator",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "isWhitelisted",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "pure",
+          "type": "function",
+          "name": "name",
+          "outputs": [
+            {
+              "internalType": "string",
+              "name": "_name",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "pure",
+          "type": "function",
+          "name": "symbol",
+          "outputs": [
+            {
+              "internalType": "string",
+              "name": "_symbol",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "tokenURI",
+          "outputs": [
+            {
+              "internalType": "string",
+              "name": "",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "totalSupply",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "creatorOfToken(uint256)": {
+            "details": "Gets the creator of the token",
+            "params": {
+              "_tokenId": "uint256 ID of the token"
+            },
+            "returns": {
+              "_0": "address of the creator"
+            }
+          },
+          "isWhitelisted(address)": {
+            "details": "Returns whether the creator is whitelisted",
+            "params": {
+              "_creator": "address to check"
+            },
+            "returns": {
+              "_0": "bool"
+            }
+          },
+          "tokenURI(uint256)": {
+            "details": "Throws if `_tokenId` is not a valid NFT. URIs are defined in RFC 3986. The URI may point to a JSON file that conforms to the \"ERC721 Metadata JSON Schema\"."
+          },
+          "totalSupply()": {
+            "details": "Gets the total amount of tokens stored by the contract",
+            "returns": {
+              "_0": "uint256 representing the total amount of tokens"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "name()": {
+            "notice": "A descriptive name for a collection of NFTs in this contract"
+          },
+          "symbol()": {
+            "notice": "An abbreviated name for NFTs in this contract"
+          },
+          "tokenURI(uint256)": {
+            "notice": "A distinct Uniform Resource Identifier (URI) for a given asset."
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@ensdomains/buffer/=lib/buffer/",
+        "@ensdomains/ens-contracts/=lib/ens-contracts/contracts/",
+        "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        "@uniswap/v3-core/=lib/v3-core/contracts/",
+        "@uniswap/v3-core/contracts/=lib/v3-core/contracts/",
+        "@uniswap/v3-periphery/=lib/v3-periphery/contracts/",
+        "arachnid/solidity-stringutils/=lib/solidity-stringutils/",
+        "ds-test/=lib/ds-test/src/",
+        "ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/",
+        "forge-std/=lib/forge-std/src/",
+        "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        "rareprotocol/assets/=lib/assets/src/",
+        "rareprotocol/aux/=src/",
+        "royalty-guard/=lib/royalty-guard/src/royalty-guard/",
+        "royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/",
+        "royalty-registry/=lib/royalty-registry-solidity/contracts/",
+        "solmate/=lib/solmate/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/token/ERC721/superrare/ISuperRare.sol": "ISuperRare"
+      },
+      "libraries": {},
+      "viaIR": true
+    },
+    "sources": {
+      "src/token/ERC721/superrare/ISuperRare.sol": {
+        "keccak256": "0x5fd0bd50fc36eb38aaa1a32d2ba4692ad3993369440a99ef8d1536c39b3dcada",
+        "urls": [
+          "bzz-raw://cd46c1268707cdcc7c2b6f8f551f21c76e4d4fecffa7dfb5793c8620763658cc",
+          "dweb:/ipfs/QmNYD4r7hJxwjqBQ24VK6CQecMdbkaHNb2GUyqPctaidRk"
+        ],
+        "license": "BSD-3-Clause"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/token/ERC721/superrare/ISuperRare.sol",
+    "id": 88872,
+    "exportedSymbols": {
+      "ISuperRare": [
+        88871
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "41:1348:212",
+    "nodes": [
+      {
+        "id": 88828,
+        "nodeType": "PragmaDirective",
+        "src": "41:23:212",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 88871,
+        "nodeType": "ContractDefinition",
+        "src": "66:1322:212",
+        "nodes": [
+          {
+            "id": 88834,
+            "nodeType": "FunctionDefinition",
+            "src": "185:60:212",
+            "nodes": [],
+            "documentation": {
+              "id": 88829,
+              "nodeType": "StructuredDocumentation",
+              "src": "93:87:212",
+              "text": " @notice A descriptive name for a collection of NFTs in this contract"
+            },
+            "functionSelector": "06fdde03",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "name",
+            "nameLocation": "194:4:212",
+            "parameters": {
+              "id": 88830,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "198:2:212"
+            },
+            "returnParameters": {
+              "id": 88833,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 88832,
+                  "mutability": "mutable",
+                  "name": "_name",
+                  "nameLocation": "238:5:212",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 88834,
+                  "src": "224:19:212",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 88831,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "224:6:212",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "223:21:212"
+            },
+            "scope": 88871,
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 88840,
+            "nodeType": "FunctionDefinition",
+            "src": "328:64:212",
+            "nodes": [],
+            "documentation": {
+              "id": 88835,
+              "nodeType": "StructuredDocumentation",
+              "src": "251:72:212",
+              "text": " @notice An abbreviated name for NFTs in this contract"
+            },
+            "functionSelector": "95d89b41",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "symbol",
+            "nameLocation": "337:6:212",
+            "parameters": {
+              "id": 88836,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "343:2:212"
+            },
+            "returnParameters": {
+              "id": 88839,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 88838,
+                  "mutability": "mutable",
+                  "name": "_symbol",
+                  "nameLocation": "383:7:212",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 88840,
+                  "src": "369:21:212",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 88837,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "369:6:212",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "368:23:212"
+            },
+            "scope": 88871,
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 88848,
+            "nodeType": "FunctionDefinition",
+            "src": "529:70:212",
+            "nodes": [],
+            "documentation": {
+              "id": 88841,
+              "nodeType": "StructuredDocumentation",
+              "src": "398:126:212",
+              "text": " @dev Returns whether the creator is whitelisted\n @param _creator address to check\n @return bool"
+            },
+            "functionSelector": "3af32abf",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isWhitelisted",
+            "nameLocation": "538:13:212",
+            "parameters": {
+              "id": 88844,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 88843,
+                  "mutability": "mutable",
+                  "name": "_creator",
+                  "nameLocation": "560:8:212",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 88848,
+                  "src": "552:16:212",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 88842,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "552:7:212",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "551:18:212"
+            },
+            "returnParameters": {
+              "id": 88847,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 88846,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 88848,
+                  "src": "593:4:212",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 88845,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "593:4:212",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "592:6:212"
+            },
+            "scope": 88871,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 88856,
+            "nodeType": "FunctionDefinition",
+            "src": "882:74:212",
+            "nodes": [],
+            "documentation": {
+              "id": 88849,
+              "nodeType": "StructuredDocumentation",
+              "src": "605:272:212",
+              "text": " @notice A distinct Uniform Resource Identifier (URI) for a given asset.\n @dev Throws if `_tokenId` is not a valid NFT. URIs are defined in RFC\n 3986. The URI may point to a JSON file that conforms to the \"ERC721\n Metadata JSON Schema\"."
+            },
+            "functionSelector": "c87b56dd",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tokenURI",
+            "nameLocation": "891:8:212",
+            "parameters": {
+              "id": 88852,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 88851,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "908:8:212",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 88856,
+                  "src": "900:16:212",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 88850,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "900:7:212",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "899:18:212"
+            },
+            "returnParameters": {
+              "id": 88855,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 88854,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 88856,
+                  "src": "941:13:212",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 88853,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "941:6:212",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "940:15:212"
+            },
+            "scope": 88871,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 88864,
+            "nodeType": "FunctionDefinition",
+            "src": "1105:74:212",
+            "nodes": [],
+            "documentation": {
+              "id": 88857,
+              "nodeType": "StructuredDocumentation",
+              "src": "962:138:212",
+              "text": " @dev Gets the creator of the token\n @param _tokenId uint256 ID of the token\n @return address of the creator"
+            },
+            "functionSelector": "d5da8d44",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "creatorOfToken",
+            "nameLocation": "1114:14:212",
+            "parameters": {
+              "id": 88860,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 88859,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "1137:8:212",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 88864,
+                  "src": "1129:16:212",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 88858,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1129:7:212",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1128:18:212"
+            },
+            "returnParameters": {
+              "id": 88863,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 88862,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 88864,
+                  "src": "1170:7:212",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 88861,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1170:7:212",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1169:9:212"
+            },
+            "scope": 88871,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 88870,
+            "nodeType": "FunctionDefinition",
+            "src": "1331:55:212",
+            "nodes": [],
+            "documentation": {
+              "id": 88865,
+              "nodeType": "StructuredDocumentation",
+              "src": "1185:141:212",
+              "text": " @dev Gets the total amount of tokens stored by the contract\n @return uint256 representing the total amount of tokens"
+            },
+            "functionSelector": "18160ddd",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "totalSupply",
+            "nameLocation": "1340:11:212",
+            "parameters": {
+              "id": 88866,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1351:2:212"
+            },
+            "returnParameters": {
+              "id": 88869,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 88868,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 88870,
+                  "src": "1377:7:212",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 88867,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1377:7:212",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1376:9:212"
+            },
+            "scope": 88871,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "ISuperRare",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          88871
+        ],
+        "name": "ISuperRare",
+        "nameLocation": "76:10:212",
+        "scope": 88872,
+        "usedErrors": []
+      }
+    ],
+    "license": "BSD-3-Clause"
+  },
+  "id": 212
+}

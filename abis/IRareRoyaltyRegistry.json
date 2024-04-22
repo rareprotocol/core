@@ -1,0 +1,765 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_contractAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "calculateRoyaltyFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_contractAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getERC721TokenRoyaltyPercentage",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_contractAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_percentage",
+          "type": "uint8"
+        }
+      ],
+      "name": "setPercentageForSetERC721ContractRoyalty",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_contractAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "tokenCreator",
+      "outputs": [
+        {
+          "internalType": "address payable",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "calculateRoyaltyFee(address,uint256,uint256)": "860110f5",
+    "getERC721TokenRoyaltyPercentage(address,uint256)": "7c0329f7",
+    "setPercentageForSetERC721ContractRoyalty(address,uint8)": "2d5baea3",
+    "tokenCreator(address,uint256)": "b85ed7e4"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.18+commit.87f61d96\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_contractAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"calculateRoyaltyFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_contractAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"getERC721TokenRoyaltyPercentage\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_contractAddress\",\"type\":\"address\"},{\"internalType\":\"uint8\",\"name\":\"_percentage\",\"type\":\"uint8\"}],\"name\":\"setPercentageForSetERC721ContractRoyalty\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_contractAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"tokenCreator\",\"outputs\":[{\"internalType\":\"address payable\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"calculateRoyaltyFee(address,uint256,uint256)\":{\"details\":\"Utililty function to calculate the royalty fee for a token.\",\"params\":{\"_amount\":\"uint256 wei amount.\",\"_contractAddress\":\"address ERC721Contract address.\",\"_tokenId\":\"uint256 token ID.\"},\"returns\":{\"_0\":\"uint256 wei fee.\"}},\"getERC721TokenRoyaltyPercentage(address,uint256)\":{\"details\":\"Get the royalty fee percentage for a specific ERC721 contract.\",\"params\":{\"_contractAddress\":\"address ERC721Contract address.\",\"_tokenId\":\"uint256 token ID.\"},\"returns\":{\"_0\":\"uint8 wei royalty fee.\"}},\"setPercentageForSetERC721ContractRoyalty(address,uint8)\":{\"details\":\"Utililty function to set the royalty percentage for a specific ERC721 contract.\",\"params\":{\"_contractAddress\":\"address ERC721Contract address.\",\"_percentage\":\"percentage for royalty\"}}},\"title\":\"IERC721CreatorRoyalty Token level royalty interface.\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/registry/interfaces/IRareRoyaltyRegistry.sol\":\"IRareRoyaltyRegistry\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/buffer/=lib/buffer/\",\":@ensdomains/ens-contracts/=lib/ens-contracts/contracts/\",\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":@uniswap/v3-core/=lib/v3-core/contracts/\",\":@uniswap/v3-core/contracts/=lib/v3-core/contracts/\",\":@uniswap/v3-periphery/=lib/v3-periphery/contracts/\",\":arachnid/solidity-stringutils/=lib/solidity-stringutils/\",\":ds-test/=lib/ds-test/src/\",\":ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/\",\":rareprotocol/assets/=lib/assets/src/\",\":rareprotocol/aux/=src/\",\":royalty-guard/=lib/royalty-guard/src/royalty-guard/\",\":royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/\",\":royalty-registry/=lib/royalty-registry-solidity/contracts/\",\":solmate/=lib/solmate/src/\"],\"viaIR\":true},\"sources\":{\"src/registry/interfaces/ICreatorRegistry.sol\":{\"keccak256\":\"0xcaeba1e630efa2ce901d39632fa5760cfbfd8647bf8657a137f4cece2d714ed8\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://161e5d0d9f9b27e97cbdb4fc10134254fe329fcd549fdb07900bb553d2a1ccc1\",\"dweb:/ipfs/QmNtKFgVqB28YwLJg6TWgXWHEJybrXFXEWbU5gep99HEcP\"]},\"src/registry/interfaces/IRareRoyaltyRegistry.sol\":{\"keccak256\":\"0xd6b673182b9c6453e38fcd29bd85a788b3734f82202a77cd64d15422e98ffac9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://70fd1ef8d3a5d44f2e984e969528c8a0ab25eefc92a3b19cfa63b6394bc798e3\",\"dweb:/ipfs/QmTDCPVfxqAcXDzdYfHQbm1f4nYJSBeRz91oqjfE8fxk2r\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.18+commit.87f61d96"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_contractAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "calculateRoyaltyFee",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_contractAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getERC721TokenRoyaltyPercentage",
+          "outputs": [
+            {
+              "internalType": "uint8",
+              "name": "",
+              "type": "uint8"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_contractAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint8",
+              "name": "_percentage",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "setPercentageForSetERC721ContractRoyalty"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_contractAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "tokenCreator",
+          "outputs": [
+            {
+              "internalType": "address payable",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "calculateRoyaltyFee(address,uint256,uint256)": {
+            "details": "Utililty function to calculate the royalty fee for a token.",
+            "params": {
+              "_amount": "uint256 wei amount.",
+              "_contractAddress": "address ERC721Contract address.",
+              "_tokenId": "uint256 token ID."
+            },
+            "returns": {
+              "_0": "uint256 wei fee."
+            }
+          },
+          "getERC721TokenRoyaltyPercentage(address,uint256)": {
+            "details": "Get the royalty fee percentage for a specific ERC721 contract.",
+            "params": {
+              "_contractAddress": "address ERC721Contract address.",
+              "_tokenId": "uint256 token ID."
+            },
+            "returns": {
+              "_0": "uint8 wei royalty fee."
+            }
+          },
+          "setPercentageForSetERC721ContractRoyalty(address,uint8)": {
+            "details": "Utililty function to set the royalty percentage for a specific ERC721 contract.",
+            "params": {
+              "_contractAddress": "address ERC721Contract address.",
+              "_percentage": "percentage for royalty"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@ensdomains/buffer/=lib/buffer/",
+        "@ensdomains/ens-contracts/=lib/ens-contracts/contracts/",
+        "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        "@uniswap/v3-core/=lib/v3-core/contracts/",
+        "@uniswap/v3-core/contracts/=lib/v3-core/contracts/",
+        "@uniswap/v3-periphery/=lib/v3-periphery/contracts/",
+        "arachnid/solidity-stringutils/=lib/solidity-stringutils/",
+        "ds-test/=lib/ds-test/src/",
+        "ensdomains/ens-contracts/=lib/ensdomains/ens-contracts/contracts/",
+        "forge-std/=lib/forge-std/src/",
+        "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
+        "rareprotocol/assets/=lib/assets/src/",
+        "rareprotocol/aux/=src/",
+        "royalty-guard/=lib/royalty-guard/src/royalty-guard/",
+        "royalty-registry-solidity/=lib/royalty-registry-solidity/contracts/",
+        "royalty-registry/=lib/royalty-registry-solidity/contracts/",
+        "solmate/=lib/solmate/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/registry/interfaces/IRareRoyaltyRegistry.sol": "IRareRoyaltyRegistry"
+      },
+      "libraries": {},
+      "viaIR": true
+    },
+    "sources": {
+      "src/registry/interfaces/ICreatorRegistry.sol": {
+        "keccak256": "0xcaeba1e630efa2ce901d39632fa5760cfbfd8647bf8657a137f4cece2d714ed8",
+        "urls": [
+          "bzz-raw://161e5d0d9f9b27e97cbdb4fc10134254fe329fcd549fdb07900bb553d2a1ccc1",
+          "dweb:/ipfs/QmNtKFgVqB28YwLJg6TWgXWHEJybrXFXEWbU5gep99HEcP"
+        ],
+        "license": "MIT"
+      },
+      "src/registry/interfaces/IRareRoyaltyRegistry.sol": {
+        "keccak256": "0xd6b673182b9c6453e38fcd29bd85a788b3734f82202a77cd64d15422e98ffac9",
+        "urls": [
+          "bzz-raw://70fd1ef8d3a5d44f2e984e969528c8a0ab25eefc92a3b19cfa63b6394bc798e3",
+          "dweb:/ipfs/QmTDCPVfxqAcXDzdYfHQbm1f4nYJSBeRz91oqjfE8fxk2r"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/registry/interfaces/IRareRoyaltyRegistry.sol",
+    "id": 63926,
+    "exportedSymbols": {
+      "ICreatorRegistry": [
+        63887
+      ],
+      "IRareRoyaltyRegistry": [
+        63925
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:1360:176",
+    "nodes": [
+      {
+        "id": 63889,
+        "nodeType": "PragmaDirective",
+        "src": "32:23:176",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 63891,
+        "nodeType": "ImportDirective",
+        "src": "57:56:176",
+        "nodes": [],
+        "absolutePath": "src/registry/interfaces/ICreatorRegistry.sol",
+        "file": "./ICreatorRegistry.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 63926,
+        "sourceUnit": 63888,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 63890,
+              "name": "ICreatorRegistry",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 63887,
+              "src": "65:16:176",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 63925,
+        "nodeType": "ContractDefinition",
+        "src": "186:1205:176",
+        "nodes": [
+          {
+            "id": 63904,
+            "nodeType": "FunctionDefinition",
+            "src": "476:137:176",
+            "nodes": [],
+            "documentation": {
+              "id": 63895,
+              "nodeType": "StructuredDocumentation",
+              "src": "243:228:176",
+              "text": " @dev Get the royalty fee percentage for a specific ERC721 contract.\n @param _contractAddress address ERC721Contract address.\n @param _tokenId uint256 token ID.\n @return uint8 wei royalty fee."
+            },
+            "functionSelector": "7c0329f7",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getERC721TokenRoyaltyPercentage",
+            "nameLocation": "485:31:176",
+            "parameters": {
+              "id": 63900,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 63897,
+                  "mutability": "mutable",
+                  "name": "_contractAddress",
+                  "nameLocation": "534:16:176",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 63904,
+                  "src": "526:24:176",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 63896,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "526:7:176",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 63899,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "568:8:176",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 63904,
+                  "src": "560:16:176",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 63898,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "560:7:176",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "516:66:176"
+            },
+            "returnParameters": {
+              "id": 63903,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 63902,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 63904,
+                  "src": "606:5:176",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  },
+                  "typeName": {
+                    "id": 63901,
+                    "name": "uint8",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "606:5:176",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint8",
+                      "typeString": "uint8"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "605:7:176"
+            },
+            "scope": 63925,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 63916,
+            "nodeType": "FunctionDefinition",
+            "src": "885:152:176",
+            "nodes": [],
+            "documentation": {
+              "id": 63905,
+              "nodeType": "StructuredDocumentation",
+              "src": "619:261:176",
+              "text": " @dev Utililty function to calculate the royalty fee for a token.\n @param _contractAddress address ERC721Contract address.\n @param _tokenId uint256 token ID.\n @param _amount uint256 wei amount.\n @return uint256 wei fee."
+            },
+            "functionSelector": "860110f5",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "calculateRoyaltyFee",
+            "nameLocation": "894:19:176",
+            "parameters": {
+              "id": 63912,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 63907,
+                  "mutability": "mutable",
+                  "name": "_contractAddress",
+                  "nameLocation": "931:16:176",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 63916,
+                  "src": "923:24:176",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 63906,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "923:7:176",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 63909,
+                  "mutability": "mutable",
+                  "name": "_tokenId",
+                  "nameLocation": "965:8:176",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 63916,
+                  "src": "957:16:176",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 63908,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "957:7:176",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 63911,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "991:7:176",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 63916,
+                  "src": "983:15:176",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 63910,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "983:7:176",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "913:91:176"
+            },
+            "returnParameters": {
+              "id": 63915,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 63914,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 63916,
+                  "src": "1028:7:176",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 63913,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1028:7:176",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1027:9:176"
+            },
+            "scope": 63925,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 63924,
+            "nodeType": "FunctionDefinition",
+            "src": "1263:126:176",
+            "nodes": [],
+            "documentation": {
+              "id": 63917,
+              "nodeType": "StructuredDocumentation",
+              "src": "1043:215:176",
+              "text": " @dev Utililty function to set the royalty percentage for a specific ERC721 contract.\n @param _contractAddress address ERC721Contract address.\n @param _percentage percentage for royalty"
+            },
+            "functionSelector": "2d5baea3",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setPercentageForSetERC721ContractRoyalty",
+            "nameLocation": "1272:40:176",
+            "parameters": {
+              "id": 63922,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 63919,
+                  "mutability": "mutable",
+                  "name": "_contractAddress",
+                  "nameLocation": "1330:16:176",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 63924,
+                  "src": "1322:24:176",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 63918,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1322:7:176",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 63921,
+                  "mutability": "mutable",
+                  "name": "_percentage",
+                  "nameLocation": "1362:11:176",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 63924,
+                  "src": "1356:17:176",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  },
+                  "typeName": {
+                    "id": 63920,
+                    "name": "uint8",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1356:5:176",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint8",
+                      "typeString": "uint8"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1312:67:176"
+            },
+            "returnParameters": {
+              "id": 63923,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1388:0:176"
+            },
+            "scope": 63925,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 63893,
+              "name": "ICreatorRegistry",
+              "nameLocations": [
+                "220:16:176"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 63887,
+              "src": "220:16:176"
+            },
+            "id": 63894,
+            "nodeType": "InheritanceSpecifier",
+            "src": "220:16:176"
+          }
+        ],
+        "canonicalName": "IRareRoyaltyRegistry",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 63892,
+          "nodeType": "StructuredDocumentation",
+          "src": "115:70:176",
+          "text": " @title IERC721CreatorRoyalty Token level royalty interface."
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          63925,
+          63887
+        ],
+        "name": "IRareRoyaltyRegistry",
+        "nameLocation": "196:20:176",
+        "scope": 63926,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 176
+}
