@@ -7,32 +7,55 @@ import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {IERC20} from "openzeppelin-contracts/interfaces/IERC20.sol";
 import {IERC721} from "openzeppelin-contracts/interfaces/IERC721.sol";
 
-contract GlobalOffer is Ownable {
+contract BatchOffer is Initializable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
+    using MarketUtils for MarketConfig.Config;
+    using MarketConfig for MarketConfig.Config;
     using EnumerableSet for EnumerableSet.Bytes32Set;
 
     /*//////////////////////////////////////////////////////////////////////////
                         Structs and Storage
     //////////////////////////////////////////////////////////////////////////*/
-    struct GlobalOffer {
+    MarketConfig.Config private marketConfig;
+    
+    struct BatchOffer {
         address creator;
         bytes32 rootHash;
     }
 
-    mapping(bytes32 =>  GlobalOffer) private _rootToOffer;
+    mapping(bytes32 =>  BatchOffer) private _rootToOffer;
 
     EnumerableSet.Bytes32Set private _roots;
 
+    //////////////////////////////////////////////////////////////////////////
+  //                      Initializer
+  //////////////////////////////////////////////////////////////////////////
+  function initialize(
+    address _networkBeneficiary,
+    address _marketplaceSettings,
+    address _royaltyEngine,
+    address _payments,
+    address _approvedTokenRegistry
+  ) external initializer {
+    marketConfig = MarketConfig.generateMarketConfig(
+      _networkBeneficiary,
+      _marketplaceSettings,
+      _royaltyEngine,
+      _payments,
+      _approvedTokenRegistry
+    );
+    __Ownable_init();
+  }
 
     /*//////////////////////////////////////////////////////////////////////////
                         Events
     //////////////////////////////////////////////////////////////////////////*/
-    event GlobalOfferCreated(
-
+    event BatchOfferCreated(
         address indexed creator,
-        bytes32 rootHash
+        bytes32 rootHash,
+        uint256 expiry
     );
 
-    event GlobalOfferAccepted(
+    event BatchOfferAccepted(
         address indexed seller,
         address indexed buyer,
         address indexed contractAddress,
@@ -46,28 +69,38 @@ contract GlobalOffer is Ownable {
     /*//////////////////////////////////////////////////////////////////////////
                         External Write Functions
     //////////////////////////////////////////////////////////////////////////*/
-    function createGlobalOffer(
+    function createBatchOffer(
         bytes32 _rootHash
     ) external {
         require(
             _rootToOffer[_rootHash].creator == address(0),
-            "[createGlobalOffer] offer already exists"
+            "createBatchOffer::offer already exists"
         );
-        _rootToOffer[_rootHash] = GlobalOffer(msg.sender, _rootHash);
+
+        // Approved Currency Check
+        marketConfig.checkIfCurrencyIsApproved(_currencyAddress);
+
+        _rootToOffer[_rootHash] = BatchOffer(msg.sender, _rootHash);
         _roots.add(_rootHash);
-        emit GlobalOfferCreated(msg.sender, _rootHash);
+        emit BatchOfferCreated(msg.sender, _rootHash);
     }
 
-    function fulfillGlobalOffer(
+    function acceptBatchOffer(
         bytes32[] memory _proof,
         bytes32 _rootHash,
         address _contractAddress,
         uint256 _tokenId,
         address _currency,
-        uint256 _amount
-    ) external {
-        GlobalOfferOrder memory offer = _rootToOffer[_rootHash];
-        require(offer.creator != address(0), "[fulfillGlobalOffer] offer does not exist");
+        uint256 _amount,
+        address payable[] calldata _splitRecipients,
+        uint8[] calldata _splitRatios
+    ) external payable nonReentrant {
+        IERC721 erc721 = IERC721(_contractAddress);
+        address tokenOwner = erc721.ownerOf(_tokenId);
+        require(msg.sender == tokenOwner, "acceptBatchOffer::Must be tokenOwner to accept offer");
+
+        BatchOfferOrder memory offer = _rootToOffer[_rootHash];
+        require(offer.creator != address(0), "acceptBatchOffer::offer does not exist");
         bytes32 leaf = keccak256(
             abi.encodePacked(_contractAddress, _tokenId, _amount, _currency)
         );
@@ -76,20 +109,22 @@ contract GlobalOffer is Ownable {
         _roots.remove(_rootHash);
         delete _rootToOffer[_rootHash];
 
-        // Transfer ERC20 tokens from the buyer to the seller
-        IERC20 erc20Token = IERC20(_currency);
-        require(
-            erc20Token.transferFrom(offer.creator, owner(), _amount * 3_00 / 100_00),
-            "ERC20 transfer failed"
-        );
-        require(
-            erc20Token.transferFrom(offer.creator, msg.sender, _amount),
-            "ERC20 transfer failed"
-        );
+        // Perform payout
+        if (directSaleConfig.price != 0) {
+            marketConfig.payout(
+                _contractAddress,
+                _tokenId,
+                _currency,
+                _amount,
+                msg.sender,
+                _splitRecipients,
+                _splitRatios
+            );
+        }
 
         // Transfer ERC721 token from the seller to the buyer
         IERC721 erc721Token = IERC721(_contractAddress);
-        require(erc721Token.ownerOf(_tokenId) == msg.sender, "[fulfillGlobalOffer] Must be owner of the token being sold");
+        require(erc721Token.ownerOf(_tokenId) == msg.sender, "acceptBatchOffer:: Must be owner of the token being sold");
         erc721Token.safeTransferFrom(msg.sender, offer.creator, _tokenId);
         emit PodFullfilled(
             msg.sender,
@@ -107,15 +142,10 @@ contract GlobalOffer is Ownable {
     //////////////////////////////////////////////////////////////////////////*/
 
     // Getter function for _rootToOffer mapping
-    function getGlobalOffer(
+    function getBatchOffer(
         bytes32 rootHash
-    ) external view returns (GlobalOffer memory) {
+    ) external view returns (BatchOffer memory) {
         return _rootToOffer[rootHash];
-    }
-
-    // Setter function for _rootToOffer mapping
-    function setGlobalOffer(bytes32 rootHash, GlobalOffer memory order) external {
-        _rootToOffer[rootHash] = order;
     }
 
     // Getter function for _roots EnumerableSet
