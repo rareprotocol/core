@@ -3,9 +3,17 @@ pragma solidity ^0.8.0;
 
 import "ensdomains/governance/MerkleProof.sol";
 import {EnumerableSet} from "openzeppelin-contracts/utils/structs/EnumerableSet.sol";
-import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
-import {IERC20} from "openzeppelin-contracts/interfaces/IERC20.sol";
-import {IERC721} from "openzeppelin-contracts/interfaces/IERC721.sol";
+//import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
+//import {IERC721} from "openzeppelin-contracts/interfaces/IERC721.sol";
+
+import {IERC721} from "openzeppelin-contracts/token/ERC721/IERC721.sol";
+import {Initializable} from "openzeppelin-contracts-upgradeable/proxy/utils/Initializable.sol";
+import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/access/OwnableUpgradeable.sol";
+import {ReentrancyGuardUpgradeable} from "openzeppelin-contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import {UUPSUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+
+import {MarketConfig} from "../utils/structs/MarketConfig.sol";
+import {MarketUtils} from "../utils/MarketUtils.sol";
 
 contract BatchOffer is Initializable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     using MarketUtils for MarketConfig.Config;
