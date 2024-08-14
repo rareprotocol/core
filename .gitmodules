@@ -34,3 +34,6 @@
 [submodule "lib/royalty-guard"]
 	path = lib/royalty-guard
 	url = https://github.com/rareprotocol/royalty-guard
+[submodule "lib/governance-contracts"]
+	path = lib/governance-contracts
+	url = https://github.com/ensdomains/governance-contracts
