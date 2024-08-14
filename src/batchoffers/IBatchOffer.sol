@@ -11,21 +11,21 @@ interface IBatchOffer {
 
 
 
-/*//////////////////////////////////////////////////////////////////////////
-                    Events
-//////////////////////////////////////////////////////////////////////////*/
-event BatchOfferCreated (
-    address indexed creator,
-    bytes32 rootHash
-);
+  /*//////////////////////////////////////////////////////////////////////////
+                      Events
+  //////////////////////////////////////////////////////////////////////////*/
+  event BatchOfferCreated (
+      address indexed creator,
+      bytes32 rootHash
+  );
 
-event BatchOfferAccepted (
-    address indexed seller,
-    address indexed buyer,
-    address indexed contractAddress,
-    uint256 tokenId,
-    bytes32 rootHash,
-    address currency,
-    uint256 amount
-);
+  event BatchOfferAccepted (
+      address indexed seller,
+      address indexed buyer,
+      address indexed contractAddress,
+      uint256 tokenId,
+      bytes32 rootHash,
+      address currency,
+      uint256 amount
+  );
 }

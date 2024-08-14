@@ -3,8 +3,6 @@ pragma solidity ^0.8.0;
 
 import "ensdomains/governance/MerkleProof.sol";
 import {EnumerableSet} from "openzeppelin-contracts/utils/structs/EnumerableSet.sol";
-//import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
-//import {IERC721} from "openzeppelin-contracts/interfaces/IERC721.sol";
 
 import {IERC721} from "openzeppelin-contracts/token/ERC721/IERC721.sol";
 import {Initializable} from "openzeppelin-contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -16,6 +14,9 @@ import {IBatchOffer} from "./IBatchOffer.sol";
 import {MarketConfig} from "../utils/structs/MarketConfig.sol";
 import {MarketUtils} from "../utils/MarketUtils.sol";
 
+/// @author SuperRare Labs Inc.
+/// @title BatchOffer
+/// @notice Creates batch offers
 contract BatchOfferCretor is Initializable, IBatchOffer, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     using MarketUtils for MarketConfig.Config;
     using MarketConfig for MarketConfig.Config;
@@ -29,9 +30,12 @@ contract BatchOfferCretor is Initializable, IBatchOffer, OwnableUpgradeable, Ree
     struct BatchOffer {
         address creator;
         bytes32 rootHash;
+        uint256 amount;
+        address currency;
+        uint256 expiry;
     }
 
-    mapping(bytes32 =>  BatchOffer) private _rootToOffer;
+    mapping(bytes32 => BatchOffer) private _rootToOffer;
 
     EnumerableSet.Bytes32Set private _roots;
 
@@ -65,14 +69,16 @@ contract BatchOfferCretor is Initializable, IBatchOffer, OwnableUpgradeable, Ree
                         External Write Functions
     //////////////////////////////////////////////////////////////////////////*/
     function createBatchOffer(
-        bytes32 _rootHash
+        bytes32 _rootHash,
+        uint256 _amount,
+        address _currency,
+        uint256 _expiry
     ) external {
-        require(
-            _rootToOffer[_rootHash].creator == address(0),
-            "createBatchOffer::offer exists"
-        );
+        require(_rootToOffer[_rootHash].creator == address(0), "createBatchOffer::offer exists");
+        marketConfig.checkIfCurrencyIsApproved(_currency);
+        require(_expiry > block.timestamp, "createBatchOffer::expiry must be in the future");
 
-        _rootToOffer[_rootHash] = BatchOffer(msg.sender, _rootHash);
+        _rootToOffer[_rootHash] = BatchOffer(msg.sender, _rootHash, _amount, _currency, _expiry);
         _roots.add(_rootHash);
         emit BatchOfferCreated(msg.sender, _rootHash);
     }  
@@ -91,18 +97,23 @@ contract BatchOfferCretor is Initializable, IBatchOffer, OwnableUpgradeable, Ree
         address tokenOwner = erc721.ownerOf(_tokenId);
 
         require(msg.sender == tokenOwner, "acceptBatchOffer::Must be tokenOwner");
+        marketConfig.checkIfCurrencyIsApproved(_currency);
 
         BatchOffer memory offer = _rootToOffer[_rootHash];
         require(offer.creator != address(0), "acceptBatchOffer::offer does not exist");
+        require(offer.expiry > block.timestamp, "acceptBatchOffer::offer expired");
         bytes32 leaf = keccak256(
-            abi.encodePacked(_contractAddress, _tokenId, _amount, _currency)
+            abi.encodePacked(_contractAddress, _tokenId)
         );
         (bool success, ) = MerkleProof.verify(_proof, offer.rootHash, leaf);
         require(success, "Invalid _proof");
+
+        // Cleanup memory
         _roots.remove(_rootHash);
         delete _rootToOffer[_rootHash];
 
         // Perform payout
+        // TODO: test case to make sure mark as sold is performed after payout
         if (_amount != 0) {
             marketConfig.payout(
                 _contractAddress,
@@ -117,8 +128,9 @@ contract BatchOfferCretor is Initializable, IBatchOffer, OwnableUpgradeable, Ree
 
         // Transfer ERC721 token from the seller to the buyer
         IERC721 erc721Token = IERC721(_contractAddress);
-        require(erc721Token.ownerOf(_tokenId) == msg.sender, "acceptBatchOffer:: Must be owner of the token being sold");
+        try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, _tokenId, true) {} catch {}
         erc721Token.safeTransferFrom(msg.sender, offer.creator, _tokenId);
+
         emit BatchOfferAccepted (
             msg.sender,
             offer.creator,
