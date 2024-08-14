@@ -9,14 +9,23 @@ interface IBatchOffer {
   //                      Structs
   //////////////////////////////////////////////////////////////////////////
 
-
+  struct BatchOffer {
+      address creator;
+      bytes32 rootHash;
+      uint256 amount;
+      address currency;
+      uint256 expiry;
+  }
 
   /*//////////////////////////////////////////////////////////////////////////
                       Events
   //////////////////////////////////////////////////////////////////////////*/
   event BatchOfferCreated (
       address indexed creator,
-      bytes32 rootHash
+      bytes32 rootHash,
+      uint256 amount,
+      address currency,
+      uint256 expiry,
   );
 
   event BatchOfferAccepted (

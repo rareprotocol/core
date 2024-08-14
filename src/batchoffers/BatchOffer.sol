@@ -23,17 +23,9 @@ contract BatchOfferCretor is Initializable, IBatchOffer, OwnableUpgradeable, Ree
     using EnumerableSet for EnumerableSet.Bytes32Set;
 
     /*//////////////////////////////////////////////////////////////////////////
-                        Structs and Storage
+                            Storage
     //////////////////////////////////////////////////////////////////////////*/
     MarketConfig.Config private marketConfig;
-    
-    struct BatchOffer {
-        address creator;
-        bytes32 rootHash;
-        uint256 amount;
-        address currency;
-        uint256 expiry;
-    }
 
     mapping(bytes32 => BatchOffer) private _rootToOffer;
 
@@ -80,7 +72,7 @@ contract BatchOfferCretor is Initializable, IBatchOffer, OwnableUpgradeable, Ree
 
         _rootToOffer[_rootHash] = BatchOffer(msg.sender, _rootHash, _amount, _currency, _expiry);
         _roots.add(_rootHash);
-        emit BatchOfferCreated(msg.sender, _rootHash);
+        emit BatchOfferCreated(msg.sender, _rootHash, _amount, _currency, _expiry);
     }  
 
     function acceptBatchOffer(
