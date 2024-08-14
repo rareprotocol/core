@@ -120,8 +120,10 @@ contract BatchOfferCretor is Initializable, IBatchOffer, OwnableUpgradeable, Ree
 
         // Transfer ERC721 token from the seller to the buyer
         IERC721 erc721Token = IERC721(_contractAddress);
-        try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, _tokenId, true) {} catch {}
         erc721Token.safeTransferFrom(msg.sender, offer.creator, _tokenId);
+
+        // If payout and transfer succeed, mark as sold
+        try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, _tokenId, true) {} catch {}
 
         emit BatchOfferAccepted (
             msg.sender,
