@@ -12,10 +12,11 @@ import {OwnableUpgradeable} from "openzeppelin-contracts-upgradeable/access/Owna
 import {ReentrancyGuardUpgradeable} from "openzeppelin-contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import {UUPSUpgradeable} from "openzeppelin-contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
+import {IBatchOffer} from "./IBatchOffer.sol";
 import {MarketConfig} from "../utils/structs/MarketConfig.sol";
 import {MarketUtils} from "../utils/MarketUtils.sol";
 
-contract BatchOffer is Initializable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
+contract BatchOfferCretor is Initializable, IBatchOffer, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     using MarketUtils for MarketConfig.Config;
     using MarketConfig for MarketConfig.Config;
     using EnumerableSet for EnumerableSet.Bytes32Set;
@@ -35,44 +36,30 @@ contract BatchOffer is Initializable, OwnableUpgradeable, ReentrancyGuardUpgrade
     EnumerableSet.Bytes32Set private _roots;
 
     //////////////////////////////////////////////////////////////////////////
-  //                      Initializer
-  //////////////////////////////////////////////////////////////////////////
-  function initialize(
-    address _networkBeneficiary,
-    address _marketplaceSettings,
-    address _royaltyEngine,
-    address _payments,
-    address _approvedTokenRegistry
-  ) external initializer {
-    marketConfig = MarketConfig.generateMarketConfig(
-      _networkBeneficiary,
-      _marketplaceSettings,
-      _royaltyEngine,
-      _payments,
-      _approvedTokenRegistry
-    );
-    __Ownable_init();
-  }
-
-    /*//////////////////////////////////////////////////////////////////////////
-                        Events
-    //////////////////////////////////////////////////////////////////////////*/
-    event BatchOfferCreated(
-        address indexed creator,
-        bytes32 rootHash,
-        uint256 expiry
-    );
-
-    event BatchOfferAccepted(
-        address indexed seller,
-        address indexed buyer,
-        address indexed contractAddress,
-        uint256 tokenId,
-        bytes32 rootHash,
-        address currency,
-        uint256 amount
-    );
-    
+    //                      Initializer
+    //////////////////////////////////////////////////////////////////////////
+    function initialize(
+        address _networkBeneficiary,
+        address _marketplaceSettings,
+        address _spaceOperatorRegistry,
+        address _royaltyEngine,
+        address _payments,
+        address _approvedTokenRegistry,
+        address _stakingSettings,
+        address _stakingRegistry
+    ) external initializer {
+        marketConfig = MarketConfig.generateMarketConfig(
+        _networkBeneficiary,
+        _marketplaceSettings,
+        _spaceOperatorRegistry,
+        _royaltyEngine,
+        _payments,
+        _approvedTokenRegistry,
+        _stakingSettings,
+        _stakingRegistry
+        );
+        __Ownable_init();
+    } 
 
     /*//////////////////////////////////////////////////////////////////////////
                         External Write Functions
@@ -82,16 +69,13 @@ contract BatchOffer is Initializable, OwnableUpgradeable, ReentrancyGuardUpgrade
     ) external {
         require(
             _rootToOffer[_rootHash].creator == address(0),
-            "createBatchOffer::offer already exists"
+            "createBatchOffer::offer exists"
         );
-
-        // Approved Currency Check
-        marketConfig.checkIfCurrencyIsApproved(_currencyAddress);
 
         _rootToOffer[_rootHash] = BatchOffer(msg.sender, _rootHash);
         _roots.add(_rootHash);
         emit BatchOfferCreated(msg.sender, _rootHash);
-    }
+    }  
 
     function acceptBatchOffer(
         bytes32[] memory _proof,
@@ -105,9 +89,10 @@ contract BatchOffer is Initializable, OwnableUpgradeable, ReentrancyGuardUpgrade
     ) external payable nonReentrant {
         IERC721 erc721 = IERC721(_contractAddress);
         address tokenOwner = erc721.ownerOf(_tokenId);
-        require(msg.sender == tokenOwner, "acceptBatchOffer::Must be tokenOwner to accept offer");
 
-        BatchOfferOrder memory offer = _rootToOffer[_rootHash];
+        require(msg.sender == tokenOwner, "acceptBatchOffer::Must be tokenOwner");
+
+        BatchOffer memory offer = _rootToOffer[_rootHash];
         require(offer.creator != address(0), "acceptBatchOffer::offer does not exist");
         bytes32 leaf = keccak256(
             abi.encodePacked(_contractAddress, _tokenId, _amount, _currency)
@@ -118,7 +103,7 @@ contract BatchOffer is Initializable, OwnableUpgradeable, ReentrancyGuardUpgrade
         delete _rootToOffer[_rootHash];
 
         // Perform payout
-        if (directSaleConfig.price != 0) {
+        if (_amount != 0) {
             marketConfig.payout(
                 _contractAddress,
                 _tokenId,
@@ -134,7 +119,7 @@ contract BatchOffer is Initializable, OwnableUpgradeable, ReentrancyGuardUpgrade
         IERC721 erc721Token = IERC721(_contractAddress);
         require(erc721Token.ownerOf(_tokenId) == msg.sender, "acceptBatchOffer:: Must be owner of the token being sold");
         erc721Token.safeTransferFrom(msg.sender, offer.creator, _tokenId);
-        emit PodFullfilled(
+        emit BatchOfferAccepted (
             msg.sender,
             offer.creator,
             _contractAddress,
