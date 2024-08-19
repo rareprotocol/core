@@ -17,7 +17,7 @@ import {MarketUtils} from "../utils/MarketUtils.sol";
 /// @author SuperRare Labs Inc.
 /// @title BatchOfferCreator
 /// @notice Creates batch offers
-contract BatchOfferCretor is Initializable, IBatchOffer, OwnableUpgradeable, ReentrancyGuardUpgradeable {
+contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, ReentrancyGuardUpgradeable {
   using MarketUtils for MarketConfig.Config;
   using MarketConfig for MarketConfig.Config;
   using EnumerableSet for EnumerableSet.Bytes32Set;

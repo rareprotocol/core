@@ -5,30 +5,12 @@ import "forge-std/Test.sol";
 
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
+import {IBatchOffer} from "../../batchoffer/IBatchOffer.sol";
 import {BatchOfferCreator} from "../../batchoffer/BatchOffer.sol";
-
-contract TestCurrency is ERC20 {
-  constructor() ERC20("Currency", "CUR") {
-    _mint(msg.sender, 1_000_000_000 ether);
-  }
-}
-
-// contract TestERC721 is ERC721, IERC721Mint, Ownable {
-//   uint256 private tokenCount;
-
-//   constructor() ERC721("TestERC721", "TEST") {}
-
-//   function mintTo(address _receiver) external returns (uint256) {
-//     tokenCount++;
-//     _mint(_receiver, tokenCount);
-//     return tokenCount;
-//   }
-// }
+import {Payments} from "rareprotocol/aux/payments/Payments.sol";
 
 contract TestBatchOffer is Test {
-  BatchOfferCreator offerCretor;
-  TestCurrency currency;
-  TestERC721 testErc721;
+  BatchOfferCreator offerCreator;
 
   address deployer = address(0xabadabab);
   address stakingSettings = address(0xabadaba0);
@@ -45,17 +27,10 @@ contract TestBatchOffer is Test {
   uint256 tokenId = 123;
   uint8 marketplaceFeePercentage = 3;
 
-  address currencyAddress;
-
   function setUp() public {
     vm.startPrank(deployer);
 
-    // Deploy Test Assets
-    currency = new TestCurrency();
-    // testErc721 = new TestERC721();
-    currencyAddress = address(currency);
-
-    offerCreator = new BatchOfferCreator;
+    offerCreator = new BatchOfferCreator();
     offerCreator.initialize(
       networkBeneficiary,
       marketplaceSettings,
@@ -67,29 +42,59 @@ contract TestBatchOffer is Test {
       stakingRegistry
     );
 
-    vm.etch(marketplaceSettings, address(rareMinter).code);
-    vm.etch(stakingSettings, address(rareMinter).code);
-    vm.etch(stakingRegistry, address(rareMinter).code);
-    vm.etch(royaltyRegistry, address(rareMinter).code);
-    vm.etch(royaltyEngine, address(rareMinter).code);
-    vm.etch(spaceOperatorRegistry, address(rareMinter).code);
-    vm.etch(approvedTokenRegistry, address(rareMinter).code);
+    vm.etch(marketplaceSettings, address(offerCreator).code);
+    vm.etch(stakingSettings, address(offerCreator).code);
+    vm.etch(stakingRegistry, address(offerCreator).code);
+    vm.etch(royaltyRegistry, address(offerCreator).code);
+    vm.etch(royaltyEngine, address(offerCreator).code);
+    vm.etch(spaceOperatorRegistry, address(offerCreator).code);
+    vm.etch(approvedTokenRegistry, address(offerCreator).code);
 
     vm.stopPrank();
   }
 
   function test_createBatchOffer() public {
     vm.prank(deployer);
-    offerCreator.createBatchOffer(
-      "e2f05447de94f4cd02902ffc2554d41b1cd8422528571125749db2a45d853edb",
-      1,
-      currency,
-      vm.block.timestamp + 200
-    );
+
+    bytes32 root = 0xe2f05447de94f4cd02902ffc2554d41b1cd8422528571125749db2a45d853edb;
+
+    offerCreator.createBatchOffer(root, 1, address(0x0), block.timestamp + 200);
     vm.stopPrank();
 
-    if (offerCreator.getBatchOffer("e2f05447de94f4cd02902ffc2554d41b1cd8422528571125749db2a45d853edb") == bytes32(0)) {
+    IBatchOffer.BatchOffer memory storedOffer = offerCreator.getBatchOffer(
+      bytes32(0xe2f05447de94f4cd02902ffc2554d41b1cd8422528571125749db2a45d853edb)
+    );
+    if (storedOffer.amount == 0) {
       revert("offer create failed");
     }
+  }
+
+  function test_acceptBatchOffer() public {
+    vm.prank(deployer);
+
+    bytes32[] memory _proof = new bytes32[](1);
+    _proof[0] = 0x38576e7ee26ee6f4d2d299090ff29296be72bdffd2b2c6666fb55158cea93788;
+    bytes32 _rootHash = 0xe2f05447de94f4cd02902ffc2554d41b1cd8422528571125749db2a45d853edb;
+    address _contractAddress = address(0x123);
+    uint256 _tokenId = 123;
+    address _currency = address(0x0);
+    uint256 _amount = 1;
+    address payable[] memory _splitRecipients = new address payable[](1);
+    uint8[] memory _splitRatios = new uint8[](1);
+    _splitRecipients[0] = payable(msg.sender);
+    _splitRatios[0] = 100;
+
+    offerCreator.acceptBatchOffer(
+      _proof,
+      _rootHash,
+      _contractAddress,
+      _tokenId,
+      _currency,
+      _amount,
+      _splitRecipients,
+      _splitRatios
+    );
+
+    vm.stopPrank();
   }
 }

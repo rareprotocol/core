@@ -13,7 +13,8 @@ function main() {
 
     const leaf = keccak256('0x123 -> 123')
     const proof = tree.getProof(leaf)
+    console.log(`proof: ${tree.getHexProof(keccak256('0x123 -> 123'))}`)
     console.log(`testLeaf proven: ${tree.verify(proof, leaf, root)}`) //-> true
 }
 
-main();
+main()
