@@ -6,6 +6,10 @@ import "forge-std/Test.sol";
 import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
+import {ERC721} from "openzeppelin-contracts/token/ERC721/ERC721.sol";
+import {IERC721} from "openzeppelin-contracts/token/ERC721/IERC721.sol";
+import {IERC721Mint} from "../../collection/IERC721Mint.sol";
+import "openzeppelin-contracts/access/Ownable.sol";
 
 import {IBatchOffer} from "../../batchoffer/IBatchOffer.sol";
 import {BatchOfferCreator} from "../../batchoffer/BatchOffer.sol";
@@ -17,9 +21,22 @@ contract TestCurrency is ERC20 {
   }
 }
 
+contract TestERC721 is ERC721, IERC721Mint, Ownable {
+  uint256 private tokenCount;
+
+  constructor() ERC721("TestERC721", "TEST") {}
+
+  function mintTo(address _receiver) external returns (uint256) {
+    tokenCount++;
+    _mint(_receiver, tokenCount);
+    return tokenCount;
+  }
+}
+
 contract TestBatchOffer is Test {
   BatchOfferCreator offerCreator;
   TestCurrency currency;
+  TestERC721 testToken;
 
   address deployer = address(0xabadabab);
   address stakingSettings = address(0xabadaba0);
@@ -30,6 +47,9 @@ contract TestBatchOffer is Test {
   address approvedTokenRegistry = address(0xabadaba7);
   address stakingRegistry = address(0xabadaba9);
   address networkBeneficiary = address(0xabadabaa);
+
+  address ryan = address(0xcafe);
+  address notryan = address(0xcafd);
 
   address zeroAddress = address(0);
   bytes32[] emptyProof = new bytes32[](0);
@@ -43,6 +63,16 @@ contract TestBatchOffer is Test {
 
     currency = new TestCurrency();
     currencyAddress = address(currency);
+    testToken = new testToken;
+
+    testToken.transferOwnership(notryan);
+
+    deal(deployer, 100 ether);
+    deal(ryan, 100 ether);
+    deal(notryan, 100 ether);
+
+    currency.transfer(ryan, 1000000 ether);
+    currency.transfer(notryan, 1000000 ether);
 
     offerCreator = new BatchOfferCreator();
     offerCreator.initialize(
@@ -70,7 +100,9 @@ contract TestBatchOffer is Test {
   function test_createBatchOffer() public {
     vm.prank(deployer);
 
-    bytes32 root = 0xe2f05447de94f4cd02902ffc2554d41b1cd8422528571125749db2a45d853edb;
+    Merkle m = new Merkle();
+    bytes32 data = mload(add(address(testToken) + " -> " + testToken.tokenCount, 32));
+    bytes32 root = m.getRoot(data);
 
     offerCreator.createBatchOffer(root, 1, currencyAddress, block.timestamp + 200);
     vm.stopPrank();
