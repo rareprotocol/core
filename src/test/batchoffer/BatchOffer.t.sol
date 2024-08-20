@@ -3,14 +3,23 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 
+import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
+import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
 import {IBatchOffer} from "../../batchoffer/IBatchOffer.sol";
 import {BatchOfferCreator} from "../../batchoffer/BatchOffer.sol";
 import {Payments} from "rareprotocol/aux/payments/Payments.sol";
 
+contract TestCurrency is ERC20 {
+  constructor() ERC20("Currency", "CUR") {
+    _mint(msg.sender, 1_000_000_000 ether);
+  }
+}
+
 contract TestBatchOffer is Test {
   BatchOfferCreator offerCreator;
+  TestCurrency currency;
 
   address deployer = address(0xabadabab);
   address stakingSettings = address(0xabadaba0);
@@ -27,8 +36,13 @@ contract TestBatchOffer is Test {
   uint256 tokenId = 123;
   uint8 marketplaceFeePercentage = 3;
 
+  address currencyAddress;
+
   function setUp() public {
     vm.startPrank(deployer);
+
+    currency = new TestCurrency();
+    currencyAddress = address(currency);
 
     offerCreator = new BatchOfferCreator();
     offerCreator.initialize(
@@ -58,7 +72,7 @@ contract TestBatchOffer is Test {
 
     bytes32 root = 0xe2f05447de94f4cd02902ffc2554d41b1cd8422528571125749db2a45d853edb;
 
-    offerCreator.createBatchOffer(root, 1, address(0x0), block.timestamp + 200);
+    offerCreator.createBatchOffer(root, 1, currencyAddress, block.timestamp + 200);
     vm.stopPrank();
 
     IBatchOffer.BatchOffer memory storedOffer = offerCreator.getBatchOffer(
@@ -77,19 +91,20 @@ contract TestBatchOffer is Test {
     bytes32 _rootHash = 0xe2f05447de94f4cd02902ffc2554d41b1cd8422528571125749db2a45d853edb;
     address _contractAddress = address(0x123);
     uint256 _tokenId = 123;
-    address _currency = address(0x0);
     uint256 _amount = 1;
     address payable[] memory _splitRecipients = new address payable[](1);
     uint8[] memory _splitRatios = new uint8[](1);
     _splitRecipients[0] = payable(msg.sender);
     _splitRatios[0] = 100;
 
+    currency.approve(address(offerCreator), _amount + (_amount * 3) / 100);
+
     offerCreator.acceptBatchOffer(
       _proof,
       _rootHash,
       _contractAddress,
       _tokenId,
-      _currency,
+      currencyAddress,
       _amount,
       _splitRecipients,
       _splitRatios

@@ -70,6 +70,14 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     emit BatchOfferCreated(msg.sender, _rootHash, _amount, _currency, _expiry);
   }
 
+  function revokeBatchOffer(bytes32 _rootHash) external {
+    require(_rootToOffer[_rootHash].creator == msg.sender, "createBatchOffer::must be owner");
+
+    // Cleanup memory
+    _roots.remove(_rootHash);
+    delete _rootToOffer[_rootHash];
+  }
+
   function acceptBatchOffer(
     bytes32[] memory _proof,
     bytes32 _rootHash,
