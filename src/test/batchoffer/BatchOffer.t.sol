@@ -2,10 +2,8 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
+import {Merkle} from "murky/Merkle.sol";
 
-import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
-import {SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
-import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 import {ERC721} from "openzeppelin-contracts/token/ERC721/ERC721.sol";
 import {IERC721} from "openzeppelin-contracts/token/ERC721/IERC721.sol";
 import {IERC721Mint} from "../../collection/IERC721Mint.sol";
@@ -14,12 +12,6 @@ import "openzeppelin-contracts/access/Ownable.sol";
 import {IBatchOffer} from "../../batchoffer/IBatchOffer.sol";
 import {BatchOfferCreator} from "../../batchoffer/BatchOffer.sol";
 import {Payments} from "rareprotocol/aux/payments/Payments.sol";
-
-contract TestCurrency is ERC20 {
-  constructor() ERC20("Currency", "CUR") {
-    _mint(msg.sender, 1_000_000_000 ether);
-  }
-}
 
 contract TestERC721 is ERC721, IERC721Mint, Ownable {
   uint256 private tokenCount;
@@ -35,8 +27,8 @@ contract TestERC721 is ERC721, IERC721Mint, Ownable {
 
 contract TestBatchOffer is Test {
   BatchOfferCreator offerCreator;
-  TestCurrency currency;
   TestERC721 testToken;
+  uint256 testTokenId;
 
   address deployer = address(0xabadabab);
   address stakingSettings = address(0xabadaba0);
@@ -51,28 +43,15 @@ contract TestBatchOffer is Test {
   address ryan = address(0xcafe);
   address notryan = address(0xcafd);
 
-  address zeroAddress = address(0);
-  bytes32[] emptyProof = new bytes32[](0);
-  uint256 tokenId = 123;
-  uint8 marketplaceFeePercentage = 3;
-
-  address currencyAddress;
-
   function setUp() public {
     vm.startPrank(deployer);
 
-    currency = new TestCurrency();
-    currencyAddress = address(currency);
-    testToken = new testToken;
-
-    testToken.transferOwnership(notryan);
+    testToken = new TestERC721();
+    testTokenId = testToken.mintTo(notryan);
 
     deal(deployer, 100 ether);
     deal(ryan, 100 ether);
     deal(notryan, 100 ether);
-
-    currency.transfer(ryan, 1000000 ether);
-    currency.transfer(notryan, 1000000 ether);
 
     offerCreator = new BatchOfferCreator();
     offerCreator.initialize(
@@ -101,15 +80,16 @@ contract TestBatchOffer is Test {
     vm.prank(deployer);
 
     Merkle m = new Merkle();
-    bytes32 data = mload(add(address(testToken) + " -> " + testToken.tokenCount, 32));
+    bytes32[] memory data = new bytes32[](2);
+    data[0] = keccak256(abi.encodePacked(address(testToken), testTokenId));
+    data[1] = keccak256(abi.encodePacked(address(testToken), uint256(2)));
     bytes32 root = m.getRoot(data);
 
-    offerCreator.createBatchOffer(root, 1, currencyAddress, block.timestamp + 200);
+    vm.startPrank(ryan);
+    offerCreator.createBatchOffer(root, 1, address(0), block.timestamp + 200);
     vm.stopPrank();
 
-    IBatchOffer.BatchOffer memory storedOffer = offerCreator.getBatchOffer(
-      bytes32(0xe2f05447de94f4cd02902ffc2554d41b1cd8422528571125749db2a45d853edb)
-    );
+    IBatchOffer.BatchOffer memory storedOffer = offerCreator.getBatchOffer(root);
     if (storedOffer.amount == 0) {
       revert("offer create failed");
     }
@@ -118,25 +98,31 @@ contract TestBatchOffer is Test {
   function test_acceptBatchOffer() public {
     vm.prank(deployer);
 
-    bytes32[] memory _proof = new bytes32[](1);
-    _proof[0] = 0x38576e7ee26ee6f4d2d299090ff29296be72bdffd2b2c6666fb55158cea93788;
-    bytes32 _rootHash = 0xe2f05447de94f4cd02902ffc2554d41b1cd8422528571125749db2a45d853edb;
-    address _contractAddress = address(0x123);
-    uint256 _tokenId = 123;
+    testToken.transferOwnership(notryan);
+
     uint256 _amount = 1;
     address payable[] memory _splitRecipients = new address payable[](1);
     uint8[] memory _splitRatios = new uint8[](1);
-    _splitRecipients[0] = payable(msg.sender);
+    _splitRecipients[0] = payable(notryan);
     _splitRatios[0] = 100;
 
-    currency.approve(address(offerCreator), _amount + (_amount * 3) / 100);
+    Merkle m = new Merkle();
+    bytes32[] memory data = new bytes32[](2);
+    data[0] = keccak256(abi.encodePacked(address(testToken), testTokenId));
+    data[1] = keccak256(abi.encodePacked(address(testToken), uint256(2)));
+    bytes32 _rootHash = m.getRoot(data);
+    bytes32[] memory _proof = m.getProof(data, 0);
 
+    vm.startPrank(ryan);
+    offerCreator.createBatchOffer(_rootHash, 1, address(0), block.timestamp + 200);
+
+    vm.startPrank(notryan);
     offerCreator.acceptBatchOffer(
       _proof,
       _rootHash,
-      _contractAddress,
-      _tokenId,
-      currencyAddress,
+      address(testToken),
+      testTokenId,
+      address(0),
       _amount,
       _splitRecipients,
       _splitRatios

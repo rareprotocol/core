@@ -4,6 +4,7 @@
 @ensdomains/governance/=lib/governance-contracts/contracts/
 ensdomains/governance=lib/governance-contracts/contracts/
 ds-test/=lib/ds-test/src/
+murky/=lib/murky/src/
 forge-std/=lib/forge-std/src/
 openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/
 openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/
