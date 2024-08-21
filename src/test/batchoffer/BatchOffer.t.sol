@@ -11,7 +11,15 @@ import "openzeppelin-contracts/access/Ownable.sol";
 
 import {IBatchOffer} from "../../batchoffer/IBatchOffer.sol";
 import {BatchOfferCreator} from "../../batchoffer/BatchOffer.sol";
+import {IMarketplaceSettings} from "rareprotocol/aux/marketplace/IMarketplaceSettings.sol";
+import {IStakingSettings} from "rareprotocol/aux/marketplace/IStakingSettings.sol";
+import {IRareRoyaltyRegistry} from "rareprotocol/aux/registry/interfaces/IRareRoyaltyRegistry.sol";
+import {IPayments} from "rareprotocol/aux/payments/IPayments.sol";
 import {Payments} from "rareprotocol/aux/payments/Payments.sol";
+import {ISpaceOperatorRegistry} from "rareprotocol/aux/registry/interfaces/ISpaceOperatorRegistry.sol";
+import {IRareStakingRegistry} from "../../staking/registry/IRareStakingRegistry.sol";
+import {IApprovedTokenRegistry} from "rareprotocol/aux/registry/interfaces/IApprovedTokenRegistry.sol";
+import {IRoyaltyEngineV1} from "royalty-registry/IRoyaltyEngineV1.sol";
 
 contract TestERC721 is ERC721, IERC721Mint, Ownable {
   uint256 private tokenCount;
@@ -40,6 +48,8 @@ contract TestBatchOffer is Test {
   address stakingRegistry = address(0xabadaba9);
   address networkBeneficiary = address(0xabadabaa);
 
+  uint8 marketplaceFeePercentage = 3;
+
   address ryan = address(0xcafe);
   address notryan = address(0xcafd);
 
@@ -49,9 +59,9 @@ contract TestBatchOffer is Test {
     testToken = new TestERC721();
     testTokenId = testToken.mintTo(notryan);
 
-    deal(deployer, 100 ether);
-    deal(ryan, 100 ether);
-    deal(notryan, 100 ether);
+    vm.deal(deployer, 5 ether);
+    vm.deal(ryan, 5 ether);
+    vm.deal(notryan, 5 ether);
 
     offerCreator = new BatchOfferCreator();
     offerCreator.initialize(
@@ -86,7 +96,7 @@ contract TestBatchOffer is Test {
     bytes32 root = m.getRoot(data);
 
     vm.startPrank(ryan);
-    offerCreator.createBatchOffer(root, 1, address(0), block.timestamp + 200);
+    offerCreator.createBatchOffer(root, 100, address(0), block.timestamp + 200);
     vm.stopPrank();
 
     IBatchOffer.BatchOffer memory storedOffer = offerCreator.getBatchOffer(root);
@@ -98,9 +108,10 @@ contract TestBatchOffer is Test {
   function test_acceptBatchOffer() public {
     vm.prank(deployer);
 
+    mockPayout(100, notryan);
+
     testToken.transferOwnership(notryan);
 
-    uint256 _amount = 1;
     address payable[] memory _splitRecipients = new address payable[](1);
     uint8[] memory _splitRatios = new uint8[](1);
     _splitRecipients[0] = payable(notryan);
@@ -114,20 +125,80 @@ contract TestBatchOffer is Test {
     bytes32[] memory _proof = m.getProof(data, 0);
 
     vm.startPrank(ryan);
-    offerCreator.createBatchOffer(_rootHash, 1, address(0), block.timestamp + 200);
+    offerCreator.createBatchOffer(_rootHash, 100, address(0), block.timestamp + 200);
 
     vm.startPrank(notryan);
+
     offerCreator.acceptBatchOffer(
       _proof,
       _rootHash,
       address(testToken),
       testTokenId,
       address(0),
-      _amount,
       _splitRecipients,
       _splitRatios
     );
 
     vm.stopPrank();
+  }
+
+  function mockPayout(uint256 _amount, address _seller) internal {
+    // setup getRewardAccumulatorAddressForUser call
+    vm.mockCall(
+      stakingRegistry,
+      abi.encodeWithSelector(IRareStakingRegistry.getRewardAccumulatorAddressForUser.selector, _seller),
+      abi.encode(address(0))
+    );
+
+    // setup calculateMarketplacePayoutFee call -- 3%
+    vm.mockCall(
+      stakingSettings,
+      abi.encodeWithSelector(IStakingSettings.calculateMarketplacePayoutFee.selector, _amount),
+      abi.encode((_amount * 3) / 100)
+    );
+
+    // setup calculateStakingFee call -- 3%
+    vm.mockCall(
+      stakingSettings,
+      abi.encodeWithSelector(IStakingSettings.calculateStakingFee.selector, _amount),
+      abi.encode(0)
+    );
+
+    // setup calculateMarketplaceFee call -- 3%
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IMarketplaceSettings.calculateMarketplaceFee.selector, _amount),
+      abi.encode((_amount * 3) / 100)
+    );
+
+    // setup getMarketplaceFeePercentage call -- 3%
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IMarketplaceSettings.getMarketplaceFeePercentage.selector),
+      abi.encode(marketplaceFeePercentage)
+    );
+
+    // setup has hasERC721TokenSold -- false
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(IMarketplaceSettings.hasERC721TokenSold.selector, address(testToken), 1),
+      abi.encode(false)
+    );
+    // setup has isApprovedSpaceOperator -- false
+    vm.mockCall(
+      spaceOperatorRegistry,
+      abi.encodeWithSelector(ISpaceOperatorRegistry.isApprovedSpaceOperator.selector, _seller),
+      abi.encode(false)
+    );
+
+    // setup has getERC721ContractPrimarySaleFeePercentage -- 15%
+    vm.mockCall(
+      marketplaceSettings,
+      abi.encodeWithSelector(
+        IMarketplaceSettings.getERC721ContractPrimarySaleFeePercentage.selector,
+        address(testToken)
+      ),
+      abi.encode(15)
+    );
   }
 }
