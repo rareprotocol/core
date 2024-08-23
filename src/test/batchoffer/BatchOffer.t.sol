@@ -86,27 +86,10 @@ contract TestBatchOffer is Test {
     vm.stopPrank();
   }
 
-  function test_createBatchOffer() public {
+  function test_sendAndAcceptBatchOffer() public {
     vm.prank(deployer);
 
-    Merkle m = new Merkle();
-    bytes32[] memory data = new bytes32[](2);
-    data[0] = keccak256(abi.encodePacked(address(testToken), testTokenId));
-    data[1] = keccak256(abi.encodePacked(address(testToken), uint256(2)));
-    bytes32 root = m.getRoot(data);
-
-    vm.startPrank(ryan);
-    offerCreator.createBatchOffer(root, 100, address(0), block.timestamp + 200);
-    vm.stopPrank();
-
-    IBatchOffer.BatchOffer memory storedOffer = offerCreator.getBatchOffer(root);
-    if (storedOffer.amount == 0) {
-      revert("offer create failed");
-    }
-  }
-
-  function test_acceptBatchOffer() public {
-    vm.prank(deployer);
+    uint256 amount = 100;
 
     mockPayout(100, notryan);
 
@@ -125,9 +108,16 @@ contract TestBatchOffer is Test {
     bytes32[] memory _proof = m.getProof(data, 0);
 
     vm.startPrank(ryan);
-    offerCreator.createBatchOffer(_rootHash, 100, address(0), block.timestamp + 200);
+    offerCreator.createBatchOffer{value: amount + (amount * 3) / 100}(
+      _rootHash,
+      amount,
+      address(0),
+      block.timestamp + 200
+    );
 
     vm.startPrank(notryan);
+
+    testToken.setApprovalForAll(address(offerCreator), true);
 
     offerCreator.acceptBatchOffer(
       _proof,
