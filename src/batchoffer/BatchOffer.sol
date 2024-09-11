@@ -80,17 +80,20 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     emit BatchOfferCreated(msg.sender, _rootHash, _amount, _currency, _expiry);
   }
 
-  function revokeBatchOffer(bytes32 _rootHash) external {
+  function revokeBatchOffer(bytes32 _rootHash) external nonReentrant() {
     require(_rootToOffer[_rootHash].creator == msg.sender, "createBatchOffer::must be owner");
 
-    // Refund Escrow
+    // Load Offer
     BatchOffer memory offer = _rootToOffer[_rootHash];
-    uint256 fee = marketConfig.marketplaceSettings.calculateMarketplaceFee(offer.amount);
-    MarketUtils.refund(marketConfig, offer.currency, offer.amount, fee, offer.creator);
 
     // Cleanup memory
+    // IMPORTANT: Must be done before external refund call
     _roots.remove(_rootHash);
     delete _rootToOffer[_rootHash];
+
+    // Refund Escrow
+    uint256 fee = marketConfig.marketplaceSettings.calculateMarketplaceFee(offer.amount);
+    MarketUtils.refund(marketConfig, offer.currency, offer.amount, fee, offer.creator);
   }
 
   function acceptBatchOffer(
@@ -98,7 +101,6 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     bytes32 _rootHash,
     address _contractAddress,
     uint256 _tokenId,
-    address _currency,
     address payable[] calldata _splitRecipients,
     uint8[] calldata _splitRatios
   ) external payable nonReentrant {
@@ -106,9 +108,10 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     address tokenOwner = erc721.ownerOf(_tokenId);
 
     require(msg.sender == tokenOwner, "acceptBatchOffer::Must be tokenOwner");
-    marketConfig.checkIfCurrencyIsApproved(_currency);
 
     BatchOffer memory offer = _rootToOffer[_rootHash];
+    address currency = offer.currency;
+    marketConfig.checkIfCurrencyIsApproved(currency);
     require(offer.creator != address(0), "acceptBatchOffer::offer does not exist");
     require(offer.expiry > block.timestamp, "acceptBatchOffer::offer expired");
     require(offer.rootHash == _rootHash, "acceptBatchOffer::root mismatch");
@@ -126,7 +129,7 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
       marketConfig.payout(
         _contractAddress,
         _tokenId,
-        _currency,
+        currency,
         offer.amount,
         msg.sender,
         _splitRecipients,
@@ -141,7 +144,7 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     // If payout and transfer succeed, mark as sold
     try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, _tokenId, true) {} catch {}
 
-    emit BatchOfferAccepted(msg.sender, offer.creator, _contractAddress, _tokenId, _rootHash, _currency, offer.amount);
+    emit BatchOfferAccepted(msg.sender, offer.creator, _contractAddress, _tokenId, _rootHash, currency, offer.amount);
   }
 
   /*//////////////////////////////////////////////////////////////////////////

@@ -124,7 +124,6 @@ contract TestBatchOffer is Test {
       _rootHash,
       address(testToken),
       testTokenId,
-      address(0),
       _splitRecipients,
       _splitRatios
     );
