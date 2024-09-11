@@ -120,6 +120,7 @@ contract TestBatchOffer is Test {
     testToken.setApprovalForAll(address(offerCreator), true);
 
     offerCreator.acceptBatchOffer(
+      address(ryan),
       _proof,
       _rootHash,
       address(testToken),

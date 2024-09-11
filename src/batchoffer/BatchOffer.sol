@@ -2,7 +2,6 @@
 pragma solidity ^0.8.0;
 
 import "ensdomains/governance/MerkleProof.sol";
-import {EnumerableSet} from "openzeppelin-contracts/utils/structs/EnumerableSet.sol";
 
 import {IERC721} from "openzeppelin-contracts/token/ERC721/IERC721.sol";
 import {Initializable} from "openzeppelin-contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -20,16 +19,13 @@ import {MarketUtils} from "../utils/MarketUtils.sol";
 contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, ReentrancyGuardUpgradeable {
   using MarketUtils for MarketConfig.Config;
   using MarketConfig for MarketConfig.Config;
-  using EnumerableSet for EnumerableSet.Bytes32Set;
 
   /*//////////////////////////////////////////////////////////////////////////
                             Storage
     //////////////////////////////////////////////////////////////////////////*/
   MarketConfig.Config private marketConfig;
 
-  mapping(bytes32 => BatchOffer) private _rootToOffer;
-
-  EnumerableSet.Bytes32Set private _roots;
+  mapping(address => mapping (bytes32 => BatchOffer)) private _creatorToRootToOffer;
 
   //////////////////////////////////////////////////////////////////////////
   //                      Initializer
@@ -66,13 +62,12 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     address _currency,
     uint256 _expiry
   ) external payable nonReentrant {
-    require(_rootToOffer[_rootHash].creator == address(0), "createBatchOffer::offer exists");
+    require(_creatorToRootToOffer[msg.sender][_rootHash].creator == address(0), "createBatchOffer::offer exists");
     marketConfig.checkIfCurrencyIsApproved(_currency);
     require(_expiry > block.timestamp, "createBatchOffer::expiry must be in the future");
     require(_amount > 0, "offer::Amount cannot be 0");
 
-    _rootToOffer[_rootHash] = BatchOffer(msg.sender, _rootHash, _amount, _currency, _expiry);
-    _roots.add(_rootHash);
+    _creatorToRootToOffer[msg.sender][_rootHash] = BatchOffer(msg.sender, _rootHash, _amount, _currency, _expiry);
 
     uint256 requiredAmount = _amount + marketConfig.marketplaceSettings.calculateMarketplaceFee(_amount);
     MarketUtils.checkAmountAndTransfer(_currency, requiredAmount);
@@ -81,15 +76,14 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
   }
 
   function revokeBatchOffer(bytes32 _rootHash) external nonReentrant() {
-    require(_rootToOffer[_rootHash].creator == msg.sender, "createBatchOffer::must be owner");
+    require(_creatorToRootToOffer[msg.sender][_rootHash].creator == msg.sender, "createBatchOffer::must be owner");
 
     // Load Offer
-    BatchOffer memory offer = _rootToOffer[_rootHash];
+    BatchOffer memory offer = _creatorToRootToOffer[msg.sender][_rootHash];
 
     // Cleanup memory
     // IMPORTANT: Must be done before external refund call
-    _roots.remove(_rootHash);
-    delete _rootToOffer[_rootHash];
+    delete _creatorToRootToOffer[msg.sender][_rootHash];
 
     // Refund Escrow
     uint256 fee = marketConfig.marketplaceSettings.calculateMarketplaceFee(offer.amount);
@@ -97,6 +91,7 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
   }
 
   function acceptBatchOffer(
+    address _creator,
     bytes32[] memory _proof,
     bytes32 _rootHash,
     address _contractAddress,
@@ -109,7 +104,7 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
 
     require(msg.sender == tokenOwner, "acceptBatchOffer::Must be tokenOwner");
 
-    BatchOffer memory offer = _rootToOffer[_rootHash];
+    BatchOffer memory offer = _creatorToRootToOffer[_creator][_rootHash];
     address currency = offer.currency;
     marketConfig.checkIfCurrencyIsApproved(currency);
     require(offer.creator != address(0), "acceptBatchOffer::offer does not exist");
@@ -120,8 +115,8 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     require(success, "Invalid _proof");
 
     // Cleanup memory
-    _roots.remove(_rootHash);
-    delete _rootToOffer[_rootHash];
+    // IMPORTANT: Must be done before external payout
+    delete _creatorToRootToOffer[_creator][_rootHash];
 
     // Perform payout
     // TODO: test case to make sure mark as sold is performed after payout
@@ -152,17 +147,8 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     //////////////////////////////////////////////////////////////////////////*/
 
   // Getter function for _rootToOffer mapping
-  function getBatchOffer(bytes32 rootHash) external view returns (BatchOffer memory) {
-    return _rootToOffer[rootHash];
+  function getBatchOffer(address creator, bytes32 rootHash) external view returns (BatchOffer memory) {
+    return _creatorToRootToOffer[creator][rootHash];
   }
 
-  // Getter function for _roots EnumerableSet
-  function getRoots() external view returns (bytes32[] memory) {
-    uint256 size = _roots.length();
-    bytes32[] memory result = new bytes32[](size);
-    for (uint256 i = 0; i < size; i++) {
-      result[i] = _roots.at(i);
-    }
-    return result;
-  }
 }
