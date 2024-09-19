@@ -76,6 +76,7 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     marketConfig.checkIfCurrencyIsApproved(_currency);
     require(_expiry > block.timestamp, "createBatchOffer::expiry must be in the future");
     require(_amount > 0, "offer::Amount cannot be 0");
+    require(_rootHash != bytes32(0), "createBatchOffer::rootHash cannot be 0");
 
     _creatorToRootToOffer[msg.sender][_rootHash] = BatchOffer(msg.sender, _rootHash, _amount, _currency, _expiry);
 
