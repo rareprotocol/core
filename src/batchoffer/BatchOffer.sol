@@ -87,10 +87,11 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
   }
 
   function revokeBatchOffer(bytes32 _rootHash) external nonReentrant() {
-    require(_creatorToRootToOffer[msg.sender][_rootHash].creator == msg.sender, "createBatchOffer::must be owner");
 
     // Load Offer
     BatchOffer memory offer = _creatorToRootToOffer[msg.sender][_rootHash];
+
+    require(offer.creator == msg.sender, "createBatchOffer::must be owner");
 
     // Cleanup memory
     // IMPORTANT: Must be done before external refund call
