@@ -113,6 +113,7 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     bytes32 leaf = keccak256(abi.encodePacked(_contractAddress, _tokenId));
     (bool success, ) = MerkleProof.verify(_proof, offer.rootHash, leaf);
     require(success, "Invalid _proof");
+    MarketUtils.checkSplits(_splitRecipients, _splitRatios);
 
     // Cleanup memory
     // IMPORTANT: Must be done before external payout
