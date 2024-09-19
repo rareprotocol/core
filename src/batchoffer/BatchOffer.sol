@@ -41,14 +41,14 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     address _stakingRegistry
   ) external initializer {
 
-    require(_networkBeneficiary != address(0), "BatchOfferCreator::initialize::networkBeneficiary address must be set");
-    require(_marketplaceSettings != address(0), "BatchOfferCreator::initialize::marketplaceSettings address must be set"););
-    require(_spaceOperatorRegistry != address(0), "BatchOfferCreator::initialize::spaceOperatorRegistry address must be set");");
-    require(_royaltyEngine != address(0), "BatchOfferCreator::initialize::royaltyEngine address must be set");
-    require(_payments != address(0), "BatchOfferCreator::initialize::payments address must be set");
-    require(_approvedTokenRegistry != address(0), "BatchOfferCreator::initialize::approvedTokenRegistry address must be set");");
-    require(_stakingSettings != address(0), "BatchOfferCreator::initialize::stakingSettings address must be set");
-    require(_stakingRegistry != address(0), "BatchOfferCreator::initialize::stakingRegistry address must be set");
+    require(_networkBeneficiary != address(0), "BatchOfferCreator::networkBeneficiary address must be set");
+    require(_marketplaceSettings != address(0), "BatchOfferCreator::marketplaceSettings address must be set");
+    require(_spaceOperatorRegistry != address(0), "BatchOfferCreator::spaceOperatorRegistry address must be set");
+    require(_royaltyEngine != address(0), "BatchOfferCreator::royaltyEngine address must be set");
+    require(_payments != address(0), "BatchOfferCreator::payments address must be set");
+    require(_approvedTokenRegistry != address(0), "BatchOfferCreator::approvedTokenRegistry address must be set");
+    require(_stakingSettings != address(0), "BatchOfferCreator::stakingSettings address must be set");
+    require(_stakingRegistry != address(0), "BatchOfferCreator::stakingRegistry address must be set");
     
     marketConfig = MarketConfig.generateMarketConfig(
       _networkBeneficiary,
