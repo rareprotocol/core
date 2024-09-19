@@ -148,7 +148,8 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     IERC721 erc721Token = IERC721(_contractAddress);
     erc721Token.safeTransferFrom(msg.sender, offer.creator, _tokenId);
 
-    // If payout and transfer succeed, mark as sold
+    // If payout and transfer succeed, check token and mark as sold
+    require(offer.creator == erc721Token.ownerOf(_tokenId), "acceptBatchOffer::ERC721 transfer failed");
     try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, _tokenId, true) {} catch {}
 
     emit BatchOfferAccepted(msg.sender, offer.creator, _contractAddress, _tokenId, _rootHash, currency, offer.amount);
