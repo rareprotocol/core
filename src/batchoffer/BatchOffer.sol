@@ -121,7 +121,6 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     marketConfig.checkIfCurrencyIsApproved(currency);
     require(offer.creator != address(0), "acceptBatchOffer::offer does not exist");
     require(offer.expiry > block.timestamp, "acceptBatchOffer::offer expired");
-    require(offer.rootHash == _rootHash, "acceptBatchOffer::root mismatch");
     bytes32 leaf = keccak256(abi.encodePacked(_contractAddress, _tokenId));
     (bool success, ) = MerkleProof.verify(_proof, offer.rootHash, leaf);
     require(success, "Invalid _proof");
