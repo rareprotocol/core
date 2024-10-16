@@ -18,6 +18,10 @@
     "solhint": "solhint",
     "test": "forge test -vvv"
   },
+  "dependencies": {
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.4.0"
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
