@@ -256,14 +256,7 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
       contractTxsPerAddress[_contractAddress][msg.sender] += 1;
     }
 
-    // Perform Mint
     uint256 tokenIdStart = IERC721Mint(_contractAddress).mintTo(msg.sender); // get first Token Id in range of mint
-    try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, tokenIdStart, true) {} catch {}
-    for (uint256 i = 1; i < _numMints; i++) {
-      // Start with offset of 1 since already minted first
-      IERC721Mint(_contractAddress).mintTo(msg.sender);
-      try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, tokenIdStart + i, true) {} catch {}
-    }
 
     // Perform payout
     if (directSaleConfig.price != 0) {
@@ -276,6 +269,14 @@ contract RareMinter is Initializable, IRareMinter, OwnableUpgradeable, Reentranc
         directSaleConfig.splitRecipients,
         directSaleConfig.splitRatios
       );
+    }
+
+        // Perform Mint
+    try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, tokenIdStart, true) {} catch {}
+    for (uint256 i = 1; i < _numMints; i++) {
+      // Start with offset of 1 since already minted first
+      IERC721Mint(_contractAddress).mintTo(msg.sender);
+      try marketConfig.marketplaceSettings.markERC721Token(_contractAddress, tokenIdStart + i, true) {} catch {}
     }
 
     emit MintDirectSale(
