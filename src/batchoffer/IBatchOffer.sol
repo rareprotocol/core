@@ -15,6 +15,7 @@ interface IBatchOffer {
     uint256 amount;
     address currency;
     uint256 expiry;
+    uint256 feePercentage;
   }
 
   /*//////////////////////////////////////////////////////////////////////////

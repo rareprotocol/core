@@ -83,7 +83,14 @@ contract BatchOfferCreator is
     require(_amount > 0, "offer::Amount cannot be 0");
     require(_rootHash != bytes32(0), "createBatchOffer::rootHash cannot be 0");
 
-    _creatorToRootToOffer[msg.sender][_rootHash] = BatchOffer(msg.sender, _rootHash, _amount, _currency, _expiry);
+    _creatorToRootToOffer[msg.sender][_rootHash] = BatchOffer(
+      msg.sender,
+      _rootHash,
+      _amount,
+      _currency,
+      _expiry,
+      marketConfig.marketplaceSettings.getMarketplaceFeePercentage()
+    );
 
     uint256 requiredAmount = _amount + marketConfig.marketplaceSettings.calculateMarketplaceFee(_amount);
     MarketUtils.checkAmountAndTransfer(_currency, requiredAmount);
@@ -102,8 +109,7 @@ contract BatchOfferCreator is
     delete _creatorToRootToOffer[msg.sender][_rootHash];
 
     // Refund Escrow
-    uint256 fee = marketConfig.marketplaceSettings.calculateMarketplaceFee(offer.amount);
-    marketConfig.refund(offer.currency, offer.amount, fee, offer.creator);
+    marketConfig.refund(offer.currency, offer.amount, offer.feePercentage, offer.creator);
   }
 
   function acceptBatchOffer(
