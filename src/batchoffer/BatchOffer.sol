@@ -16,7 +16,13 @@ import {MarketUtils} from "../utils/MarketUtils.sol";
 /// @author SuperRare Labs Inc.
 /// @title BatchOfferCreator
 /// @notice Creates batch offers
-contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, ReentrancyGuardUpgradeable {
+contract BatchOfferCreator is
+  Initializable,
+  IBatchOffer,
+  OwnableUpgradeable,
+  ReentrancyGuardUpgradeable,
+  UUPSUpgradeable
+{
   using MarketUtils for MarketConfig.Config;
   using MarketConfig for MarketConfig.Config;
 
@@ -25,7 +31,7 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
   //////////////////////////////////////////////////////////////////////////*/
   MarketConfig.Config private marketConfig;
 
-  mapping(address => mapping (bytes32 => BatchOffer)) private _creatorToRootToOffer;
+  mapping(address => mapping(bytes32 => BatchOffer)) private _creatorToRootToOffer;
 
   //////////////////////////////////////////////////////////////////////////
   //                      Initializer
@@ -40,7 +46,6 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     address _stakingSettings,
     address _stakingRegistry
   ) external initializer {
-
     require(_networkBeneficiary != address(0), "BatchOfferCreator::networkBeneficiary address must be set");
     require(_marketplaceSettings != address(0), "BatchOfferCreator::marketplaceSettings address must be set");
     require(_spaceOperatorRegistry != address(0), "BatchOfferCreator::spaceOperatorRegistry address must be set");
@@ -49,7 +54,7 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     require(_approvedTokenRegistry != address(0), "BatchOfferCreator::approvedTokenRegistry address must be set");
     require(_stakingSettings != address(0), "BatchOfferCreator::stakingSettings address must be set");
     require(_stakingRegistry != address(0), "BatchOfferCreator::stakingRegistry address must be set");
-    
+
     marketConfig = MarketConfig.generateMarketConfig(
       _networkBeneficiary,
       _marketplaceSettings,
@@ -86,8 +91,7 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     emit BatchOfferCreated(msg.sender, _rootHash, _amount, _currency, _expiry);
   }
 
-  function revokeBatchOffer(bytes32 _rootHash) external nonReentrant() {
-
+  function revokeBatchOffer(bytes32 _rootHash) external nonReentrant {
     // Load Offer
     BatchOffer memory offer = _creatorToRootToOffer[msg.sender][_rootHash];
 
@@ -99,7 +103,7 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
 
     // Refund Escrow
     uint256 fee = marketConfig.marketplaceSettings.calculateMarketplaceFee(offer.amount);
-    MarketUtils.refund(marketConfig, offer.currency, offer.amount, fee, offer.creator);
+    marketConfig.refund(offer.currency, offer.amount, fee, offer.creator);
   }
 
   function acceptBatchOffer(
@@ -155,6 +159,12 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
     emit BatchOfferAccepted(msg.sender, offer.creator, _contractAddress, _tokenId, _rootHash, currency, offer.amount);
   }
 
+  //////////////////////////////////////////////////////////////////////////
+  //                      Internal UUPS Functions
+  //////////////////////////////////////////////////////////////////////////
+  /// @inheritdoc UUPSUpgradeable
+  function _authorizeUpgrade(address) internal override onlyOwner {}
+
   /*//////////////////////////////////////////////////////////////////////////
                         External Read Functions
     //////////////////////////////////////////////////////////////////////////*/
@@ -163,5 +173,4 @@ contract BatchOfferCreator is Initializable, IBatchOffer, OwnableUpgradeable, Re
   function getBatchOffer(address creator, bytes32 rootHash) external view returns (BatchOffer memory) {
     return _creatorToRootToOffer[creator][rootHash];
   }
-
 }
