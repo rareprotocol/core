@@ -132,6 +132,41 @@ contract TestBatchOffer is Test {
     vm.stopPrank();
   }
 
+    function test_revokeBatchOffer() public {
+    vm.prank(deployer);
+
+    uint256 amount = 100;
+
+    mockPayout(100, notryan);
+
+    testToken.transferOwnership(notryan);
+
+    address payable[] memory _splitRecipients = new address payable[](1);
+    uint8[] memory _splitRatios = new uint8[](1);
+    _splitRecipients[0] = payable(notryan);
+    _splitRatios[0] = 100;
+
+    Merkle m = new Merkle();
+    bytes32[] memory data = new bytes32[](2);
+    data[0] = keccak256(abi.encodePacked(address(testToken), testTokenId));
+    data[1] = keccak256(abi.encodePacked(address(testToken), uint256(2)));
+    bytes32 _rootHash = m.getRoot(data);
+    bytes32[] memory _proof = m.getProof(data, 0);
+
+    vm.startPrank(ryan);
+    offerCreator.createBatchOffer{value: amount + (amount * 3) / 100}(
+      _rootHash,
+      amount,
+      address(0),
+      block.timestamp + 200
+    );
+
+    offerCreator.revokeBatchOffer(_rootHash);
+
+    vm.stopPrank();
+  }
+
+
   function mockPayout(uint256 _amount, address _seller) internal {
     // setup getRewardAccumulatorAddressForUser call
     vm.mockCall(
