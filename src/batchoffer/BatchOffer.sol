@@ -110,6 +110,8 @@ contract BatchOfferCreator is
 
     // Refund Escrow
     marketConfig.refund(offer.currency, offer.amount, offer.feePercentage, offer.creator);
+
+    emit BatchOfferRevoked(msg.sender, _rootHash, offer.currency, offer.amount);
   }
 
   function acceptBatchOffer(

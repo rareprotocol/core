@@ -32,4 +32,11 @@ interface IBatchOffer {
     address currency,
     uint256 amount
   );
+
+  event BatchOfferRevoked(
+    address indexed creator,
+    bytes32 rootHash,
+    address currency,
+    uint256 amount
+  );
 }
