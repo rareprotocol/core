@@ -107,7 +107,7 @@ contract RareSpaceNFT is
         burn(_tokenId);
     }
 
-    function burn(uint256 tokenId) public virtual override onlyTokenOwner(_tokenId) {
+    function burn(uint256 tokenId) public virtual override onlyTokenOwner(tokenId) {
         super.burn(tokenId);
     } 
 
