@@ -107,6 +107,10 @@ contract RareSpaceNFT is
         burn(_tokenId);
     }
 
+    function burn(uint256 tokenId) public virtual override onlyTokenOwner(_tokenId) {
+        super.burn(tokenId);
+    } 
+
     function setRoyaltyReceiver(uint256 _tokenId, address _receiver) external {
         require(msg.sender == tokenCreator(_tokenId), "Not creator");
         _setRoyaltyReceiver(_tokenId, _receiver);

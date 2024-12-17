@@ -29,7 +29,7 @@ contract Payments is IPayments, PullPayment {
         require(msg.value == _amount);
 
         if (_amount > 0) {
-            (bool success, ) = address(_payee).call{value: _amount}("");
+            (bool success, ) = address(_payee).call{value: _amount, gas: 50_000}("");
 
             if (!success) {
                 _asyncTransfer(_payee, _amount);
@@ -50,7 +50,7 @@ contract Payments is IPayments, PullPayment {
         for (uint256 i = 0; i < _splits.length; i++) {
             totalAmount = totalAmount + _amounts[i];
             if (_splits[i] != address(0)) {
-                (bool success, ) = address(_splits[i]).call{value: _amounts[i]}(
+                (bool success, ) = address(_splits[i]).call{value: _amounts[i], gas: 50_000}(
                     ""
                 );
 

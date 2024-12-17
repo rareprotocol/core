@@ -117,7 +117,7 @@ contract SuperRareMarketplace is
       _refund(_currencyAddress, currOffer.amount, currOffer.marketplaceFee, msg.sender);
     }
 
-    erc721.safeTransferFrom(tokenOwner, msg.sender, _tokenId);
+    erc721.transferFrom(tokenOwner, msg.sender, _tokenId);
 
     _payout(_originContract, _tokenId, _currencyAddress, _amount, sp.seller, sp.splitRecipients, sp.splitRatios);
 
@@ -242,7 +242,7 @@ contract SuperRareMarketplace is
     delete tokenCurrentOffers[_originContract][_tokenId][_currencyAddress];
 
     IERC721 erc721 = IERC721(_originContract);
-    erc721.safeTransferFrom(msg.sender, currOffer.buyer, _tokenId);
+    erc721.transferFrom(msg.sender, currOffer.buyer, _tokenId);
 
     _payout(_originContract, _tokenId, _currencyAddress, _amount, msg.sender, _splitAddresses, _splitRatios);
 
